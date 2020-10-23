@@ -85,7 +85,7 @@ Thanks goes to these wonderful people
 <!-- markdownlint-disable -->
 <table>
   <tr>
-    <td align="center"><a href="https://github.com/koromerzhin"><img src="https://avatars0.githubusercontent.com/u/308012?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Le TOULLEC Martial</b></sub></a><br /><a href="https://github.com/koromerzhin/docker/commits?author=koromerzhin" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/koromerzhin"><img src="https://avatars0.githubusercontent.com/u/308012?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Le TOULLEC Martial</b></sub></a><br /><a href="https://github.com/koromerzhin/template-github/commits?author=koromerzhin" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/apps/renovate"><img src="https://avatars1.githubusercontent.com/in/2740?v=4?s=100" width="100px;" alt=""/><br /><sub><b>renovate[bot]</b></sub></a><br /><a href="#tool-renovate[bot]" title="Tools">🔧</a></td>
     <td align="center"><a href="https://github.com/apps/restyled-io"><img src="https://avatars0.githubusercontent.com/in/5851?v=4?s=100" width="100px;" alt=""/><br /><sub><b>restyled-io[bot]</b></sub></a><br /><a href="#tool-restyled-io[bot]" title="Tools">🔧</a></td>
   </tr>
