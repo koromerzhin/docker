@@ -31,6 +31,7 @@
 Software:
 
 - make
+- docker
 
 ## Install
 
