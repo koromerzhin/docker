@@ -1,0 +1,30 @@
+{
+  "name": "@koromerzhin/docker",
+  "version": "1.0.0",
+  "description": "images docker",
+  "scripts": {
+    "contributors": "all-contributors",
+    "changelog": "gitmoji-changelog",
+    "readme": "readme",
+    "licenses": "license-checker",
+    "commit": "sgc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/koromerzhin/docker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/koromerzhin/docker/issues"
+  },
+  "homepage": "https://github.com/koromerzhin/docker#readme",
+  "dependencies": {
+    "all-contributors-cli": "6.19.0",
+    "gitmoji-changelog": "2.1.0",
+    "license-checker": "25.0.1",
+    "readme-md-generator": "1.0.0",
+    "semantic-git-commit-cli": "3.7.0"
+  }
+}
