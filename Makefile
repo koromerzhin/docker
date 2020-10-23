@@ -1,3 +1,5 @@
+ARGS := $(filter-out $@,$(MAKECMDGOALS))
+
 .DEFAULT_GOAL := help
 %:
 	@:
@@ -25,3 +27,33 @@ git-commit: node_modules ## Commit data
 git-check: node_modules ## CHECK before
 	@make contributors-check -i
 	@git status
+
+docker-images: ## docker images
+	docker images
+
+docker-generate-angular: ## Docker GENERATE angular
+	docker build -t koromerzhin/angular:latest images/angular
+
+docker-generate-php-fpm: ## Docker GENERATE php-fpm
+	docker build -t koromerzhin/php-fpm:latest images/php-fpm
+
+docker-generate-php-fpm-symfony: ## Docker GENERATE php-fpm-symfony
+	docker build -t koromerzhin/php-fpm-symfony:latest images/php-fpm-symfony
+
+docker-generate-vuejs: ## Docker GENERATE vuejs
+	docker build -t koromerzhin/vuejs:latest images/vuejs
+
+docker-login: ## Login docker
+	docker login
+
+docker-push-angular: ## Docker PUSH angular
+	@echo "docker push koromerzhin/angular:latest"
+
+docker-push-php-fpm: ## Docker PUSH php-fpm
+	@echo "docker push koromerzhin/php-fpm:latest"
+
+docker-push-php-fpm-symfony: ## Docker PUSH php-fpm-symfony
+	@echo "docker push koromerzhin/php-fpm-symfony:latest"
+
+docker-push-vuejs: ## Docker PUSH vuejs
+	@echo "docker push koromerzhin/vuejs:latest"
