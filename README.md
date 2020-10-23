@@ -50,6 +50,31 @@ make git-check
 make git-commit
 ```
 
+## docker generate
+
+```sh
+make docker-generate-angular
+make docker-generate-php-fpm
+make docker-generate-php-fpm-symfony
+make docker-generate-vuejs
+```
+
+## docker push
+
+```sh
+make docker-push-angular
+make docker-push-php-fpm
+make docker-push-php-fpm-symfony
+make docker-push-vuejs
+```
+
+## Vues images
+
+[docker-push-angular](https://hub.docker.com/r/koromerzhin/angular)
+[docker-push-php-fpm](https://hub.docker.com/r/koromerzhin/phpfpm)
+[docker-push-php-fpm-symfony](https://hub.docker.com/r/koromerzhin/php-fpm-symfony)
+[docker-push-vuejs](https://hub.docker.com/r/koromerzhin/vuejs)
+
 ## Author
 
 👤 **koromerzhin**
