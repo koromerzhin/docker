@@ -70,10 +70,17 @@ make docker-push-vuejs
 
 ## Vues images
 
+<<<<<<< HEAD
 - [docker-push-angular](https://hub.docker.com/r/koromerzhin/angular)
 - [docker-push-php-fpm](https://hub.docker.com/r/koromerzhin/phpfpm)
 - [docker-push-php-fpm-symfony](https://hub.docker.com/r/koromerzhin/php-fpm-symfony)
 - [docker-push-vuejs](https://hub.docker.com/r/koromerzhin/vuejs)
+=======
+[docker-push-angular](https://hub.docker.com/r/koromerzhin/angular)
+[docker-push-php-fpm](https://hub.docker.com/r/koromerzhin/phpfpm)
+[docker-push-php-fpm-symfony](https://hub.docker.com/r/koromerzhin/php-fpm-symfony)
+[docker-push-vuejs](https://hub.docker.com/r/koromerzhin/vuejs)
+>>>>>>> c51117b355853e34f303b449f7a868d99bfc6873
 
 ## Author
 
