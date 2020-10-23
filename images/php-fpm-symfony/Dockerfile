@@ -1,15 +1,11 @@
 FROM php:7.4-fpm
 
-RUN apt-get update && apt-get install -y \
-      wget \
-      git \
-      fish
+RUN apt-get update && apt-get install -y wget git fish
+
 # UPDATE
 RUN apt-get update
-
 # Add Lib
 RUN apt-get install -y libzip-dev libicu-dev
-
 
 # Support de Postgre
 RUN apt-get install -y libpq-dev
@@ -36,8 +32,7 @@ RUN docker-php-ext-enable xdebug
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer
 
 # Symfony tool
-RUN wget https://get.symfony.com/cli/installer -O - | bash && \
-  mv /root/.symfony/bin/symfony /usr/local/bin/symfony
+RUN wget https://get.symfony.com/cli/installer -O - | bash && mv /root/.symfony/bin/symfony /usr/local/bin/symfony
 
 WORKDIR /var/www
 

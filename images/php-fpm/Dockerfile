@@ -1,15 +1,12 @@
 FROM php:7.4-fpm
 
-RUN apt-get update && apt-get install -y \
-      wget \
-      git \
-      fish
+RUN apt-get update && apt-get install -y wget git fish
+
 # UPDATE
 RUN apt-get update
 
 # Add Lib
 RUN apt-get install -y libzip-dev libicu-dev
-
 
 # Support de Postgre
 RUN apt-get install -y libpq-dev
