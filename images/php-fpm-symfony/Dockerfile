@@ -35,6 +35,10 @@ RUN docker-php-ext-enable xdebug
 # Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer
 
+# Symfony tool
+RUN wget https://get.symfony.com/cli/installer -O - | bash && \
+  mv /root/.symfony/bin/symfony /usr/local/bin/symfony
+
 WORKDIR /var/www
 
 EXPOSE 9000
