@@ -32,6 +32,7 @@ Software:
 
 - make
 - docker
+- npm
 
 ## Install
 
@@ -49,6 +50,12 @@ make git-check
 
 ```sh
 make git-commit
+```
+
+## help
+
+```sh
+make help
 ```
 
 ## docker generate
