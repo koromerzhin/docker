@@ -1,4 +1,4 @@
-name: docker php-fpm
+name: docker phpfpm
 on:
     - push
 jobs:
@@ -6,4 +6,4 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - {name: Checkout, uses: actions/checkout@v2}
-            - {name: 'Create proxy network', run: 'make docker-generate-php-fpm'}
+            - {name: 'Create proxy network', run: 'make docker-generate-phpfpm'}
