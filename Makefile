@@ -34,8 +34,8 @@ docker-images: ## docker images
 docker-generate-angular: ## Docker GENERATE angular
 	docker build -t koromerzhin/angular:latest images/angular
 
-docker-generate-php-fpm: ## Docker GENERATE php-fpm
-	docker build -t koromerzhin/php-fpm:latest images/php-fpm
+docker-generate-phpfpm: ## Docker GENERATE phpfpm
+	docker build -t koromerzhin/phpfpm:latest images/phpfpm
 
 docker-generate-php-fpm-symfony: ## Docker GENERATE php-fpm-symfony
 	docker build -t koromerzhin/php-fpm-symfony:latest images/php-fpm-symfony
@@ -49,8 +49,8 @@ docker-login: ## Login docker
 docker-push-angular: ## Docker PUSH angular
 	@echo "docker push koromerzhin/angular:latest"
 
-docker-push-php-fpm: ## Docker PUSH php-fpm
-	@echo "docker push koromerzhin/php-fpm:latest"
+docker-push-phpfpm: ## Docker PUSH phpfpm
+	@echo "docker push koromerzhin/phpfpm:latest"
 
 docker-push-php-fpm-symfony: ## Docker PUSH php-fpm-symfony
 	@echo "docker push koromerzhin/php-fpm-symfony:latest"

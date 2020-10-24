@@ -62,7 +62,7 @@ make help
 
 ```sh
 make docker-generate-angular
-make docker-generate-php-fpm
+make docker-generate-phpfpm
 make docker-generate-php-fpm-symfony
 make docker-generate-vuejs
 ```
@@ -71,7 +71,7 @@ make docker-generate-vuejs
 
 ```sh
 make docker-push-angular
-make docker-push-php-fpm
+make docker-push-phpfpm
 make docker-push-php-fpm-symfony
 make docker-push-vuejs
 ```
@@ -79,7 +79,7 @@ make docker-push-vuejs
 ## Vues images
 
 - [angular](https://hub.docker.com/r/koromerzhin/angular)
-- [php-fpm](https://hub.docker.com/r/koromerzhin/phpfpm)
+- [phpfpm](https://hub.docker.com/r/koromerzhin/phpfpm)
 - [php-fpm-symfony](https://hub.docker.com/r/koromerzhin/php-fpm-symfony)
 - [vuejs](https://hub.docker.com/r/koromerzhin/vuejs)
 
