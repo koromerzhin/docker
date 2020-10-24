@@ -85,6 +85,16 @@ make docker-push-react
 - [php-fpm-symfony](https://hub.docker.com/r/koromerzhin/php-fpm-symfony)
 - [vuejs](https://hub.docker.com/r/koromerzhin/vuejs)
 - [react](https://hub.docker.com/r/koromerzhin/react)
+- [django](https://hub.docker.com/r/koromerzhin/django)
+
+## Example d'utilisation
+
+- [angular](https://www.github.com/koromerzhin/template-angular)
+- [phpfpm](https://www.github.com/koromerzhin/template-phpfpm)
+- [php-fpm-symfony](https://www.github.com/koromerzhin/template-symfony)
+- [vuejs](https://www.github.com/koromerzhin/template-vuejs)
+- [react](https://www.github.com/koromerzhin/template-react)
+- [django](https://www.github.com/koromerzhin/template-django)
 
 ## Author
 
