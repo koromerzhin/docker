@@ -46,6 +46,9 @@ docker-generate-vuejs: ## Docker GENERATE vuejs
 docker-generate-react: ## Docker GENERATE react
 	docker build -t koromerzhin/react:latest images/react
 
+docker-generate-django: ## Docker GENERATE django
+	docker build -t koromerzhin/django:latest images/django
+
 docker-login: ## Login docker
 	docker login
 
@@ -63,3 +66,6 @@ docker-push-vuejs: ## Docker PUSH vuejs
 
 docker-push-react: ## Docker PUSH react
 	@echo "docker push koromerzhin/react:latest"
+
+docker-push-django: ## Docker PUSH django
+	@echo "docker push koromerzhin/django:latest"
