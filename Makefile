@@ -43,6 +43,9 @@ docker-generate-php-fpm-symfony: ## Docker GENERATE php-fpm-symfony
 docker-generate-vuejs: ## Docker GENERATE vuejs
 	docker build -t koromerzhin/vuejs:latest images/vuejs
 
+docker-generate-react: ## Docker GENERATE react
+	docker build -t koromerzhin/react:latest images/react
+
 docker-login: ## Login docker
 	docker login
 
@@ -57,3 +60,6 @@ docker-push-php-fpm-symfony: ## Docker PUSH php-fpm-symfony
 
 docker-push-vuejs: ## Docker PUSH vuejs
 	@echo "docker push koromerzhin/vuejs:latest"
+
+docker-push-react: ## Docker PUSH react
+	@echo "docker push koromerzhin/react:latest"
