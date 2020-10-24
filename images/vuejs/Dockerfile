@@ -1,19 +1,11 @@
 # base image
-FROM node:13.8.0 as labstagvuejs
+FROM node:13.8.0
 
 # set working directory
 WORKDIR /app
 
 # install and cache app dependencies
-RUN npm install -g http-server@0.12.1
-RUN npm install -g nodemon
+RUN npm install -g @vue/cli@4.2.2
 
-RUN echo  "\"use strict\"; \
-\
-    setInterval(() => {\
-    console.log(\"tick 2\");\
-    }, 1000);\
-    " > /index.js
-RUN mkdir /dist
-
-CMD nodemon /index.js
+# start app
+CMD npm run serve
