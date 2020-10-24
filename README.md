@@ -65,6 +65,7 @@ make docker-generate-angular
 make docker-generate-phpfpm
 make docker-generate-php-fpm-symfony
 make docker-generate-vuejs
+make docker-generate-react
 ```
 
 ## docker push
@@ -74,6 +75,7 @@ make docker-push-angular
 make docker-push-phpfpm
 make docker-push-php-fpm-symfony
 make docker-push-vuejs
+make docker-push-react
 ```
 
 ## Vues images
@@ -82,6 +84,7 @@ make docker-push-vuejs
 - [phpfpm](https://hub.docker.com/r/koromerzhin/phpfpm)
 - [php-fpm-symfony](https://hub.docker.com/r/koromerzhin/php-fpm-symfony)
 - [vuejs](https://hub.docker.com/r/koromerzhin/vuejs)
+- [react](https://hub.docker.com/r/koromerzhin/react)
 
 ## Author
 
