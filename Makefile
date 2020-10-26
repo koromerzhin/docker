@@ -59,25 +59,41 @@ docker-login: ## Login docker
 	docker login
 
 docker-push-angular: ## Docker PUSH angular
-	@echo "docker push koromerzhin/angular:latest"
+	@make docker-images -i
+	@echo "docker tag TAGIMAGE koromerzhin/angular:latest"
+	@echo "docker push koromerzhin/angular"
 
 docker-push-phpfpm: ## Docker PUSH phpfpm
-	@echo "docker push koromerzhin/phpfpm:latest"
+	@make docker-images -i
+	@echo "docker tag TAGIMAGE koromerzhin/phpfpm:latest"
+	@echo "docker push koromerzhin/phpfpm"
 
 docker-push-phpfpm-without-xdebug: ## Docker PUSH phpfpm-without-xdebug
-	@echo "docker push koromerzhin/phpfpm-without-xdebug:latest"
+	@make docker-images -i
+	@echo "docker tag TAGIMAGE koromerzhin/phpfpm-without-xdebug:latest"
+	@echo "docker push koromerzhin/phpfpm-without-xdebug"
 
 docker-push-php-fpm-symfony: ## Docker PUSH php-fpm-symfony
-	@echo "docker push koromerzhin/php-fpm-symfony:latest"
+	@make docker-images -i
+	@echo "docker tag TAGIMAGE koromerzhin/php-fpm-symfony:latest"
+	@echo "docker push koromerzhin/php-fpm-symfony"
 
 docker-push-php-fpm-symfony-without-xdebug: ## Docker PUSH php-fpm-symfony-without-xdebug
-	@echo "docker push koromerzhin/php-fpm-symfony-without-xdebug:latest"
+	@make docker-images -i
+	@echo "docker tag TAGIMAGE koromerzhin/php-fpm-symfony-without-xdebug:latest"
+	@echo "docker push koromerzhin/php-fpm-symfony-without-xdebug"
 
 docker-push-vuejs: ## Docker PUSH vuejs
-	@echo "docker push koromerzhin/vuejs:latest"
+	@make docker-images -i
+	@echo "docker tag TAGIMAGE koromerzhin/vuejs:latest"
+	@echo "docker push koromerzhin/vuejs"
 
 docker-push-react: ## Docker PUSH react
-	@echo "docker push koromerzhin/react:latest"
+	@make docker-images -i
+	@echo "docker tag TAGIMAGE koromerzhin/react:latest"
+	@echo "docker push koromerzhin/react"
 
 docker-push-django: ## Docker PUSH django
-	@echo "docker push koromerzhin/django:latest"
+	@make docker-images -i
+	@echo "docker tag TAGIMAGE koromerzhin/django:latest"
+	@echo "docker push koromerzhin/django"
