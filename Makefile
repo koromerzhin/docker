@@ -37,8 +37,14 @@ docker-generate-angular: ## Docker GENERATE angular
 docker-generate-phpfpm: ## Docker GENERATE phpfpm
 	docker build -t koromerzhin/phpfpm:latest images/phpfpm
 
+docker-generate-phpfpm-without-xdebug: ## Docker GENERATE phpfpm without xdebug
+	docker build -t koromerzhin/phpfpm-without-xdebug:latest images/phpfpm-without-xdebug
+
 docker-generate-php-fpm-symfony: ## Docker GENERATE php-fpm-symfony
 	docker build -t koromerzhin/php-fpm-symfony:latest images/php-fpm-symfony
+
+docker-generate-php-fpm-symfony-without-xdebug: ## Docker GENERATE php-fpm-symfony without xdebug
+	docker build -t koromerzhin/php-fpm-symfony-without-xdebug:latest images/php-fpm-symfony-without-xdebug
 
 docker-generate-vuejs: ## Docker GENERATE vuejs
 	docker build -t koromerzhin/vuejs:latest images/vuejs
@@ -58,8 +64,14 @@ docker-push-angular: ## Docker PUSH angular
 docker-push-phpfpm: ## Docker PUSH phpfpm
 	@echo "docker push koromerzhin/phpfpm:latest"
 
+docker-push-phpfpm-without-xdebug: ## Docker PUSH phpfpm-without-xdebug
+	@echo "docker push koromerzhin/phpfpm-without-xdebug:latest"
+
 docker-push-php-fpm-symfony: ## Docker PUSH php-fpm-symfony
 	@echo "docker push koromerzhin/php-fpm-symfony:latest"
+
+docker-push-php-fpm-symfony-without-xdebug: ## Docker PUSH php-fpm-symfony-without-xdebug
+	@echo "docker push koromerzhin/php-fpm-symfony-without-xdebug:latest"
 
 docker-push-vuejs: ## Docker PUSH vuejs
 	@echo "docker push koromerzhin/vuejs:latest"
