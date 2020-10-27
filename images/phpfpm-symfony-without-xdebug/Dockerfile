@@ -1,24 +1,24 @@
 FROM php:7.4-fpm
 
 RUN apt-get update
-RUN apt-get install -y wget
-RUN apt-get install -y git
-RUN apt-get install -y fish
-RUN apt-get install -y libzip-dev
-RUN apt-get install -y libicu-dev
-RUN apt-get install -y zip
-RUN apt-get install -y libfreetype6-dev
-RUN apt-get install -y libmcrypt-dev
-RUN apt-get install -y libjpeg-dev
-RUN apt-get install -y libjpeg62-turbo-dev
-RUN apt-get install -y libpng-dev
-RUN apt-get install -y zlib1g-dev
-RUN apt-get install -y g++
-RUN apt-get install -y libldap2-dev
-RUN apt-get install -y libxml++2.6-dev
-RUN apt-get install -y libpq-dev
+RUN apt-get install -y wget --no-install-recommends
+RUN apt-get install -y git --no-install-recommends
+RUN apt-get install -y fish --no-install-recommends
+RUN apt-get install -y libzip-dev --no-install-recommends
+RUN apt-get install -y libicu-dev --no-install-recommends
+RUN apt-get install -y zip --no-install-recommends
+RUN apt-get install -y libfreetype6-dev --no-install-recommends
+RUN apt-get install -y libmcrypt-dev --no-install-recommends
+RUN apt-get install -y libjpeg-dev --no-install-recommends
+RUN apt-get install -y libjpeg62-turbo-dev --no-install-recommends
+RUN apt-get install -y libpng-dev --no-install-recommends
+RUN apt-get install -y zlib1g-dev --no-install-recommends
+RUN apt-get install -y g++ --no-install-recommends
+RUN apt-get install -y libldap2-dev --no-install-recommends
+RUN apt-get install -y libxml++2.6-dev --no-install-recommends
+RUN apt-get install -y libpq-dev --no-install-recommends
 RUN apt-get install -y libmagickwand-dev --no-install-recommends
-RUN apt-get install -y libldap2-dev
+RUN apt-get install -y libldap2-dev --no-install-recommends
 
 # Add PECL
 RUN pecl install imagick
