@@ -71,3 +71,28 @@ docker-push-react: ## Docker PUSH react
 docker-push-django: ## Docker PUSH django
 	@make docker-images -i
 	@echo "docker push koromerzhin/django"
+
+
+linter-docker-angular: node_modules ## linter docker angular
+	@npm run linter-docker images/angular/Dockerfile
+linter-docker-django: node_modules ## linter docker django
+	@npm run linter-docker images/django/Dockerfile
+linter-docker-phpfpm: node_modules ## linter docker phpfpm
+	@npm run linter-docker images/phpfpm/Dockerfile
+linter-docker-phpfpm-without-xdebug: node_modules ## linter docker phpfpm-without-xdebug
+	@npm run linter-docker images/phpfpm-without-xdebug/Dockerfile
+linter-docker-phpfpm-symfony: node_modules ## linter docker phpfpm-symfony
+	@npm run linter-docker images/phpfpm-symfony/Dockerfile
+linter-docker-phpfpm-symfony-without-xdebug: node_modules ## linter docker phpfpm-symfony-without-xdebug
+	@npm run linter-docker images/phpfpm-symfony-without-xdebug/Dockerfile
+
+linter-readme: node_modules ## linter README
+	@npm run linter-markdown README.md
+
+linter-docker: node_modules ## linter docker
+	@make linter-docker-angular -i
+	@make linter-docker-django -i
+	@make linter-docker-phpfpm -i
+	@make linter-docker-phpfpm-without-xdebug -i
+	@make linter-docker-phpfpm-symfony -i
+	@make linter-docker-phpfpm-symfony-without-xdebug -i
