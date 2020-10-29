@@ -1,9 +1,0 @@
-name: docker django
-on:
-    - push
-jobs:
-    makefile:
-        runs-on: ubuntu-latest
-        steps:
-            - {name: Checkout, uses: actions/checkout@v2}
-            - {name: 'Create proxy network', run: 'make docker-generate-django'}
