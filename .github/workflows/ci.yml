@@ -41,7 +41,7 @@ jobs:
         run: make linter-readme
       - name: linter docker
         run: make linter-docker
-    docker-angular:
+    angular:
         needs: install
         runs-on: ubuntu-latest
         steps:
@@ -49,7 +49,7 @@ jobs:
               uses: actions/checkout@v2
             - name: 'Generate image'
               run: make docker-generate-angular
-    docker-django:
+    django:
         needs: install
         runs-on: ubuntu-latest
         steps:
@@ -57,7 +57,7 @@ jobs:
               uses: actions/checkout@v2
             - name: 'Generate image'
               run: make docker-generate-django
-    docker-phpfpm:
+    phpfpm:
         needs: install
         runs-on: ubuntu-latest
         steps:
@@ -65,7 +65,7 @@ jobs:
               uses: actions/checkout@v2
             - name: 'Generate image'
               run: make docker-generate-phpfpm
-    docker-react:
+    react:
         needs: install
         runs-on: ubuntu-latest
         steps:
@@ -73,7 +73,7 @@ jobs:
               uses: actions/checkout@v2
             - name: 'Generate image'
               run: make docker-generate-react
-    docker-vuejs:
+    vuejs:
         needs: install
         runs-on: ubuntu-latest
         steps:
