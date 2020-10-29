@@ -91,3 +91,11 @@ jobs:
             uses: actions/checkout@v2
           - name: 'Generate image'
             run: make docker-generate-vuejs
+  sveltejs:
+      needs: install
+      runs-on: ubuntu-latest
+      steps:
+          - name: Checkout
+            uses: actions/checkout@v2
+          - name: 'Generate image'
+            run: make docker-generate-sveltejs
