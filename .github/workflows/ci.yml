@@ -51,43 +51,43 @@ jobs:
         run: make linter-readme
       - name: linter docker
         run: make linter-docker
-    angular:
-        needs: install
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v2
-            - name: 'Generate image'
-              run: make docker-generate-angular
-    django:
-        needs: install
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v2
-            - name: 'Generate image'
-              run: make docker-generate-django
-    phpfpm:
-        needs: install
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v2
-            - name: 'Generate image'
-              run: make docker-generate-phpfpm
-    react:
-        needs: install
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v2
-            - name: 'Generate image'
-              run: make docker-generate-react
-    vuejs:
-        needs: install
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v2
-            - name: 'Generate image'
-              run: make docker-generate-vuejs
+  angular:
+      needs: install
+      runs-on: ubuntu-latest
+      steps:
+          - name: Checkout
+            uses: actions/checkout@v2
+          - name: 'Generate image'
+            run: make docker-generate-angular
+  django:
+      needs: install
+      runs-on: ubuntu-latest
+      steps:
+          - name: Checkout
+            uses: actions/checkout@v2
+          - name: 'Generate image'
+            run: make docker-generate-django
+  phpfpm:
+      needs: install
+      runs-on: ubuntu-latest
+      steps:
+          - name: Checkout
+            uses: actions/checkout@v2
+          - name: 'Generate image'
+            run: make docker-generate-phpfpm
+  react:
+      needs: install
+      runs-on: ubuntu-latest
+      steps:
+          - name: Checkout
+            uses: actions/checkout@v2
+          - name: 'Generate image'
+            run: make docker-generate-react
+  vuejs:
+      needs: install
+      runs-on: ubuntu-latest
+      steps:
+          - name: Checkout
+            uses: actions/checkout@v2
+          - name: 'Generate image'
+            run: make docker-generate-vuejs
