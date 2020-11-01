@@ -1,7 +1,6 @@
-FROM php:7.4-fpm
+FROM php:7.4.12-fpm
 
-RUN apt-get update
-RUN apt-get install -y wget --no-install-recommends
+RUN apt-get update && apt-get install -y wget --no-install-recommends
 RUN apt-get install -y git --no-install-recommends
 RUN apt-get install -y fish --no-install-recommends
 RUN apt-get install -y libzip-dev --no-install-recommends
@@ -50,9 +49,6 @@ RUN docker-php-ext-enable imagick
 
 # Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer
-
-# Symfony tool
-RUN wget https://get.symfony.com/cli/installer -O - | bash && mv /root/.symfony/bin/symfony /usr/local/bin/symfony
 
 WORKDIR /var/www
 

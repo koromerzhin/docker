@@ -1,7 +1,7 @@
 name: Continuous Integration
 on: [push]
 jobs:
-  environnement:
+  tests:
     runs-on: ${{ matrix.operating-system }}
     strategy:
       fail-fast: false
@@ -25,40 +25,20 @@ jobs:
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
-  install:
-    needs: environnement
-    runs-on: ${{ matrix.operating-system }}
-    strategy:
-      fail-fast: false
-      matrix:
-        operating-system: [ubuntu-latest]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
       - name: Install npm dependencies
         run: npm install
-  linter:
-    needs: install
-    runs-on: ${{ matrix.operating-system }}
-    strategy:
-      fail-fast: false
-      matrix:
-        operating-system: [ubuntu-latest]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
       - name: linter markdown
         run: make linter-readme
       - name: linter docker
         run: make linter-docker
-  angular:
+  nodejs:
       needs: install
       runs-on: ubuntu-latest
       steps:
           - name: Checkout
             uses: actions/checkout@v2
           - name: 'Generate image'
-            run: make docker-generate-angular
+            run: make docker-generate-nodejs
   django:
       needs: install
       runs-on: ubuntu-latest
@@ -75,27 +55,3 @@ jobs:
             uses: actions/checkout@v2
           - name: 'Generate image'
             run: make docker-generate-phpfpm
-  react:
-      needs: install
-      runs-on: ubuntu-latest
-      steps:
-          - name: Checkout
-            uses: actions/checkout@v2
-          - name: 'Generate image'
-            run: make docker-generate-react
-  vuejs:
-      needs: install
-      runs-on: ubuntu-latest
-      steps:
-          - name: Checkout
-            uses: actions/checkout@v2
-          - name: 'Generate image'
-            run: make docker-generate-vuejs
-  sveltejs:
-      needs: install
-      runs-on: ubuntu-latest
-      steps:
-          - name: Checkout
-            uses: actions/checkout@v2
-          - name: 'Generate image'
-            run: make docker-generate-sveltejs

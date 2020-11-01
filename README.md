@@ -53,42 +53,24 @@ make help
 ## docker generate
 
 ```sh
-docker-generate-angular
+docker-generate-nodejs
 docker-generate-django
 docker-generate-phpfpm
-docker-generate-react
-docker-generate-sveltejs
-docker-generate-vuejs
 ```
 
 ## docker push
 
 ```sh
-docker-push-angular
+docker-push-nodejs
 docker-push-django
 docker-push-phpfpm
-docker-push-react
-docker-push-sveltejs
-docker-push-vuejs
 ```
 
 ## Vues images
 
-- [angular](https://hub.docker.com/r/koromerzhin/angular)
+- [nodejs](https://hub.docker.com/r/koromerzhin/nodejs)
 - [django](https://hub.docker.com/r/koromerzhin/django)
 - [phpfpm](https://hub.docker.com/r/koromerzhin/phpfpm)
-- [react](https://hub.docker.com/r/koromerzhin/react)
-- [sveltejs](https://hub.docker.com/r/koromerzhin/sveltejs)
-- [vuejs](https://hub.docker.com/r/koromerzhin/vuejs)
-
-## Example d'utilisation
-
-- [angular](https://www.github.com/koromerzhin/template-angular)
-- [django](https://www.github.com/koromerzhin/template-django)
-- [phpfpm](https://www.github.com/koromerzhin/template-phpfpm)
-- [react](https://www.github.com/koromerzhin/template-react)
-- [sveltejs](https://www.github.com/koromerzhin/template-sveltejs)
-- [vuejs](https://www.github.com/koromerzhin/template-vuejs)
 
 ## Author
 

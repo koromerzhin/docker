@@ -32,91 +32,68 @@ docker-images: ## docker images
 	docker images
 
 docker-generate: ## docker generate image
-	@make docker-generate-angular -i
 	@make docker-generate-django -i
+	@make docker-generate-nodejs -i
 	@make docker-generate-phpfpm -i
-	@make docker-generate-react -i
-	@make docker-generate-sveltejs -i
-	@make docker-generate-vuejs -i
-
-docker-generate-angular: ## Docker GENERATE angular
-	docker build -t koromerzhin/angular:latest images/angular
 
 docker-generate-django: ## Docker GENERATE django
-	docker build -t koromerzhin/django:latest images/django
+	docker build -t koromerzhin/django:latest images/django/3.9.0
+	docker build -t koromerzhin/django:3.9.0 images/django/3.9.0
+
+docker-generate-nodejs: ## Docker GENERATE nodejs
+	docker build -t koromerzhin/nodejs:latest images/nodejs/15.0.1
+	docker build -t koromerzhin/nodejs:15.0.1 images/nodejs/15.0.1
+	docker build -t koromerzhin/nodejs:latest-angular images/nodejs/angular/10.2.0
+	docker build -t koromerzhin/nodejs:10.2.0-angular images/nodejs/angular/10.2.0
+	docker build -t koromerzhin/nodejs:latest-react images/nodejs/react/15.0.1
+	docker build -t koromerzhin/nodejs:15.0.1-react images/nodejs/react/15.0.1
+	docker build -t koromerzhin/nodejs:latest-sveltejs images/nodejs/sveltejs/15.0.1
+	docker build -t koromerzhin/nodejs:15.0.1-sveltejs images/nodejs/sveltejs/15.0.1
+	docker build -t koromerzhin/nodejs:latest-vuejs images/nodejs/vuejs/4.5.8
+	docker build -t koromerzhin/nodejs:4.5.8-vuejs images/nodejs/vuejs/4.5.8
 
 docker-generate-phpfpm: ## Docker GENERATE phpfpm
-	docker build -t koromerzhin/phpfpm:latest images/phpfpm
-	docker build -t koromerzhin/phpfpm:latest-without-xdebug images/phpfpm-without-xdebug
-	docker build -t koromerzhin/phpfpm:latest-symfony images/phpfpm-symfony
-	docker build -t koromerzhin/phpfpm:latest-symfony-without-xdebug images/phpfpm-symfony-without-xdebug
-
-docker-generate-react: ## Docker GENERATE react
-	docker build -t koromerzhin/react:latest images/react
-
-docker-generate-sveltejs: ## Docker GENERATE sveltejs
-	docker build -t koromerzhin/sveltejs:latest images/sveltejs
-
-docker-generate-vuejs: ## Docker GENERATE vuejs
-	docker build -t koromerzhin/vuejs:latest images/vuejs
+	docker build -t koromerzhin/phpfpm:latest images/phpfpm/7.4.12
+	docker build -t koromerzhin/phpfpm:7.4.12 images/phpfpm/7.4.12
+	docker build -t koromerzhin/phpfpm:latest-xdebug images/phpfpm/xdebug/7.4.12
+	docker build -t koromerzhin/phpfpm:7.4.12-xdebug images/phpfpm/xdebug/7.4.12
+	docker build -t koromerzhin/phpfpm:latest-symfony images/phpfpm/symfony/7.4.12
+	docker build -t koromerzhin/phpfpm:7.4.12-symfony images/phpfpm/symfony/7.4.12
+	docker build -t koromerzhin/phpfpm:latest-symfony-xdebug images/phpfpm/symfony-xdebug/7.4.12
+	docker build -t koromerzhin/phpfpm:7.4.12-symfony-xdebug images/phpfpm/symfony-xdebug/7.4.12
 
 docker-login: ## Login docker
 	docker login
 
-docker-push-angular: ## Docker PUSH angular
-	@make docker-images -i
-	@echo "docker push koromerzhin/angular"
+docker-push: ## docker PUSH
+	@make docker-push-django -i
+	@make docker-push-nodejs -i
+	@make docker-push-phpfpm -i
 
 docker-push-django: ## Docker PUSH django
-	@make docker-images -i
-	@echo "docker push koromerzhin/django"
+	docker push koromerzhin/django
+
+docker-push-nodejs: ## Docker PUSH nodejs
+	docker push koromerzhin/nodejs
 
 docker-push-phpfpm: ## Docker PUSH phpfpm
-	@make docker-images -i
-	@echo "docker push koromerzhin/phpfpm"
+	docker push koromerzhin/phpfpm
 
-docker-push-react: ## Docker PUSH react
-	@make docker-images -i
-	@echo "docker push koromerzhin/react"
+linter-docker-nodejs: node_modules ## linter docker nodejs
+	@npm run linter-docker images/nodejs/*/Dockerfile
+	@npm run linter-docker images/nodejs/*/*/Dockerfile
 
-docker-push-sveltejs: ## Docker PUSH sveltejs
-	@make docker-images -i
-	@echo "docker push koromerzhin/sveltejs"
-
-docker-push-vuejs: ## Docker PUSH vuejs
-	@make docker-images -i
-	@echo "docker push koromerzhin/vuejs"
-
-
-linter-docker-angular: node_modules ## linter docker angular
-	@npm run linter-docker images/angular/Dockerfile
 linter-docker-django: node_modules ## linter docker django
-	@npm run linter-docker images/django/Dockerfile
+	@npm run linter-docker images/django/*/Dockerfile
+
 linter-docker-phpfpm: node_modules ## linter docker phpfpm
-	@npm run linter-docker images/phpfpm/Dockerfile
-linter-docker-phpfpm-without-xdebug: node_modules ## linter docker phpfpm-without-xdebug
-	@npm run linter-docker images/phpfpm-without-xdebug/Dockerfile
-linter-docker-phpfpm-symfony: node_modules ## linter docker phpfpm-symfony
-	@npm run linter-docker images/phpfpm-symfony/Dockerfile
-linter-docker-phpfpm-symfony-without-xdebug: node_modules ## linter docker phpfpm-symfony-without-xdebug
-	@npm run linter-docker images/phpfpm-symfony-without-xdebug/Dockerfile
-linter-docker-react: node_modules ## linter react
-	@npm run linter-docker images/react/Dockerfile
-linter-docker-sveltejs: node_modules ## linter sveltejs
-	@npm run linter-docker images/sveltejs/Dockerfile
-linter-docker-vuejs: node_modules ## linter vuejs
-	@npm run linter-docker images/vuejs/Dockerfile
+	@npm run linter-docker images/phpfpm/*/Dockerfile
+	@npm run linter-docker images/phpfpm/*/*/Dockerfile
 
 linter-readme: node_modules ## linter README
 	@npm run linter-markdown README.md
 
 linter-docker: node_modules ## linter docker
-	@make linter-docker-angular -i
+	@make linter-docker-nodejs -i
 	@make linter-docker-django -i
 	@make linter-docker-phpfpm -i
-	@make linter-docker-phpfpm-without-xdebug -i
-	@make linter-docker-phpfpm-symfony -i
-	@make linter-docker-phpfpm-symfony-without-xdebug -i
-	@make linter-docker-react -i
-	@make linter-docker-sveltejs -i
-	@make linter-docker-vuejs -i

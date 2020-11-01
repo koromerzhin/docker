@@ -1,11 +1,8 @@
 # base image
-FROM node:13.14.0
+FROM node:15.0.1
 
 # set working directory
 WORKDIR /app
 
 # install and cache app dependencies
-RUN npm install -g @vue/cli@4.2.2
-
-# start app
-CMD npm run serve
+RUN npm install -g npm@7.0.7

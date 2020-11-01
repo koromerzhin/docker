@@ -1,5 +1,5 @@
 # base image
-FROM node:13.14.0
+FROM koromerzhin/nodejs:15.0.1
 
 # set working directory
 WORKDIR /app
