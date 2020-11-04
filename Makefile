@@ -7,24 +7,30 @@ ARGS := $(filter-out $@,$(MAKECMDGOALS))
 help:
 	@grep -E '(^[a-zA-Z_-]+:.*?##.*$$)|(^##)' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
 
-node_modules:
+package-lock.json: package.json
+	npm install
+
+node_modules: package-lock.json
 	npm install
 
 install: node_modules ## Installation application
 
-contributors-add: node_modules ## add Contributors
+contributors: ## Contributors
+	@npm run contributors
+
+contributors-add: ## add Contributors
 	@npm run contributors add
 
-contributors-check: node_modules ## check Contributors
+contributors-check: ## check Contributors
 	@npm run contributors check
 
-contributors-generate: node_modules ## generate Contributors
+contributors-generate: ## generate Contributors
 	@npm run contributors generate
 
-git-commit: node_modules ## Commit data
+git-commit: ## Commit data
 	npm run commit
 
-git-check: node_modules ## CHECK before
+git-check: ## CHECK before
 	@make contributors-check -i
 	@git status
 
@@ -79,21 +85,21 @@ docker-push-nodejs: ## Docker PUSH nodejs
 docker-push-phpfpm: ## Docker PUSH phpfpm
 	docker push koromerzhin/phpfpm
 
-linter-docker-nodejs: node_modules ## linter docker nodejs
+linter-docker-nodejs: ## linter docker nodejs
 	@npm run linter-docker images/nodejs/*/Dockerfile
 	@npm run linter-docker images/nodejs/*/*/Dockerfile
 
-linter-docker-django: node_modules ## linter docker django
+linter-docker-django: ## linter docker django
 	@npm run linter-docker images/django/*/Dockerfile
 
-linter-docker-phpfpm: node_modules ## linter docker phpfpm
+linter-docker-phpfpm: ## linter docker phpfpm
 	@npm run linter-docker images/phpfpm/*/Dockerfile
 	@npm run linter-docker images/phpfpm/*/*/Dockerfile
 
-linter-readme: node_modules ## linter README
+linter-readme: ## linter README
 	@npm run linter-markdown README.md
 
-linter-docker: node_modules ## linter docker
+linter-docker: ## linter docker
 	@make linter-docker-nodejs -i
 	@make linter-docker-django -i
 	@make linter-docker-phpfpm -i
