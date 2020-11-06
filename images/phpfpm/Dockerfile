@@ -18,6 +18,7 @@ RUN apt-get install -y libxml++2.6-dev --no-install-recommends
 RUN apt-get install -y libpq-dev --no-install-recommends
 RUN apt-get install -y libmagickwand-dev --no-install-recommends
 RUN apt-get install -y libldap2-dev --no-install-recommends
+RUN apt-get install -y unzip --no-install-recommends
 
 # Add PECL
 RUN pecl install imagick

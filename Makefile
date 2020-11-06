@@ -43,30 +43,30 @@ docker-generate: ## docker generate image
 	@make docker-generate-phpfpm -i
 
 docker-generate-django: ## Docker GENERATE django
-	docker build -t koromerzhin/django:latest images/django/3.9.0
-	docker build -t koromerzhin/django:3.9.0 images/django/3.9.0
+	docker build -t koromerzhin/django:latest images/django
+	docker build -t koromerzhin/django:3.9.0 images/django
 
 docker-generate-nodejs: ## Docker GENERATE nodejs
-	docker build -t koromerzhin/nodejs:latest images/nodejs/15.0.1
-	docker build -t koromerzhin/nodejs:15.0.1 images/nodejs/15.0.1
-	docker build -t koromerzhin/nodejs:latest-angular images/nodejs/angular/10.2.0
-	docker build -t koromerzhin/nodejs:10.2.0-angular images/nodejs/angular/10.2.0
-	docker build -t koromerzhin/nodejs:latest-react images/nodejs/react/15.0.1
-	docker build -t koromerzhin/nodejs:15.0.1-react images/nodejs/react/15.0.1
-	docker build -t koromerzhin/nodejs:latest-sveltejs images/nodejs/sveltejs/15.0.1
-	docker build -t koromerzhin/nodejs:15.0.1-sveltejs images/nodejs/sveltejs/15.0.1
-	docker build -t koromerzhin/nodejs:latest-vuejs images/nodejs/vuejs/4.5.8
-	docker build -t koromerzhin/nodejs:4.5.8-vuejs images/nodejs/vuejs/4.5.8
+	docker build -t koromerzhin/nodejs:latest images/nodejs
+	docker build -t koromerzhin/nodejs:15.0.1 images/nodejs
+	docker build -t koromerzhin/nodejs:latest-angular images/nodejs/angular
+	docker build -t koromerzhin/nodejs:10.2.0-angular images/nodejs/angular
+	docker build -t koromerzhin/nodejs:latest-react images/nodejs/react
+	docker build -t koromerzhin/nodejs:15.0.1-react images/nodejs/react
+	docker build -t koromerzhin/nodejs:latest-sveltejs images/nodejs/sveltejs
+	docker build -t koromerzhin/nodejs:15.0.1-sveltejs images/nodejs/sveltejs
+	docker build -t koromerzhin/nodejs:latest-vuejs images/nodejs/vuejs
+	docker build -t koromerzhin/nodejs:4.5.8-vuejs images/nodejs/vuejs
 
 docker-generate-phpfpm: ## Docker GENERATE phpfpm
-	docker build -t koromerzhin/phpfpm:latest images/phpfpm/7.4.12
-	docker build -t koromerzhin/phpfpm:7.4.12 images/phpfpm/7.4.12
-	docker build -t koromerzhin/phpfpm:latest-xdebug images/phpfpm/xdebug/7.4.12
-	docker build -t koromerzhin/phpfpm:7.4.12-xdebug images/phpfpm/xdebug/7.4.12
-	docker build -t koromerzhin/phpfpm:latest-symfony images/phpfpm/symfony/7.4.12
-	docker build -t koromerzhin/phpfpm:7.4.12-symfony images/phpfpm/symfony/7.4.12
-	docker build -t koromerzhin/phpfpm:latest-symfony-xdebug images/phpfpm/symfony-xdebug/7.4.12
-	docker build -t koromerzhin/phpfpm:7.4.12-symfony-xdebug images/phpfpm/symfony-xdebug/7.4.12
+	docker build -t koromerzhin/phpfpm:latest images/phpfpm
+	docker build -t koromerzhin/phpfpm:7.4.12 images/phpfpm
+	docker build -t koromerzhin/phpfpm:latest-xdebug images/phpfpm/xdebug
+	docker build -t koromerzhin/phpfpm:7.4.12-xdebug images/phpfpm/xdebug/
+	docker build -t koromerzhin/phpfpm:latest-symfony images/phpfpm/symfony
+	docker build -t koromerzhin/phpfpm:7.4.12-symfony images/phpfpm/symfony
+	docker build -t koromerzhin/phpfpm:latest-symfony-xdebug images/phpfpm/symfony-xdebug
+	docker build -t koromerzhin/phpfpm:7.4.12-symfony-xdebug images/phpfpm/symfony-xdebug
 
 docker-login: ## Login docker
 	docker login
@@ -86,15 +86,15 @@ docker-push-phpfpm: ## Docker PUSH phpfpm
 	docker push koromerzhin/phpfpm
 
 linter-docker-nodejs: ## linter docker nodejs
+	@npm run linter-docker images/nodejs/Dockerfile
 	@npm run linter-docker images/nodejs/*/Dockerfile
-	@npm run linter-docker images/nodejs/*/*/Dockerfile
 
 linter-docker-django: ## linter docker django
-	@npm run linter-docker images/django/*/Dockerfile
+	@npm run linter-docker images/django/Dockerfile
 
 linter-docker-phpfpm: ## linter docker phpfpm
+	@npm run linter-docker images/phpfpm/Dockerfile
 	@npm run linter-docker images/phpfpm/*/Dockerfile
-	@npm run linter-docker images/phpfpm/*/*/Dockerfile
 
 linter-readme: ## linter README
 	@npm run linter-markdown README.md
