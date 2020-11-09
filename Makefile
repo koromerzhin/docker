@@ -48,13 +48,13 @@ docker-generate-django: ## Docker GENERATE django
 
 docker-generate-nodejs: ## Docker GENERATE nodejs
 	docker build -t koromerzhin/nodejs:latest images/nodejs
-	docker build -t koromerzhin/nodejs:15.0.1 images/nodejs
+	docker build -t koromerzhin/nodejs:15.1.0 images/nodejs
 	docker build -t koromerzhin/nodejs:latest-angular images/nodejs/angular
 	docker build -t koromerzhin/nodejs:10.2.0-angular images/nodejs/angular
 	docker build -t koromerzhin/nodejs:latest-react images/nodejs/react
-	docker build -t koromerzhin/nodejs:15.0.1-react images/nodejs/react
+	docker build -t koromerzhin/nodejs:16.13.1-react images/nodejs/react
 	docker build -t koromerzhin/nodejs:latest-sveltejs images/nodejs/sveltejs
-	docker build -t koromerzhin/nodejs:15.0.1-sveltejs images/nodejs/sveltejs
+	docker build -t koromerzhin/nodejs:3.29.4-sveltejs images/nodejs/sveltejs
 	docker build -t koromerzhin/nodejs:latest-vuejs images/nodejs/vuejs
 	docker build -t koromerzhin/nodejs:4.5.8-vuejs images/nodejs/vuejs
 
