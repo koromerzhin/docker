@@ -57,6 +57,8 @@ docker-generate-nodejs: ## Docker GENERATE nodejs
 	docker build -t koromerzhin/nodejs:3.29.4-sveltejs images/nodejs/sveltejs
 	docker build -t koromerzhin/nodejs:latest-vuejs images/nodejs/vuejs
 	docker build -t koromerzhin/nodejs:4.5.8-vuejs images/nodejs/vuejs
+	docker build -t koromerzhin/nodejs:latest-quasar images/nodejs/quasar
+	docker build -t koromerzhin/nodejs:1.1.3-quasar images/nodejs/quasar
 
 docker-generate-phpfpm: ## Docker GENERATE phpfpm
 	docker build -t koromerzhin/phpfpm:latest images/phpfpm
