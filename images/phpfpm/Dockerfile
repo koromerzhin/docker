@@ -53,4 +53,8 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ 
 
 WORKDIR /var/www
 
+ADD composer.json /var/www
+
+RUN composer install
+
 EXPOSE 9000
