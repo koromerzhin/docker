@@ -35,13 +35,13 @@ make install
 ## after git add
 
 ```sh
-make git-check
+make git check
 ```
 
 ## Replace git commit
 
 ```sh
-make git-commit
+make git commit
 ```
 
 ## help
@@ -53,17 +53,17 @@ make help
 ## docker generate
 
 ```sh
-docker-generate-nodejs
-docker-generate-django
-docker-generate-phpfpm
+make generate nodejs
+make generate django
+make generate phpfpm
 ```
 
 ## docker push
 
 ```sh
-docker-push-nodejs
-docker-push-django
-docker-push-phpfpm
+make push nodejs
+make push django
+make push phpfpm
 ```
 
 ## Vues images

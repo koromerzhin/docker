@@ -22,27 +22,27 @@ jobs:
         if: steps.npm-cache.outputs.cache-hit != 'true'
         run: make node_modules
       - name: linter markdown
-        run: make linter-readme
+        run: make linter readme
       - name: linter docker
-        run: make linter-docker
+        run: make linter docker
   nodejs:
       runs-on: ubuntu-latest
       steps:
           - name: Checkout
             uses: actions/checkout@v2
           - name: 'Generate image'
-            run: make docker-generate-nodejs
+            run: make docker generate-nodejs
   django:
       runs-on: ubuntu-latest
       steps:
           - name: Checkout
             uses: actions/checkout@v2
           - name: 'Generate image'
-            run: make docker-generate-django
+            run: make docker generate-django
   phpfpm:
       runs-on: ubuntu-latest
       steps:
           - name: Checkout
             uses: actions/checkout@v2
           - name: 'Generate image'
-            run: make docker-generate-phpfpm
+            run: make docker generate-phpfpm
