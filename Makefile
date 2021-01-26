@@ -59,29 +59,43 @@ else ifeq ($(COMMAND_ARGS),generate-django)
 	@docker build -t koromerzhin/django:latest images/django
 	@docker image tag koromerzhin/django:latest koromerzhin/django:3.9.0
 else ifeq ($(COMMAND_ARGS),generate-nodejs)
+	@echo "Generate Nodejs"
 	@docker build -t koromerzhin/nodejs:latest images/nodejs
 	@docker image tag koromerzhin/nodejs:latest koromerzhin/nodejs:15.1.0
+	@echo "Generate angular"
 	@docker build -t koromerzhin/nodejs:latest-angular images/nodejs/angular
 	@docker image tag koromerzhin/nodejs:latest-angular koromerzhin/nodejs:10.2.0-angular
+	@echo "Generate React"
 	@docker build -t koromerzhin/nodejs:latest-react images/nodejs/react
 	@docker image tag koromerzhin/nodejs:latest-react koromerzhin/nodejs:16.13.1-react
+	@echo "Generate Sveltejs"
 	@docker build -t koromerzhin/nodejs:latest-sveltejs images/nodejs/sveltejs
 	@docker image tag koromerzhin/nodejs:latest-sveltejs koromerzhin/nodejs:3.29.4-sveltejs
+	@echo "Generate Vuejs"
 	@docker build -t koromerzhin/nodejs:latest-vuejs images/nodejs/vuejs
 	@docker image tag koromerzhin/nodejs:latest-vuejs koromerzhin/nodejs:4.5.8-vuejs
+	@echo "Generate Quarsar"
 	@docker build -t koromerzhin/nodejs:latest-quasar images/nodejs/quasar
 	@docker image tag koromerzhin/nodejs:latest-quasar koromerzhin/nodejs:1.1.3-quasar
 else ifeq ($(COMMAND_ARGS),generate-phpfpm)
+	@echo "Generate PHPFPM"
 	@docker build -t koromerzhin/phpfpm:latest images/phpfpm
 	@docker image tag koromerzhin/phpfpm:latest koromerzhin/phpfpm:7.4.12
+	@echo "Generate XDEBUG"
 	@docker build -t koromerzhin/phpfpm:latest-xdebug images/phpfpm/xdebug
 	@docker image tag koromerzhin/phpfpm:latest-xdebug koromerzhin/phpfpm:7.4.12-xdebug
+	@echo "Generate Symfony"
 	@docker build -t koromerzhin/phpfpm:latest-symfony images/phpfpm/symfony
 	@docker image tag koromerzhin/phpfpm:latest-symfony koromerzhin/phpfpm:7.4.12-symfony
+	@echo "Generate Symfony XDEBUG"
 	@docker build -t koromerzhin/phpfpm:latest-symfony-xdebug images/phpfpm/symfony-xdebug
 	@docker image tag koromerzhin/phpfpm:latest-symfony-xdebug koromerzhin/phpfpm:7.4.12-symfony-xdebug
 else ifeq ($(COMMAND_ARGS),login)
 	@docker login
+else ifeq ($(COMMAND_ARGS),push)
+	@make docker push-django
+	@make docker push-nodejs
+	@make docker push-phpfpm
 else ifeq ($(COMMAND_ARGS),push-django)
 	docker push koromerzhin/django
 else ifeq ($(COMMAND_ARGS),push-nodejs)
