@@ -97,11 +97,11 @@ else ifeq ($(COMMAND_ARGS),push)
 	@make docker push-nodejs
 	@make docker push-phpfpm
 else ifeq ($(COMMAND_ARGS),push-django)
-	docker push koromerzhin/django
+	docker push koromerzhin/django -a
 else ifeq ($(COMMAND_ARGS),push-nodejs)
-	docker push koromerzhin/nodejs
+	docker push koromerzhin/nodejs -a
 else ifeq ($(COMMAND_ARGS),push-phpfpm)
-	docker push koromerzhin/phpfpm
+	docker push koromerzhin/phpfpm -a
 else
 	@echo "ARGUMENT missing"
 	@echo "---"
