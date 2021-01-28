@@ -6,7 +6,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [ubuntu-latest]
+        operating-system: [ubuntu-20.04]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -26,21 +26,21 @@ jobs:
       - name: linter docker
         run: make linter docker
   nodejs:
-      runs-on: ubuntu-latest
+      runs-on: ubuntu-20.04
       steps:
           - name: Checkout
             uses: actions/checkout@v2
           - name: 'Generate image'
             run: make docker generate-nodejs
   django:
-      runs-on: ubuntu-latest
+      runs-on: ubuntu-20.04
       steps:
           - name: Checkout
             uses: actions/checkout@v2
           - name: 'Generate image'
             run: make docker generate-django
   phpfpm:
-      runs-on: ubuntu-latest
+      runs-on: ubuntu-20.04
       steps:
           - name: Checkout
             uses: actions/checkout@v2
