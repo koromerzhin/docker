@@ -14,10 +14,10 @@ help:
 	@grep -E '(^[a-zA-Z_-]+:.*?##.*$$)|(^##)' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
 
 package-lock.json: package.json
-	npm install
+	@npm install
 
 node_modules: package-lock.json
-	npm install
+	@npm install
 
 install: node_modules ## Installation application
 
@@ -97,11 +97,11 @@ else ifeq ($(COMMAND_ARGS),push)
 	@make docker push-nodejs
 	@make docker push-phpfpm
 else ifeq ($(COMMAND_ARGS),push-django)
-	docker push koromerzhin/django -a
+	@docker push koromerzhin/django -a
 else ifeq ($(COMMAND_ARGS),push-nodejs)
-	docker push koromerzhin/nodejs -a
+	@docker push koromerzhin/nodejs -a
 else ifeq ($(COMMAND_ARGS),push-phpfpm)
-	docker push koromerzhin/phpfpm -a
+	@docker push koromerzhin/phpfpm -a
 else
 	@echo "ARGUMENT missing"
 	@echo "---"
