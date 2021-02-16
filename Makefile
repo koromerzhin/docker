@@ -1,7 +1,7 @@
 .DEFAULT_GOAL := help
 
 
-SUPPORTED_COMMANDS := contributors git docker linter logs generate push
+SUPPORTED_COMMANDS := contributors git docker linter logs push docker-generate
 SUPPORTS_MAKE_ARGS := $(findstring $(firstword $(MAKECMDGOALS)), $(SUPPORTED_COMMANDS))
 ifneq "$(SUPPORTS_MAKE_ARGS)" ""
   COMMAND_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
@@ -63,22 +63,22 @@ else
 	@echo "login: login"
 endif
 
-generate: ## Generate image
+docker-generate: ## Generate image
 ifeq ($(COMMAND_ARGS),all)
-	@make generate django -i
-	@make generate nodejs -i
-	@make generate phpfpm -i
+	@make docker-generate django -i
+	@make docker-generate nodejs -i
+	@make docker-generate phpfpm -i
 else ifeq ($(COMMAND_ARGS),django)
 	@docker build -t koromerzhin/django:latest images/django
 	@docker image tag koromerzhin/django:latest koromerzhin/django:3.9.0
 else ifeq ($(COMMAND_ARGS),nodejs)
-	@make generate nodejs-nodejs -i
-	@make generate nodejs-angular -i
-	@make generate nodejs-remotion -i
-	@make generate nodejs-react -i
-	@make generate nodejs-sveltejs -i
-	@make generate nodejs-vuejs -i
-	@make generate nodejs-quasar -i
+	@make docker-generate nodejs-nodejs -i
+	@make docker-generate nodejs-angular -i
+	@make docker-generate nodejs-remotion -i
+	@make docker-generate nodejs-react -i
+	@make docker-generate nodejs-sveltejs -i
+	@make docker-generate nodejs-vuejs -i
+	@make docker-generate nodejs-quasar -i
 else ifeq ($(COMMAND_ARGS),nodejs-nodejs)
 	@echo "Generate Nodejs"
 	@docker build -t koromerzhin/nodejs:latest images/nodejs
@@ -108,10 +108,10 @@ else ifeq ($(COMMAND_ARGS),nodejs-quasar)
 	@docker build -t koromerzhin/nodejs:latest-quasar images/nodejs/quasar
 	@docker image tag koromerzhin/nodejs:latest-quasar koromerzhin/nodejs:1.1.3-quasar
 else ifeq ($(COMMAND_ARGS),phpfpm)
-	@make generate phpfpm-phpfpm -i
-	@make generate phpfpm-xdebug -i
-	@make generate phpfpm-symfony -i
-	@make generate phpfpm-symfony-xdebug -i
+	@make docker-generate phpfpm-phpfpm -i
+	@make docker-generate phpfpm-xdebug -i
+	@make docker-generate phpfpm-symfony -i
+	@make docker-generate phpfpm-symfony-xdebug -i
 else ifeq ($(COMMAND_ARGS),phpfpm-phpfpm)
 	@echo "Generate PHPFPM"
 	@docker build -t koromerzhin/phpfpm:latest images/phpfpm
@@ -131,7 +131,7 @@ else ifeq ($(COMMAND_ARGS),phpfpm-symfony-xdebug)
 else
 	@echo "ARGUMENT missing"
 	@echo "---"
-	@echo "make generate ARGUMENT"
+	@echo "make docker-generate ARGUMENT"
 	@echo "---"
 	@echo "images: images"
 	@echo "check: CHECK before"
