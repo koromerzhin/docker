@@ -39,6 +39,19 @@
       "contributions": [
         "tool"
       ]
+    },
+    {
+      "login": "renovate-bot",
+      "name": "WhiteSource Renovate",
+      "avatar_url": "https://avatars.githubusercontent.com/u/25180681?v=4",
+      "profile": "https://renovate.whitesourcesoftware.com/",
+      "contributions": [
+        "bug",
+        "infra",
+        "platform",
+        "review",
+        "tool"
+      ]
     }
   ]
 }
