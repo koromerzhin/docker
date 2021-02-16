@@ -1,5 +1,6 @@
-.DEFAULT_GOAL := help
+isDocker := $(shell docker info > /dev/null 2>&1 && echo 1)
 
+.DEFAULT_GOAL := help
 
 SUPPORTED_COMMANDS := contributors git docker linter logs push docker-generate
 SUPPORTS_MAKE_ARGS := $(findstring $(firstword $(MAKECMDGOALS)), $(SUPPORTED_COMMANDS))
@@ -7,9 +8,8 @@ ifneq "$(SUPPORTS_MAKE_ARGS)" ""
   COMMAND_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
   $(eval $(COMMAND_ARGS):;@:)
 endif
-%:
-	@:
 
+.PHONY: help
 help:
 	@grep -E '(^[a-zA-Z_-]+:.*?##.*$$)|(^##)' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
 
@@ -19,9 +19,16 @@ package-lock.json: package.json
 node_modules: package-lock.json
 	@npm install
 
+isdocker: ## Docker is launch
+ifeq ($(isDocker), 0)
+	@echo "Docker is not launch"
+	exit 1
+endif
+
 install: node_modules ## Installation application
 
-contributors: ## Contributors
+.PHONY: contributors
+contributors: node_modules ## Contributors
 ifeq ($(COMMAND_ARGS),add)
 	@npm run contributors add
 else ifeq ($(COMMAND_ARGS),check)
@@ -32,7 +39,8 @@ else
 	@npm run contributors
 endif
 
-git: ## Scripts GIT
+.PHONY: git
+git: node_modules ## Scripts GIT
 ifeq ($(COMMAND_ARGS),commit)
 	@npm run commit
 else ifeq ($(COMMAND_ARGS),check)
@@ -48,7 +56,8 @@ else
 	@echo "check: CHECK before"
 endif
 
-docker: ## Scripts docker
+.PHONY: docker
+docker: isdocker ## Scripts docker
 ifeq ($(COMMAND_ARGS),images)
 	@docker images
 else ifeq ($(COMMAND_ARGS),login)
@@ -63,7 +72,8 @@ else
 	@echo "login: login"
 endif
 
-docker-generate: ## Generate image
+.PHONY: docker-generate
+docker-generate: isdocker ## Generate image
 ifeq ($(COMMAND_ARGS),all)
 	@make docker-generate django -i
 	@make docker-generate nodejs -i
@@ -152,7 +162,8 @@ else
 	@echo "phpfpm-symfony-xdebug: generate symfony-xdebug"
 endif
 
-linter: ## Scripts Linter
+.PHONY: linter
+linter: node_modules ## Scripts Linter
 ifeq ($(COMMAND_ARGS),all)
 	@make linter readme -i
 	@make linter docker-nodejs -i
@@ -185,7 +196,8 @@ else
 	@echo "docker-phpfpm: linter docker phpfpm"
 endif
 
-push: ## push image
+.PHONY: push
+push: isdocker ## push image
 ifeq ($(COMMAND_ARGS),all)
 	@make push django
 	@make push nodejs
