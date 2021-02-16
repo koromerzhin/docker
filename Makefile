@@ -186,7 +186,7 @@ else
 endif
 
 push: ## push image
-else ifeq ($(COMMAND_ARGS),all)
+ifeq ($(COMMAND_ARGS),all)
 	@make push django
 	@make push nodejs
 	@make push phpfpm
