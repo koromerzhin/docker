@@ -84,6 +84,7 @@ else ifeq ($(COMMAND_ARGS),django)
 	@docker image tag koromerzhin/django:latest koromerzhin/django:3.9.0
 else ifeq ($(COMMAND_ARGS),nodejs)
 	@make docker-generate nodejs-nodejs -i
+	@make docker-generate nodejs-express -i
 	@make docker-generate nodejs-angular -i
 	@make docker-generate nodejs-remotion -i
 	@make docker-generate nodejs-react -i
@@ -94,6 +95,10 @@ else ifeq ($(COMMAND_ARGS),nodejs-nodejs)
 	@echo "Generate Nodejs"
 	@docker build -t koromerzhin/nodejs:latest images/nodejs
 	@docker image tag koromerzhin/nodejs:latest koromerzhin/nodejs:15.1.0
+else ifeq ($(COMMAND_ARGS),nodejs-express)
+	@echo "Generate Nodejs"
+	@docker build -t koromerzhin/nodejs:latest-express images/nodejs/express
+	@docker image tag koromerzhin/nodejs:latest-express koromerzhin/nodejs:15.1.0-express
 else ifeq ($(COMMAND_ARGS),nodejs-angular)
 	@echo "Generate angular"
 	@docker build -t koromerzhin/nodejs:latest-angular images/nodejs/angular
@@ -150,6 +155,7 @@ else
 	@echo "django: generate all django images"
 	@echo "nodejs: generate all nodejs images"
 	@echo "nodejs-nodejs: generate nodejs"
+	@echo "nodejs-express: generate express"
 	@echo "nodejs-angular: generate angular"
 	@echo "nodejs-remotion: generate remotion"
 	@echo "nodejs-react: generate react"
