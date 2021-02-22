@@ -10,7 +10,9 @@
 ## 🏠 [Homepage](https://github.com/koromerzhin/docker#readme)
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+
 [![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#-contributors)
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Need
@@ -78,10 +80,9 @@ make push phpfpm
 
 ## 🤝 Contributing
 
-Contributions, issues and feature requests are welcome!
-Feel free to check
-[issues page](https://github.com/koromerzhin/docker/issues).
-You can also take a look at the
+Contributions, issues and feature requests are welcome! Feel free to check
+[issues page](https://github.com/koromerzhin/docker/issues). You can also take a
+look at the
 [contributing guide](https://github.com/koromerzhin/docker/blob/develop/CONTRIBUTING.md).
 
 ## Show your support
