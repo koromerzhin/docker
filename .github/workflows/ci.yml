@@ -26,6 +26,7 @@ jobs:
       - name: linter docker
         run: make linter docker
   nodejs:
+      needs: tests
       runs-on: ubuntu-20.04
       steps:
           - name: Checkout
@@ -33,6 +34,7 @@ jobs:
           - name: 'Generate image'
             run: make docker generate-nodejs
   django:
+      needs: tests
       runs-on: ubuntu-20.04
       steps:
           - name: Checkout
@@ -40,6 +42,7 @@ jobs:
           - name: 'Generate image'
             run: make docker generate-django
   phpfpm:
+      needs: tests
       runs-on: ubuntu-20.04
       steps:
           - name: Checkout
