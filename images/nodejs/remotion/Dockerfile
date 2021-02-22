@@ -16,4 +16,4 @@ ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 
 EXPOSE 8000
 
-CMD ["npm", "run", "server"] 
+CMD ["npm", "run", "server"]
