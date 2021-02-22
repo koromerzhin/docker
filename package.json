@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/koromerzhin/docker#readme",
   "dependencies": {
-    "all-contributors-cli": "6.19.0",
+    "all-contributors-cli": "6.20.0",
     "dockerfilelint": "1.8.0",
     "gitmoji-changelog": "2.2.0",
     "license-checker": "25.0.1",
