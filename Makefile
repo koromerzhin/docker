@@ -42,9 +42,7 @@ endif
 
 .PHONY: git
 git: node_modules ## Scripts GIT
-ifeq ($(COMMAND_ARGS),commit)
-	@npm run commit
-else ifeq ($(COMMAND_ARGS),check)
+ifeq ($(COMMAND_ARGS),check)
 	@make contributors check -i
 	@make linter all -i
 	@git status
@@ -53,7 +51,6 @@ else
 	@echo "---"
 	@echo "make git ARGUMENT"
 	@echo "---"
-	@echo "commit: Commit data"
 	@echo "check: CHECK before"
 endif
 
@@ -85,6 +82,7 @@ else ifeq ($(COMMAND_ARGS),django)
 else ifeq ($(COMMAND_ARGS),nodejs)
 	@make docker-generate nodejs-nodejs -i
 	@make docker-generate nodejs-express -i
+	@make docker-generate nodejs-socketio -i
 	@make docker-generate nodejs-angular -i
 	@make docker-generate nodejs-remotion -i
 	@make docker-generate nodejs-react -i
@@ -99,6 +97,10 @@ else ifeq ($(COMMAND_ARGS),nodejs-express)
 	@echo "Generate Nodejs"
 	@docker build -t koromerzhin/nodejs:latest-express images/nodejs/express
 	@docker image tag koromerzhin/nodejs:latest-express koromerzhin/nodejs:15.1.0-express
+else ifeq ($(COMMAND_ARGS),nodejs-socketio)
+	@echo "Generate Nodejs"
+	@docker build -t koromerzhin/nodejs:latest-socketio images/nodejs/socketio
+	@docker image tag koromerzhin/nodejs:latest-socketio koromerzhin/nodejs:15.1.0-socketio
 else ifeq ($(COMMAND_ARGS),nodejs-angular)
 	@echo "Generate angular"
 	@docker build -t koromerzhin/nodejs:latest-angular images/nodejs/angular
@@ -156,6 +158,7 @@ else
 	@echo "nodejs: generate all nodejs images"
 	@echo "nodejs-nodejs: generate nodejs"
 	@echo "nodejs-express: generate express"
+	@echo "nodejs-socketio: generate socketio"
 	@echo "nodejs-angular: generate angular"
 	@echo "nodejs-remotion: generate remotion"
 	@echo "nodejs-react: generate react"
