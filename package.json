@@ -29,6 +29,6 @@
     "readme-md-generator": "1.0.0"
   },
   "devDependencies": {
-    "generate-changelog": "^1.8.0"
+    "generate-changelog": "1.8.0"
   }
 }
