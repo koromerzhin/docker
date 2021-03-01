@@ -78,26 +78,13 @@ else ifeq ($(COMMAND_ARGS),django)
 	@docker image tag koromerzhin/django:latest koromerzhin/django:3.9.0
 else ifeq ($(COMMAND_ARGS),nodejs)
 	@make docker-generate nodejs-nodejs -i
-	@make docker-generate nodejs-express -i
-	@make docker-generate nodejs-socketio -i
 	@make docker-generate nodejs-angular -i
 	@make docker-generate nodejs-remotion -i
-	@make docker-generate nodejs-react -i
-	@make docker-generate nodejs-sveltejs -i
-	@make docker-generate nodejs-vuejs -i
 	@make docker-generate nodejs-quasar -i
 else ifeq ($(COMMAND_ARGS),nodejs-nodejs)
 	@echo "Generate Nodejs"
 	@docker build -t koromerzhin/nodejs:latest images/nodejs
 	@docker image tag koromerzhin/nodejs:latest koromerzhin/nodejs:15.1.0
-else ifeq ($(COMMAND_ARGS),nodejs-express)
-	@echo "Generate Nodejs"
-	@docker build -t koromerzhin/nodejs:latest-express images/nodejs/express
-	@docker image tag koromerzhin/nodejs:latest-express koromerzhin/nodejs:15.1.0-express
-else ifeq ($(COMMAND_ARGS),nodejs-socketio)
-	@echo "Generate Nodejs"
-	@docker build -t koromerzhin/nodejs:latest-socketio images/nodejs/socketio
-	@docker image tag koromerzhin/nodejs:latest-socketio koromerzhin/nodejs:15.1.0-socketio
 else ifeq ($(COMMAND_ARGS),nodejs-angular)
 	@echo "Generate angular"
 	@docker build -t koromerzhin/nodejs:latest-angular images/nodejs/angular
@@ -106,18 +93,6 @@ else ifeq ($(COMMAND_ARGS),nodejs-remotion)
 	@echo "Generate Remotion"
 	@docker build -t koromerzhin/nodejs:latest-remotion images/nodejs/remotion
 	@docker image tag koromerzhin/nodejs:latest-remotion koromerzhin/nodejs:1.3.0-remotion
-else ifeq ($(COMMAND_ARGS),nodejs-react)
-	@echo "Generate React"
-	@docker build -t koromerzhin/nodejs:latest-react images/nodejs/react
-	@docker image tag koromerzhin/nodejs:latest-react koromerzhin/nodejs:16.13.1-react
-else ifeq ($(COMMAND_ARGS),nodejs-sveltejs)
-	@echo "Generate Sveltejs"
-	@docker build -t koromerzhin/nodejs:latest-sveltejs images/nodejs/sveltejs
-	@docker image tag koromerzhin/nodejs:latest-sveltejs koromerzhin/nodejs:3.29.4-sveltejs
-else ifeq ($(COMMAND_ARGS),nodejs-vuejs)
-	@echo "Generate Vuejs"
-	@docker build -t koromerzhin/nodejs:latest-vuejs images/nodejs/vuejs
-	@docker image tag koromerzhin/nodejs:latest-vuejs koromerzhin/nodejs:4.5.8-vuejs
 else ifeq ($(COMMAND_ARGS),nodejs-quasar)
 	@echo "Generate Quarsar"
 	@docker build -t koromerzhin/nodejs:latest-quasar images/nodejs/quasar
