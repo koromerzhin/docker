@@ -1,4 +1,4 @@
-FROM php:7.4.12-fpm
+FROM php:7.4.20-fpm
 
 RUN apt-get update && apt-get install -y wget --no-install-recommends
 RUN apt-get install -y git --no-install-recommends
