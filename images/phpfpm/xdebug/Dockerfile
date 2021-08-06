@@ -1,4 +1,4 @@
-FROM koromerzhin/phpfpm:7.4.12
+FROM koromerzhin/phpfpm:8.0.9
 
-RUN pecl install xdebug-2.9.7
+RUN pecl install xdebug-3.0.4
 RUN docker-php-ext-enable xdebug

@@ -1,4 +1,4 @@
-FROM php:7.4.12-fpm
+FROM php:8.0.9-fpm
 
 RUN apt-get update && apt-get install -y wget --no-install-recommends
 RUN apt-get install -y git --no-install-recommends
@@ -39,7 +39,6 @@ RUN docker-php-ext-install pdo_pgsql
 RUN docker-php-ext-install shmop
 RUN docker-php-ext-install soap
 RUN docker-php-ext-install sockets
-RUN docker-php-ext-install xmlrpc
 RUN docker-php-ext-install zip
 RUN docker-php-ext-install bcmath
 RUN docker-php-ext-install opcache

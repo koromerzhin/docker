@@ -105,19 +105,19 @@ else ifeq ($(COMMAND_ARGS),phpfpm)
 else ifeq ($(COMMAND_ARGS),phpfpm-phpfpm)
 	@echo "Generate PHPFPM"
 	@docker build -t koromerzhin/phpfpm:latest images/phpfpm
-	@docker image tag koromerzhin/phpfpm:latest koromerzhin/phpfpm:7.4.12
+	@docker image tag koromerzhin/phpfpm:latest koromerzhin/phpfpm:8.0.9
 else ifeq ($(COMMAND_ARGS),phpfpm-xdebug)
 	@echo "Generate XDEBUG"
 	@docker build -t koromerzhin/phpfpm:latest-xdebug images/phpfpm/xdebug
-	@docker image tag koromerzhin/phpfpm:latest-xdebug koromerzhin/phpfpm:7.4.12-xdebug
+	@docker image tag koromerzhin/phpfpm:latest-xdebug koromerzhin/phpfpm:8.0.9-xdebug
 else ifeq ($(COMMAND_ARGS),phpfpm-symfony)
 	@echo "Generate Symfony"
 	@docker build -t koromerzhin/phpfpm:latest-symfony images/phpfpm/symfony
-	@docker image tag koromerzhin/phpfpm:latest-symfony koromerzhin/phpfpm:7.4.12-symfony
+	@docker image tag koromerzhin/phpfpm:latest-symfony koromerzhin/phpfpm:8.0.9-symfony
 else ifeq ($(COMMAND_ARGS),phpfpm-symfony-xdebug)
 	@echo "Generate Symfony XDEBUG"
 	@docker build -t koromerzhin/phpfpm:latest-symfony-xdebug images/phpfpm/symfony-xdebug
-	@docker image tag koromerzhin/phpfpm:latest-symfony-xdebug koromerzhin/phpfpm:7.4.12-symfony-xdebug
+	@docker image tag koromerzhin/phpfpm:latest-symfony-xdebug koromerzhin/phpfpm:8.0.9-symfony-xdebug
 else
 	@echo "ARGUMENT missing"
 	@echo "---"
@@ -185,11 +185,11 @@ ifeq ($(COMMAND_ARGS),all)
 	@make push nodejs
 	@make push phpfpm
 else ifeq ($(COMMAND_ARGS),django)
-	@docker push koromerzhin/django
+	@docker push koromerzhin/django -a
 else ifeq ($(COMMAND_ARGS),nodejs)
-	@docker push koromerzhin/nodejs
+	@docker push koromerzhin/nodejs -a
 else ifeq ($(COMMAND_ARGS),phpfpm)
-	@docker push koromerzhin/phpfpm
+	@docker push koromerzhin/phpfpm -a
 else
 	@echo "ARGUMENT missing"
 	@echo "---"
