@@ -19,6 +19,7 @@ RUN apt-get install -y libpq-dev --no-install-recommends
 RUN apt-get install -y libmagickwand-dev --no-install-recommends
 RUN apt-get install -y libldap2-dev --no-install-recommends
 RUN apt-get install -y unzip --no-install-recommends
+RUN apt-get install -y libtidy-dev --no-install-recommends
 
 # Add PECL
 RUN pecl install imagick
@@ -42,6 +43,7 @@ RUN docker-php-ext-install sockets
 RUN docker-php-ext-install zip
 RUN docker-php-ext-install bcmath
 RUN docker-php-ext-install opcache
+RUN docker-php-ext-install tidy
 
 RUN docker-php-ext-enable apcu
 RUN docker-php-ext-enable redis

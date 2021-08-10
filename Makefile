@@ -102,6 +102,10 @@ else ifeq ($(COMMAND_ARGS),phpfpm)
 	@make docker-generate phpfpm-xdebug -i
 	@make docker-generate phpfpm-symfony -i
 	@make docker-generate phpfpm-symfony-xdebug -i
+	@make docker-generate phpfpm-drupal -i
+	@make docker-generate phpfpm-drupal-xdebug -i
+	@make docker-generate phpfpm-wordpress -i
+	@make docker-generate phpfpm-wordpress-xdebug -i
 else ifeq ($(COMMAND_ARGS),phpfpm-phpfpm)
 	@echo "Generate PHPFPM"
 	@docker build -t koromerzhin/phpfpm:latest images/phpfpm
@@ -116,8 +120,24 @@ else ifeq ($(COMMAND_ARGS),phpfpm-symfony)
 	@docker image tag koromerzhin/phpfpm:latest-symfony koromerzhin/phpfpm:8.0.9-symfony
 else ifeq ($(COMMAND_ARGS),phpfpm-symfony-xdebug)
 	@echo "Generate Symfony XDEBUG"
-	@docker build -t koromerzhin/phpfpm:latest-symfony-xdebug images/phpfpm/symfony-xdebug
+	@docker build -t koromerzhin/phpfpm:latest-symfony-xdebug images/phpfpm/symfony/xdebug
 	@docker image tag koromerzhin/phpfpm:latest-symfony-xdebug koromerzhin/phpfpm:8.0.9-symfony-xdebug
+else ifeq ($(COMMAND_ARGS),phpfpm-drupal)
+	@echo "Generate drupal"
+	@docker build -t koromerzhin/phpfpm:latest-drupal images/phpfpm/drupal
+	@docker image tag koromerzhin/phpfpm:latest-drupal koromerzhin/phpfpm:8.0.9-drupal
+else ifeq ($(COMMAND_ARGS),phpfpm-drupal-xdebug)
+	@echo "Generate drupal XDEBUG"
+	@docker build -t koromerzhin/phpfpm:latest-drupal-xdebug images/phpfpm/drupal/xdebug
+	@docker image tag koromerzhin/phpfpm:latest-drupal-xdebug koromerzhin/phpfpm:8.0.9-drupal-xdebug
+else ifeq ($(COMMAND_ARGS),phpfpm-wordpress)
+	@echo "Generate wordpress"
+	@docker build -t koromerzhin/phpfpm:latest-wordpress images/phpfpm/wordpress
+	@docker image tag koromerzhin/phpfpm:latest-wordpress koromerzhin/phpfpm:8.0.9-wordpress
+else ifeq ($(COMMAND_ARGS),phpfpm-wordpress-xdebug)
+	@echo "Generate wordpress XDEBUG"
+	@docker build -t koromerzhin/phpfpm:latest-wordpress-xdebug images/phpfpm/wordpress/xdebug
+	@docker image tag koromerzhin/phpfpm:latest-wordpress-xdebug koromerzhin/phpfpm:8.0.9-wordpress-xdebug
 else
 	@echo "ARGUMENT missing"
 	@echo "---"
@@ -142,6 +162,10 @@ else
 	@echo "phpfpm-xdebug: generate xdebug"
 	@echo "phpfpm-symfony: generate symfony"
 	@echo "phpfpm-symfony-xdebug: generate symfony-xdebug"
+	@echo "phpfpm-drupal: generate drupal"
+	@echo "phpfpm-drupal-xdebug: generate drupal-xdebug"
+	@echo "phpfpm-wordpress: generate wordpress"
+	@echo "phpfpm-wordpress-xdebug: generate wordpress-xdebug"
 endif
 
 .PHONY: linter
@@ -154,14 +178,12 @@ ifeq ($(COMMAND_ARGS),all)
 else ifeq ($(COMMAND_ARGS),readme)
 	@npm run linter-markdown README.md
 else ifeq ($(COMMAND_ARGS),docker-nodejs)
-	@npm run linter-docker images/nodejs/Dockerfile
-	@npm run linter-docker images/nodejs/*/Dockerfile
+	@npm run linter-docker $$(find images/nodejs -name "Dockerfile")
 else ifeq ($(COMMAND_ARGS),docker-django)
-	@npm run linter-docker images/django/Dockerfile
+	@npm run linter-docker $$(find images/django -name "Dockerfile")
 else ifeq ($(COMMAND_ARGS),docker-phpfpm)
-	@npm run linter-docker images/phpfpm/Dockerfile
-	@npm run linter-docker images/phpfpm/*/Dockerfile
-else ifeq ($(COMMAND_ARGS),docker)
+	@npm run linter-docker $$(find images/phpfpm -name "Dockerfile")
+else ifeq ($(COMMAND_ARGS),dockerfile)
 	@make linter docker-nodejs -i
 	@make linter docker-django -i
 	@make linter docker-phpfpm -i
@@ -172,7 +194,7 @@ else
 	@echo "---"
 	@echo "all: all"
 	@echo "readme: linter README.md"
-	@echo "docker: linter docker"
+	@echo "dockerfile: linter docker"
 	@echo "docker-nodejs: linter docker nodejs"
 	@echo "docker-django: linter docker django"
 	@echo "docker-phpfpm: linter docker phpfpm"
