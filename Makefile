@@ -102,6 +102,8 @@ else ifeq ($(COMMAND_ARGS),phpfpm)
 	@make docker-generate phpfpm-xdebug -i
 	@make docker-generate phpfpm-symfony -i
 	@make docker-generate phpfpm-symfony-xdebug -i
+	@make docker-generate phpfpm-all -i
+	@make docker-generate phpfpm-all-xdebug -i
 	@make docker-generate phpfpm-drupal -i
 	@make docker-generate phpfpm-drupal-xdebug -i
 	@make docker-generate phpfpm-wordpress -i
@@ -122,6 +124,14 @@ else ifeq ($(COMMAND_ARGS),phpfpm-symfony-xdebug)
 	@echo "Generate Symfony XDEBUG"
 	@docker build -t koromerzhin/phpfpm:latest-symfony-xdebug images/phpfpm/symfony/xdebug
 	@docker image tag koromerzhin/phpfpm:latest-symfony-xdebug koromerzhin/phpfpm:8.0.9-symfony-xdebug
+else ifeq ($(COMMAND_ARGS),phpfpm-all)
+	@echo "Generate all"
+	@docker build -t koromerzhin/phpfpm:latest-all images/phpfpm/all
+	@docker image tag koromerzhin/phpfpm:latest-all koromerzhin/phpfpm:8.0.9-all
+else ifeq ($(COMMAND_ARGS),phpfpm-all-xdebug)
+	@echo "Generate all XDEBUG"
+	@docker build -t koromerzhin/phpfpm:latest-all-xdebug images/phpfpm/all/xdebug
+	@docker image tag koromerzhin/phpfpm:latest-all-xdebug koromerzhin/phpfpm:8.0.9-all-xdebug
 else ifeq ($(COMMAND_ARGS),phpfpm-drupal)
 	@echo "Generate drupal"
 	@docker build -t koromerzhin/phpfpm:latest-drupal images/phpfpm/drupal
@@ -158,6 +168,8 @@ else
 	@echo "nodejs-vuejs: generate vuejs"
 	@echo "nodejs-quasar: generate quasar"
 	@echo "phpfpm: generate all phpfpm images"
+	@echo "phpfpm-all: generate phpfpm with symfony drupal"
+	@echo "phpfpm-all-xdebug: generate phpfpm with symfony drupal xdebug"
 	@echo "phpfpm-phpfpm: generate phpfpm"
 	@echo "phpfpm-xdebug: generate xdebug"
 	@echo "phpfpm-symfony: generate symfony"
