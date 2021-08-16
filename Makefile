@@ -1,44 +1,10 @@
-isDocker := $(shell docker info > /dev/null 2>&1 && echo 1)
-
-.DEFAULT_GOAL := help
-
-SUPPORTED_COMMANDS := contributors git docker linter logs push docker-generate
-SUPPORTS_MAKE_ARGS := $(findstring $(firstword $(MAKECMDGOALS)), $(SUPPORTED_COMMANDS))
-ifneq "$(SUPPORTS_MAKE_ARGS)" ""
-  COMMAND_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
-  $(eval $(COMMAND_ARGS):;@:)
-endif
-
-.PHONY: help
-help:
-	@grep -E '(^[a-zA-Z_-]+:.*?##.*$$)|(^##)' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
-
-node_modules:
-	@npm install
-
-.PHONY: isdocker
-isdocker: ## Docker is launch
-ifeq ($(isDocker), 0)
-	@echo "Docker is not launch"
-	exit 1
-endif
+include make/general/Makefile
+include make/docker/Makefile
 
 install: node_modules ## Installation application
 
-.PHONY: contributors
-contributors: node_modules ## Contributors
-ifeq ($(COMMAND_ARGS),add)
-	@npm run contributors add
-else ifeq ($(COMMAND_ARGS),check)
-	@npm run contributors check
-else ifeq ($(COMMAND_ARGS),generate)
-	@npm run contributors generate
-else
-	@npm run contributors
-endif
-
 .PHONY: git
-git: node_modules ## Scripts GIT
+git: node_modules ## Scripts GIT *
 ifeq ($(COMMAND_ARGS),check)
 	@make contributors check -i
 	@make linter all -i
@@ -51,24 +17,8 @@ else
 	@echo "check: CHECK before"
 endif
 
-.PHONY: docker
-docker: isdocker ## Scripts docker
-ifeq ($(COMMAND_ARGS),images)
-	@docker images
-else ifeq ($(COMMAND_ARGS),login)
-	@docker login
-else
-	@echo "ARGUMENT missing"
-	@echo "---"
-	@echo "make docker ARGUMENT"
-	@echo "---"
-	@echo "images: images"
-	@echo "check: CHECK before"
-	@echo "login: login"
-endif
-
 .PHONY: docker-generate
-docker-generate: isdocker ## Generate image
+docker-generate: isdocker ## Generate image *
 ifeq ($(COMMAND_ARGS),all)
 	@make docker-generate django -i
 	@make docker-generate nodejs -i
