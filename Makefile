@@ -11,7 +11,7 @@ endif
 install: node_modules ## Installation application
 
 .PHONY: docker-generate
-docker-generate: isdocker ## Generate image *
+docker-generate: isdocker ### Generate image
 ifeq ($(COMMAND_ARGS),all)
 	@make docker-generate django -i
 	@make docker-generate nodejs -i
@@ -124,7 +124,7 @@ else
 endif
 
 .PHONY: linter
-linter: node_modules ## Scripts Linter
+linter: node_modules ### Scripts Linter
 ifeq ($(COMMAND_ARGS),all)
 	@make linter readme -i
 	@make linter docker-nodejs -i
@@ -156,7 +156,7 @@ else
 endif
 
 .PHONY: push
-push: isdocker ## push image
+push: isdocker ### push image
 ifeq ($(COMMAND_ARGS),all)
 	@make push django
 	@make push nodejs
