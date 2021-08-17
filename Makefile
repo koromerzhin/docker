@@ -1,6 +1,13 @@
 include make/general/Makefile
 include make/docker/Makefile
 
+COMMANDS_SUPPORTED_COMMANDS := docker-generate linter push
+COMMANDS_SUPPORTS_MAKE_ARGS := $(findstring $(firstword $(MAKECMDGOALS)), $(COMMANDS_SUPPORTED_COMMANDS))
+ifneq "$(COMMANDS_SUPPORTS_MAKE_ARGS)" ""
+  COMMANDS_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
+  $(eval $(COMMANDS_ARGS):;@:)
+endif
+
 install: node_modules ## Installation application
 
 .PHONY: docker-generate
