@@ -8,6 +8,14 @@ ifneq "$(COMMANDS_SUPPORTS_MAKE_ARGS)" ""
   $(eval $(COMMANDS_ARGS):;@:)
 endif
 
+GREEN := \033[0;32m
+RED := \033[0;31m
+YELLOW := \033[0;33m
+NC := \033[0m
+NEED := ${GREEN}%-20s${NC}: %s\n
+MISSING :=${RED}ARGUMENT missing${NC}\n
+ARGUMENTS := make ${PURPLE}%s${NC} ${YELLOW}ARGUMENT${NC}\n
+
 install: node_modules ## Installation application
 
 .PHONY: docker-generate
@@ -92,35 +100,35 @@ else ifeq ($(COMMAND_ARGS),phpfpm-wordpress-xdebug)
 	@docker build -t koromerzhin/phpfpm:latest-wordpress-xdebug images/phpfpm/wordpress/xdebug
 	@docker image tag koromerzhin/phpfpm:latest-wordpress-xdebug koromerzhin/phpfpm:8.0.9-wordpress-xdebug
 else
-	@echo "ARGUMENT missing"
+	@printf "${MISSING}"
 	@echo "---"
-	@echo "make docker-generate ARGUMENT"
+	@printf "${ARGUMENTS}" docker-generate
 	@echo "---"
-	@echo "images: images"
-	@echo "check: CHECK before"
-	@echo "all: generate all images"
-	@echo "django: generate all django images"
-	@echo "nodejs: generate all nodejs images"
-	@echo "nodejs-nodejs: generate nodejs"
-	@echo "nodejs-express: generate express"
-	@echo "nodejs-socketio: generate socketio"
-	@echo "nodejs-angular: generate angular"
-	@echo "nodejs-remotion: generate remotion"
-	@echo "nodejs-react: generate react"
-	@echo "nodejs-sveltejs: generate sveltejs"
-	@echo "nodejs-vuejs: generate vuejs"
-	@echo "nodejs-quasar: generate quasar"
-	@echo "phpfpm: generate all phpfpm images"
-	@echo "phpfpm-all: generate phpfpm with symfony drupal"
-	@echo "phpfpm-all-xdebug: generate phpfpm with symfony drupal xdebug"
-	@echo "phpfpm-phpfpm: generate phpfpm"
-	@echo "phpfpm-xdebug: generate xdebug"
-	@echo "phpfpm-symfony: generate symfony"
-	@echo "phpfpm-symfony-xdebug: generate symfony-xdebug"
-	@echo "phpfpm-drupal: generate drupal"
-	@echo "phpfpm-drupal-xdebug: generate drupal-xdebug"
-	@echo "phpfpm-wordpress: generate wordpress"
-	@echo "phpfpm-wordpress-xdebug: generate wordpress-xdebug"
+	@printf "${NEED}" "images" "images"
+	@printf "${NEED}" "check" "CHECK before"
+	@printf "${NEED}" "all" "generate all images"
+	@printf "${NEED}" "django" "generate all django images"
+	@printf "${NEED}" "nodejs" "generate all nodejs images"
+	@printf "${NEED}" "nodejs-nodejs" "generate nodejs"
+	@printf "${NEED}" "nodejs-express" "generate express"
+	@printf "${NEED}" "nodejs-socketio" "generate socketio"
+	@printf "${NEED}" "nodejs-angular" "generate angular"
+	@printf "${NEED}" "nodejs-remotion" "generate remotion"
+	@printf "${NEED}" "nodejs-react" "generate react"
+	@printf "${NEED}" "nodejs-sveltejs" "generate sveltejs"
+	@printf "${NEED}" "nodejs-vuejs" "generate vuejs"
+	@printf "${NEED}" "nodejs-quasar" "generate quasar"
+	@printf "${NEED}" "phpfpm" "generate all phpfpm images"
+	@printf "${NEED}" "phpfpm-all" "generate phpfpm with symfony drupal"
+	@printf "${NEED}" "phpfpm-all-xdebug" "generate phpfpm with symfony drupal xdebug"
+	@printf "${NEED}" "phpfpm-phpfpm" "generate phpfpm"
+	@printf "${NEED}" "phpfpm-xdebug" "generate xdebug"
+	@printf "${NEED}" "phpfpm-symfony" "generate symfony"
+	@printf "${NEED}" "phpfpm-symfony-xdebug" "generate symfony-xdebug"
+	@printf "${NEED}" "phpfpm-drupal" "generate drupal"
+	@printf "${NEED}" "phpfpm-drupal-xdebug" "generate drupal-xdebug"
+	@printf "${NEED}" "phpfpm-wordpress" "generate wordpress"
+	@printf "${NEED}" "phpfpm-wordpress-xdebug" "generate wordpress-xdebug"
 endif
 
 .PHONY: linter
@@ -143,16 +151,16 @@ else ifeq ($(COMMAND_ARGS),dockerfile)
 	@make linter docker-django -i
 	@make linter docker-phpfpm -i
 else
-	@echo "ARGUMENT missing"
+	@printf "${MISSING}"
 	@echo "---"
-	@echo "make linter ARGUMENT"
+	@printf "${ARGUMENTS}" linter
 	@echo "---"
-	@echo "all: all"
-	@echo "readme: linter README.md"
-	@echo "dockerfile: linter docker"
-	@echo "docker-nodejs: linter docker nodejs"
-	@echo "docker-django: linter docker django"
-	@echo "docker-phpfpm: linter docker phpfpm"
+	@printf "${NEED}" "all" "all"
+	@printf "${NEED}" "readme" "linter README.md"
+	@printf "${NEED}" "dockerfile" "linter docker"
+	@printf "${NEED}" "docker-nodejs" "linter docker nodejs"
+	@printf "${NEED}" "docker-django" "linter docker django"
+	@printf "${NEED}" "docker-phpfpm" "linter docker phpfpm"
 endif
 
 .PHONY: push
@@ -168,12 +176,12 @@ else ifeq ($(COMMAND_ARGS),nodejs)
 else ifeq ($(COMMAND_ARGS),phpfpm)
 	@docker push koromerzhin/phpfpm -a
 else
-	@echo "ARGUMENT missing"
+	@printf "${MISSING}"
 	@echo "---"
-	@echo "make push ARGUMENT"
+	@printf "${ARGUMENTS}" push
 	@echo "---"
-	@echo "all: push all images"
-	@echo "django: push all django images"
-	@echo "nodejs: push all nodejs images"
-	@echo "phpfpm: push all phpfpm images"
+	@printf "${NEED}" "all" "push all images"
+	@printf "${NEED}" "django" "push all django images"
+	@printf "${NEED}" "nodejs" "push all nodejs images"
+	@printf "${NEED}" "phpfpm" "push all phpfpm images"
 endif

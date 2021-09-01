@@ -8,7 +8,7 @@ jobs:
       matrix:
         operating-system: [ubuntu-20.04]
     steps:
-      - name: Checkout
+      - name: cdout
         uses: actions/checkout@v2
         with:
           submodules: recursive
