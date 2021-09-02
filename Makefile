@@ -100,10 +100,7 @@ else ifeq ($(COMMAND_ARGS),phpfpm-wordpress-xdebug)
 	@docker build -t koromerzhin/phpfpm:latest-wordpress-xdebug images/phpfpm/wordpress/xdebug
 	@docker image tag koromerzhin/phpfpm:latest-wordpress-xdebug koromerzhin/phpfpm:8.0.9-wordpress-xdebug
 else
-	@printf "${MISSING}"
-	@echo "---"
-	@printf "${ARGUMENTS}" docker-generate
-	@echo "---"
+	@printf "${MISSING_ARGUMENTS}" docker-generate
 	@printf "${NEED}" "images" "images"
 	@printf "${NEED}" "check" "CHECK before"
 	@printf "${NEED}" "all" "generate all images"
@@ -151,10 +148,7 @@ else ifeq ($(COMMAND_ARGS),dockerfile)
 	@make linter docker-django -i
 	@make linter docker-phpfpm -i
 else
-	@printf "${MISSING}"
-	@echo "---"
-	@printf "${ARGUMENTS}" linter
-	@echo "---"
+	@printf "${MISSING_ARGUMENTS}" linter
 	@printf "${NEED}" "all" "all"
 	@printf "${NEED}" "readme" "linter README.md"
 	@printf "${NEED}" "dockerfile" "linter docker"
@@ -176,10 +170,7 @@ else ifeq ($(COMMAND_ARGS),nodejs)
 else ifeq ($(COMMAND_ARGS),phpfpm)
 	@docker push koromerzhin/phpfpm -a
 else
-	@printf "${MISSING}"
-	@echo "---"
-	@printf "${ARGUMENTS}" push
-	@echo "---"
+	@printf "${MISSING_ARGUMENTS}" push
 	@printf "${NEED}" "all" "push all images"
 	@printf "${NEED}" "django" "push all django images"
 	@printf "${NEED}" "nodejs" "push all nodejs images"
