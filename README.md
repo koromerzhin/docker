@@ -43,7 +43,7 @@ make help
 
 ```sh
 make docker-generate nodejs
-make docker-generate django
+make docker-generate python
 make docker-generate phpfpm
 ```
 
@@ -51,7 +51,7 @@ make docker-generate phpfpm
 
 ```sh
 make push nodejs
-make push django
+make push python
 make push phpfpm
 ```
 

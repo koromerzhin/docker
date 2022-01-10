@@ -1,4 +1,6 @@
-FROM python:3.9.0
+FROM python:3.9.0 AS build-python-3.9.0
+
+FROM python:3.9.0 as build-django-3.9.0
 
 WORKDIR /app
 
