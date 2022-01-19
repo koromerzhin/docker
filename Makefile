@@ -93,31 +93,33 @@ else ifeq ($(COMMANDS_ARGS),phpfpm-wordpress-xdebug)
 	@docker image tag koromerzhin/phpfpm:latest-wordpress-xdebug koromerzhin/phpfpm:8.0.9-wordpress-xdebug
 else
 	@printf "${MISSING_ARGUMENTS}" docker-generate
-	@printf "${NEED}" "images" "images"
-	@printf "${NEED}" "check" "CHECK before"
-	@printf "${NEED}" "all" "generate all images"
-	@printf "${NEED}" "python" "generate all python images"
-	@printf "${NEED}" "nodejs" "generate all nodejs images"
-	@printf "${NEED}" "nodejs-nodejs" "generate nodejs"
-	@printf "${NEED}" "nodejs-express" "generate express"
-	@printf "${NEED}" "nodejs-socketio" "generate socketio"
-	@printf "${NEED}" "nodejs-angular" "generate angular"
-	@printf "${NEED}" "nodejs-remotion" "generate remotion"
-	@printf "${NEED}" "nodejs-react" "generate react"
-	@printf "${NEED}" "nodejs-sveltejs" "generate sveltejs"
-	@printf "${NEED}" "nodejs-vuejs" "generate vuejs"
-	@printf "${NEED}" "nodejs-quasar" "generate quasar"
-	@printf "${NEED}" "phpfpm" "generate all phpfpm images"
-	@printf "${NEED}" "phpfpm-all" "generate phpfpm with symfony drupal"
-	@printf "${NEED}" "phpfpm-all-xdebug" "generate phpfpm with symfony drupal xdebug"
-	@printf "${NEED}" "phpfpm-phpfpm" "generate phpfpm"
-	@printf "${NEED}" "phpfpm-xdebug" "generate xdebug"
-	@printf "${NEED}" "phpfpm-symfony" "generate symfony"
-	@printf "${NEED}" "phpfpm-symfony-xdebug" "generate symfony-xdebug"
-	@printf "${NEED}" "phpfpm-drupal" "generate drupal"
-	@printf "${NEED}" "phpfpm-drupal-xdebug" "generate drupal-xdebug"
-	@printf "${NEED}" "phpfpm-wordpress" "generate wordpress"
-	@printf "${NEED}" "phpfpm-wordpress-xdebug" "generate wordpress-xdebug"
+	$(call array_arguments, \
+		["images"] ="images" \
+		["check"] ="CHECK before" \
+		["all"] ="generate all images" \
+		["python"] ="generate all python images" \
+		["nodejs"] ="generate all nodejs images" \
+		["nodejs-nodejs"]="generate nodejs" \
+		["nodejs-express"]="generate express" \
+		["nodejs-socketio"]="generate socketio" \
+		["nodejs-angular"]="generate angular" \
+		["nodejs-remotion"]="generate remotion" \
+		["nodejs-react"]="generate react" \
+		["nodejs-sveltejs"]="generate sveltejs" \
+		["nodejs-vuejs"]="generate vuejs" \
+		["nodejs-quasar"]="generate quasar" \
+		["phpfpm"]="generate all phpfpm images" \
+		["phpfpm-all"]="generate phpfpm with symfony drupal" \
+		["phpfpm-all-xdebug"]="generate phpfpm with symfony drupal xdebug" \
+		["phpfpm-phpfpm"]="generate phpfpm" \
+		["phpfpm-xdebug"]="generate xdebug" \
+		["phpfpm-symfony"]="generate symfony" \
+		["phpfpm-symfony-xdebug"]="generate symfony-xdebug" \
+		["phpfpm-drupal"]="generate drupal" \
+		["phpfpm-drupal-xdebug"]="generate drupal-xdebug" \
+		["phpfpm-wordpress"]="generate wordpress" \
+		["phpfpm-wordpress-xdebug"]="generate wordpress-xdebug" \
+	)
 endif
 
 .PHONY: linter
@@ -140,13 +142,15 @@ else ifeq ($(COMMANDS_ARGS),dockerfile)
 	@make linter docker-python -i
 	@make linter docker-phpfpm -i
 else
-	@printf "${MISSING_ARGUMENTS}" linter
-	@printf "${NEED}" "all" "all"
-	@printf "${NEED}" "readme" "linter README.md"
-	@printf "${NEED}" "dockerfile" "linter docker"
-	@printf "${NEED}" "docker-nodejs" "linter docker nodejs"
-	@printf "${NEED}" "docker-python" "linter docker python"
-	@printf "${NEED}" "docker-phpfpm" "linter docker phpfpm"
+	@printf "${MISSING_ARGUMENTS}" "linter"
+	$(call array_arguments, \
+		["all"]="all" \
+		["readme"]="linter README.md" \
+		["dockerfile"]="linter docker" \
+		["docker-python"]="linter docker python" \
+		["docker-nodejs"]="linter docker nodejs" \
+		["docker-phpfpm"]="linter docker phpfpm" \
+	)
 endif
 
 .PHONY: push
@@ -162,9 +166,11 @@ else ifeq ($(COMMANDS_ARGS),nodejs)
 else ifeq ($(COMMANDS_ARGS),phpfpm)
 	@docker push koromerzhin/phpfpm -a
 else
-	@printf "${MISSING_ARGUMENTS}" push
-	@printf "${NEED}" "all" "push all images"
-	@printf "${NEED}" "python" "push all python images"
-	@printf "${NEED}" "nodejs" "push all nodejs images"
-	@printf "${NEED}" "phpfpm" "push all phpfpm images"
+	@printf "${MISSING_ARGUMENTS}" "push"
+	$(call array_arguments, \
+		["all"]="push all images" \
+		["python"]="push all python images" \
+		["nodejs"]="push all nodejs images" \
+		["phpfpm"]="push all phpfpm images" \
+	)
 endif
