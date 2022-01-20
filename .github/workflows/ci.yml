@@ -26,7 +26,7 @@ jobs:
       - name: linter markdown
         run: make linter readme
       - name: linter docker
-        run: make linter docker
+        run: make linter dockerfile
   nodejs:
       needs: tests
       runs-on: ubuntu-20.04

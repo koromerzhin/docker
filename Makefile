@@ -126,30 +126,28 @@ endif
 linter: node_modules ### Scripts Linter
 ifeq ($(COMMANDS_ARGS),all)
 	@make linter readme -i
-	@make linter docker-nodejs -i
-	@make linter docker-python -i
-	@make linter docker-phpfpm -i
+	@make linter dockerfile -i
 else ifeq ($(COMMANDS_ARGS),readme)
 	@npm run linter-markdown README.md
-else ifeq ($(COMMANDS_ARGS),docker-nodejs)
+else ifeq ($(COMMANDS_ARGS),nodejs)
 	@npm run linter-docker $$(find images/nodejs -name "Dockerfile")
-else ifeq ($(COMMANDS_ARGS),docker-python)
+else ifeq ($(COMMANDS_ARGS),python)
 	@npm run linter-docker $$(find images/python -name "Dockerfile")
-else ifeq ($(COMMANDS_ARGS),docker-phpfpm)
+else ifeq ($(COMMANDS_ARGS),phpfpm)
 	@npm run linter-docker $$(find images/phpfpm -name "Dockerfile")
 else ifeq ($(COMMANDS_ARGS),dockerfile)
-	@make linter docker-nodejs -i
-	@make linter docker-python -i
-	@make linter docker-phpfpm -i
+	@make linter nodejs -i
+	@make linter python -i
+	@make linter phpfpm -i
 else
 	@printf "${MISSING_ARGUMENTS}" "linter"
 	$(call array_arguments, \
 		["all"]="all" \
 		["readme"]="linter README.md" \
-		["dockerfile"]="linter docker" \
-		["docker-python"]="linter docker python" \
-		["docker-nodejs"]="linter docker nodejs" \
-		["docker-phpfpm"]="linter docker phpfpm" \
+		["dockerfile"]="linter docker all " \
+		["python"]="linter docker python" \
+		["nodejs"]="linter docker nodejs" \
+		["phpfpm"]="linter docker phpfpm" \
 	)
 endif
 
