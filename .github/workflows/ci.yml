@@ -25,16 +25,19 @@ jobs:
         run: make linter dockerfile
   nodejs:
       needs: tests
+      runs-on: ubuntu-20.04
       steps:
           - name: 'Generate image'
             run: make docker-generate nodejs
   python:
       needs: tests
+      runs-on: ubuntu-20.04
       steps:
           - name: 'Generate image'
             run: make docker-generate python
   phpfpm:
       needs: tests
+      runs-on: ubuntu-20.04
       steps:
           - name: 'Generate image'
             run: make docker-generate phpfpm
