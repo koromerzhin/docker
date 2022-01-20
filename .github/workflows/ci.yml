@@ -37,7 +37,7 @@ jobs:
               submodules: recursive
           - name: 'Generate image'
             run: make docker-generate nodejs
-  django:
+  python:
       needs: tests
       runs-on: ubuntu-20.04
       steps:
@@ -46,7 +46,7 @@ jobs:
             with:
               submodules: recursive
           - name: 'Generate image'
-            run: make docker-generate django
+            run: make docker-generate python
   phpfpm:
       needs: tests
       runs-on: ubuntu-20.04
