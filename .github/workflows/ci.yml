@@ -2,7 +2,11 @@ name: Continuous Integration
 on: [push]
 jobs:
   tests:
-    runs-on: ubuntu-20.04
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: [ubuntu-20.04]
     steps:
       - name: cdout
         uses: actions/checkout@v2
@@ -27,17 +31,29 @@ jobs:
       needs: tests
       runs-on: ubuntu-20.04
       steps:
+          - name: Checkout
+            uses: actions/checkout@v2
+            with:
+              submodules: recursive
           - name: 'Generate image'
             run: make docker-generate nodejs
   python:
       needs: tests
       runs-on: ubuntu-20.04
       steps:
+          - name: Checkout
+            uses: actions/checkout@v2
+            with:
+              submodules: recursive
           - name: 'Generate image'
             run: make docker-generate python
   phpfpm:
       needs: tests
       runs-on: ubuntu-20.04
       steps:
+          - name: Checkout
+            uses: actions/checkout@v2
+            with:
+              submodules: recursive
           - name: 'Generate image'
             run: make docker-generate phpfpm
