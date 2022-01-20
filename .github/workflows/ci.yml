@@ -7,6 +7,9 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ubuntu-20.04]
+    defaults:
+      run:
+        working-directory: scripts
     steps:
       - name: cdout
         uses: actions/checkout@v2
@@ -30,30 +33,27 @@ jobs:
   nodejs:
       needs: tests
       runs-on: ubuntu-20.04
+      defaults:
+        run:
+          working-directory: scripts
       steps:
-          - name: Checkout
-            uses: actions/checkout@v2
-            with:
-              submodules: recursive
           - name: 'Generate image'
             run: make docker-generate nodejs
   python:
       needs: tests
       runs-on: ubuntu-20.04
+      defaults:
+        run:
+          working-directory: scripts
       steps:
-          - name: Checkout
-            uses: actions/checkout@v2
-            with:
-              submodules: recursive
           - name: 'Generate image'
             run: make docker-generate python
   phpfpm:
       needs: tests
       runs-on: ubuntu-20.04
+      defaults:
+        run:
+          working-directory: scripts
       steps:
-          - name: Checkout
-            uses: actions/checkout@v2
-            with:
-              submodules: recursive
           - name: 'Generate image'
             run: make docker-generate phpfpm
