@@ -9,6 +9,7 @@ jobs:
         operating-system: [ubuntu-20.04]
     defaults:
       run:
+        shell: bash
         working-directory: scripts
     steps:
       - name: cdout
@@ -35,6 +36,7 @@ jobs:
       runs-on: ubuntu-20.04
       defaults:
         run:
+          shell: bash
           working-directory: scripts
       steps:
           - name: 'Generate image'
@@ -44,6 +46,7 @@ jobs:
       runs-on: ubuntu-20.04
       defaults:
         run:
+          shell: bash
           working-directory: scripts
       steps:
           - name: 'Generate image'
@@ -53,6 +56,7 @@ jobs:
       runs-on: ubuntu-20.04
       defaults:
         run:
+          shell: bash
           working-directory: scripts
       steps:
           - name: 'Generate image'
