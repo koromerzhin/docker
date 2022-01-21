@@ -25,6 +25,7 @@ jobs:
           name: start
           path: |
             .
+            !.github
             !node_modules
   tests:
     needs: start
@@ -44,6 +45,7 @@ jobs:
           name: tests
           path: |
             .
+            !.github
             !node_modules
   nodejs:
       needs: tests
