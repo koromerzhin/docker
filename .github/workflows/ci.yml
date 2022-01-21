@@ -26,6 +26,7 @@ jobs:
           name: homework
           path: .
   tests:
+    needs: start
     runs-on: ubuntu-20.04
     steps:
       - name: get start
