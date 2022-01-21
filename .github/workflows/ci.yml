@@ -24,7 +24,9 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: homework
-          path: .
+          path: |
+            .
+            !node_modules
   tests:
     needs: start
     runs-on: ubuntu-20.04
