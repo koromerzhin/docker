@@ -1,4 +1,4 @@
-FROM php:8.0.9-fpm AS build-phpfpm-8.0.9
+FROM php:8.1.2-fpm AS build-phpfpm-8.0.9
 
 RUN apt-get update && apt-get install -y \
     wget \
