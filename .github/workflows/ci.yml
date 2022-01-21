@@ -2,7 +2,6 @@ name: Continuous Integration
 on: [push]
 jobs:
   tests:
-    concurrency: ci-${{ github.ref }}
     runs-on: ${{ matrix.operating-system }}
     strategy:
       fail-fast: false
@@ -29,23 +28,32 @@ jobs:
       - name: linter docker
         run: make linter dockerfile
   nodejs:
-      concurrency: ci-${{ github.ref }}
       needs: tests
       runs-on: ubuntu-20.04
       steps:
+          - name: Checkout
+            uses: actions/checkout@v2
+            with:
+              submodules: recursive
           - name: 'Generate image'
             run: make docker-generate nodejs
   python:
-      concurrency: ci-${{ github.ref }}
       needs: tests
       runs-on: ubuntu-20.04
       steps:
+          - name: Checkout
+            uses: actions/checkout@v2
+            with:
+              submodules: recursive
           - name: 'Generate image'
             run: make docker-generate python
   phpfpm:
-      concurrency: ci-${{ github.ref }}
       needs: tests
       runs-on: ubuntu-20.04
       steps:
+          - name: Checkout
+            uses: actions/checkout@v2
+            with:
+              submodules: recursive
           - name: 'Generate image'
             run: make docker-generate phpfpm
