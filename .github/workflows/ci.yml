@@ -19,7 +19,6 @@ jobs:
       - name: Install npm dependencies
         if: steps.npm-cache.outputs.cache-hit != 'true'
         run: make node_modules
-
       - name: save start
         uses: actions/upload-artifact@v2
         with:
@@ -39,33 +38,40 @@ jobs:
         run: make linter readme
       - name: linter docker
         run: make linter dockerfile
+      - name: save tests
+        uses: actions/upload-artifact@v2
+        with:
+          name: tests
+          path: |
+            .
+            !node_modules
   nodejs:
       needs: tests
       runs-on: ubuntu-20.04
       steps:
-          - name: Checkout
-            uses: actions/checkout@v2
-            with:
-              submodules: recursive
-          - name: 'Generate image'
-            run: make docker-generate nodejs
+      - name: get tests
+        uses: actions/download-artifact@v2
+        with:
+          name: tests
+      - name: 'Generate image'
+        run: make docker-generate nodejs
   python:
       needs: tests
       runs-on: ubuntu-20.04
       steps:
-          - name: Checkout
-            uses: actions/checkout@v2
-            with:
-              submodules: recursive
-          - name: 'Generate image'
-            run: make docker-generate python
+      - name: get tests
+        uses: actions/download-artifact@v2
+        with:
+          name: tests
+      - name: 'Generate image'
+        run: make docker-generate python
   phpfpm:
       needs: tests
       runs-on: ubuntu-20.04
       steps:
-          - name: Checkout
-            uses: actions/checkout@v2
-            with:
-              submodules: recursive
-          - name: 'Generate image'
-            run: make docker-generate phpfpm
+      - name: get tests
+        uses: actions/download-artifact@v2
+        with:
+          name: tests
+      - name: 'Generate image'
+        run: make docker-generate phpfpm
