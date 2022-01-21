@@ -23,7 +23,7 @@ jobs:
       - name: save start
         uses: actions/upload-artifact@v2
         with:
-          name: homework
+          name: start
           path: |
             .
             !node_modules
