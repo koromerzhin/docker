@@ -1,12 +1,8 @@
 name: Continuous Integration
 on: [push]
 jobs:
-  tests:
-    runs-on: ${{ matrix.operating-system }}
-    strategy:
-      fail-fast: false
-      matrix:
-        operating-system: [ubuntu-20.04]
+  start:
+    runs-on: ubuntu-20.04
     steps:
       - name: cdout
         uses: actions/checkout@v2
@@ -23,6 +19,19 @@ jobs:
       - name: Install npm dependencies
         if: steps.npm-cache.outputs.cache-hit != 'true'
         run: make node_modules
+
+      - name: save start
+        uses: actions/upload-artifact@v2
+        with:
+          name: homework
+          path: .
+  test:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: get start
+        uses: actions/download-artifact@v2
+        with:
+          name: start
       - name: linter markdown
         run: make linter readme
       - name: linter docker
