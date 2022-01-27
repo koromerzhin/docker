@@ -1,7 +1,7 @@
 include make/general/Makefile
 include make/docker/Makefile
 
-COMMANDS_SUPPORTED_COMMANDS := docker-generate linter push
+COMMANDS_SUPPORTED_COMMANDS := generate linter push
 COMMANDS_SUPPORTS_MAKE_ARGS := $(findstring $(firstword $(MAKECMDGOALS)), $(COMMANDS_SUPPORTED_COMMANDS))
 ifneq "$(COMMANDS_SUPPORTS_MAKE_ARGS)" ""
   COMMANDS_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
@@ -10,20 +10,20 @@ endif
 
 install: node_modules ## Installation application
 
-.PHONY: docker-generate
-docker-generate: isdocker ### Generate image
+.PHONY: generate
+generate: isdocker ### Generate image
 ifeq ($(COMMANDS_ARGS),all)
-	@make docker-generate python -i
-	@make docker-generate nodejs -i
-	@make docker-generate phpfpm -i
+	@make generate python -i
+	@make generate nodejs -i
+	@make generate phpfpm -i
 else ifeq ($(COMMANDS_ARGS),python)
 	@docker build -t koromerzhin/django:latest images/python --target build-django-3.9.0
 	@docker image tag koromerzhin/django:latest koromerzhin/django:3.9.0
 else ifeq ($(COMMANDS_ARGS),nodejs)
-	@make docker-generate nodejs-nodejs -i
-	@make docker-generate nodejs-angular -i
-	@make docker-generate nodejs-remotion -i
-	@make docker-generate nodejs-quasar -i
+	@make generate nodejs-nodejs -i
+	@make generate nodejs-angular -i
+	@make generate nodejs-remotion -i
+	@make generate nodejs-quasar -i
 else ifeq ($(COMMANDS_ARGS),nodejs-nodejs)
 	@echo "Generate Nodejs"
 	@docker build -t koromerzhin/nodejs:latest images/nodejs --target build-nodejs-15.1.0
@@ -41,64 +41,42 @@ else ifeq ($(COMMANDS_ARGS),nodejs-quasar)
 	@docker build -t koromerzhin/nodejs:latest-quasar images/nodejs --target build-quasar-1.1.3
 	@docker image tag koromerzhin/nodejs:latest-quasar koromerzhin/nodejs:1.1.3-quasar
 else ifeq ($(COMMANDS_ARGS),phpfpm)
-	@make docker-generate phpfpm-phpfpm -i
-	@make docker-generate phpfpm-xdebug -i
-	@make docker-generate phpfpm-symfony -i
-	@make docker-generate phpfpm-symfony-xdebug -i
-	@make docker-generate phpfpm-all -i
-	@make docker-generate phpfpm-all-xdebug -i
-	@make docker-generate phpfpm-drupal -i
-	@make docker-generate phpfpm-drupal-xdebug -i
-	@make docker-generate phpfpm-wordpress -i
-	@make docker-generate phpfpm-wordpress-xdebug -i
+	@make generate phpfpm-phpfpm -i
+	@make generate phpfpm-xdebug -i
+	@make generate phpfpm-symfony -i
+	@make generate phpfpm-symfony-xdebug -i
+	@make generate phpfpm-wordpress -i
+	@make generate phpfpm-wordpress-xdebug -i
 else ifeq ($(COMMANDS_ARGS),phpfpm-phpfpm)
 	@echo "Generate PHPFPM"
-	@docker build -t koromerzhin/phpfpm:latest images/phpfpm --target build-phpfpm-8.0.9
-	@docker image tag koromerzhin/phpfpm:latest koromerzhin/phpfpm:8.0.9
+	@docker build -t koromerzhin/phpfpm:latest images/phpfpm --target build-phpfpm-8.1.2
+	@docker image tag koromerzhin/phpfpm:latest koromerzhin/phpfpm:8.1.2
 else ifeq ($(COMMANDS_ARGS),phpfpm-xdebug)
 	@echo "Generate XDEBUG"
-	@docker build -t koromerzhin/phpfpm:latest-xdebug images/phpfpm --target build-phpfpm-xdebug-8.0.9
-	@docker image tag koromerzhin/phpfpm:latest-xdebug koromerzhin/phpfpm:8.0.9-xdebug
+	@docker build -t koromerzhin/phpfpm:latest-xdebug images/phpfpm --target build-phpfpm-xdebug-8.1.2
+	@docker image tag koromerzhin/phpfpm:latest-xdebug koromerzhin/phpfpm:8.1.2-xdebug
 else ifeq ($(COMMANDS_ARGS),phpfpm-symfony)
 	@echo "Generate Symfony"
-	@docker build -t koromerzhin/phpfpm:latest-symfony images/phpfpm --target build-phpfpm-symfony-8.0.9
-	@docker image tag koromerzhin/phpfpm:latest-symfony koromerzhin/phpfpm:8.0.9-symfony
+	@docker build -t koromerzhin/phpfpm:latest-symfony images/phpfpm --target build-phpfpm-symfony-8.1.2
+	@docker image tag koromerzhin/phpfpm:latest-symfony koromerzhin/phpfpm:8.1.2-symfony
 else ifeq ($(COMMANDS_ARGS),phpfpm-symfony-xdebug)
 	@echo "Generate Symfony XDEBUG"
-	@docker build -t koromerzhin/phpfpm:latest-symfony-xdebug images/phpfpm --target build-phpfpm-symfony-xdebug-8.0.9
-	@docker image tag koromerzhin/phpfpm:latest-symfony-xdebug koromerzhin/phpfpm:8.0.9-symfony-xdebug
-else ifeq ($(COMMANDS_ARGS),phpfpm-all)
-	@echo "Generate all"
-	@docker build -t koromerzhin/phpfpm:latest-all images/phpfpm --target build-phpfpm-all-8.0.9
-	@docker image tag koromerzhin/phpfpm:latest-all koromerzhin/phpfpm:8.0.9-all
-else ifeq ($(COMMANDS_ARGS),phpfpm-all-xdebug)
-	@echo "Generate all XDEBUG"
-	@docker build -t koromerzhin/phpfpm:latest-all-xdebug images/phpfpm --target build-phpfpm-all-xdebug-8.0.9
-	@docker image tag koromerzhin/phpfpm:latest-all-xdebug koromerzhin/phpfpm:8.0.9-all-xdebug
-else ifeq ($(COMMANDS_ARGS),phpfpm-drupal)
-	@echo "Generate drupal"
-	@docker build -t koromerzhin/phpfpm:latest-drupal images/phpfpm --target build-phpfpm-drupal-8.0.9
-	@docker image tag koromerzhin/phpfpm:latest-drupal koromerzhin/phpfpm:8.0.9-drupal
-else ifeq ($(COMMANDS_ARGS),phpfpm-drupal-xdebug)
-	@echo "Generate drupal XDEBUG"
-	@docker build -t koromerzhin/phpfpm:latest-drupal-xdebug images/phpfpm --target build-phpfpm-drupal-xdebug-8.0.9
-	@docker image tag koromerzhin/phpfpm:latest-drupal-xdebug koromerzhin/phpfpm:8.0.9-drupal-xdebug
+	@docker build -t koromerzhin/phpfpm:latest-symfony-xdebug images/phpfpm --target build-phpfpm-symfony-xdebug-8.1.2
+	@docker image tag koromerzhin/phpfpm:latest-symfony-xdebug koromerzhin/phpfpm:8.1.2-symfony-xdebug
 else ifeq ($(COMMANDS_ARGS),phpfpm-wordpress)
 	@echo "Generate wordpress"
-	@docker build -t koromerzhin/phpfpm:latest-wordpress images/phpfpm --target build-phpfpm-wordpress-8.0.9
-	@docker image tag koromerzhin/phpfpm:latest-wordpress koromerzhin/phpfpm:8.0.9-wordpress
+	@docker build -t koromerzhin/phpfpm:latest-wordpress images/phpfpm --target build-phpfpm-wordpress-8.1.2
+	@docker image tag koromerzhin/phpfpm:latest-wordpress koromerzhin/phpfpm:8.1.2-wordpress
 else ifeq ($(COMMANDS_ARGS),phpfpm-wordpress-xdebug)
 	@echo "Generate wordpress XDEBUG"
-	@docker build -t koromerzhin/phpfpm:latest-wordpress-xdebug images/phpfpm --target build-phpfpm-wordpress-xdebug-8.0.9
-	@docker image tag koromerzhin/phpfpm:latest-wordpress-xdebug koromerzhin/phpfpm:8.0.9-wordpress-xdebug
+	@docker build -t koromerzhin/phpfpm:latest-wordpress-xdebug images/phpfpm --target build-phpfpm-wordpress-xdebug-8.1.2
+	@docker image tag koromerzhin/phpfpm:latest-wordpress-xdebug koromerzhin/phpfpm:8.1.2-wordpress-xdebug
 else
-	@printf "${MISSING_ARGUMENTS}" docker-generate
+	@printf "${MISSING_ARGUMENTS}" generate
 	$(call array_arguments, \
-		["images"] ="images" \
-		["check"] ="CHECK before" \
-		["all"] ="generate all images" \
-		["python"] ="generate all python images" \
-		["nodejs"] ="generate all nodejs images" \
+		["all"]="generate all images" \
+		["python"]="generate all python images" \
+		["nodejs"]="generate all nodejs images" \
 		["nodejs-nodejs"]="generate nodejs" \
 		["nodejs-express"]="generate express" \
 		["nodejs-socketio"]="generate socketio" \
@@ -109,14 +87,10 @@ else
 		["nodejs-vuejs"]="generate vuejs" \
 		["nodejs-quasar"]="generate quasar" \
 		["phpfpm"]="generate all phpfpm images" \
-		["phpfpm-all"]="generate phpfpm with symfony drupal" \
-		["phpfpm-all-xdebug"]="generate phpfpm with symfony drupal xdebug" \
 		["phpfpm-phpfpm"]="generate phpfpm" \
 		["phpfpm-xdebug"]="generate xdebug" \
 		["phpfpm-symfony"]="generate symfony" \
 		["phpfpm-symfony-xdebug"]="generate symfony-xdebug" \
-		["phpfpm-drupal"]="generate drupal" \
-		["phpfpm-drupal-xdebug"]="generate drupal-xdebug" \
 		["phpfpm-wordpress"]="generate wordpress" \
 		["phpfpm-wordpress-xdebug"]="generate wordpress-xdebug" \
 	)

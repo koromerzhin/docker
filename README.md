@@ -42,9 +42,9 @@ make help
 ## docker generate
 
 ```sh
-make docker-generate nodejs
-make docker-generate python
-make docker-generate phpfpm
+make generate nodejs
+make generate python
+make generate phpfpm
 ```
 
 ## docker push
