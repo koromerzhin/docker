@@ -4,7 +4,7 @@ ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/do
 
 RUN chmod +x /usr/local/bin/install-php-extensions
 
-RUN apt-get update && apt-get install -y wget git fish zip --no-install-recommends
+RUN apt-get update && apt-get install -y wget git fish unzip zip --no-install-recommends
 
 # Add Extension
 RUN install-php-extensions amqp apcu bcmath gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip
