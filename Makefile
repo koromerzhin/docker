@@ -1,7 +1,7 @@
 include make/general/Makefile
 include make/docker/Makefile
 
-COMMANDS_SUPPORTED_COMMANDS := generate linter push generate-phpfpm
+COMMANDS_SUPPORTED_COMMANDS := generate linter push generate-phpfpm generate-python
 COMMANDS_SUPPORTS_MAKE_ARGS := $(findstring $(firstword $(MAKECMDGOALS)), $(COMMANDS_SUPPORTED_COMMANDS))
 ifneq "$(COMMANDS_SUPPORTS_MAKE_ARGS)" ""
   COMMANDS_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
@@ -13,12 +13,7 @@ install: node_modules ## Installation application
 .PHONY: generate
 generate: isdocker ### Generate image
 ifeq ($(COMMANDS_ARGS),all)
-	@make generate python -i
 	@make generate nodejs -i
-	@make generate phpfpm -i
-else ifeq ($(COMMANDS_ARGS),python)
-	@docker build -t koromerzhin/django:latest images/python --target build-django-3.9.0
-	@docker image tag koromerzhin/django:latest koromerzhin/django:3.9.0
 else ifeq ($(COMMANDS_ARGS),nodejs)
 	@make generate nodejs-nodejs -i
 	@make generate nodejs-angular -i
@@ -44,7 +39,6 @@ else
 	@printf "${MISSING_ARGUMENTS}" generate
 	$(call array_arguments, \
 		["all"]="generate all images" \
-		["python"]="generate all python images" \
 		["nodejs"]="generate all nodejs images" \
 		["nodejs-nodejs"]="generate nodejs" \
 		["nodejs-express"]="generate express" \
@@ -81,7 +75,6 @@ else
 		["all"]="all" \
 		["readme"]="linter README.md" \
 		["dockerfile"]="linter docker all " \
-		["python"]="linter docker python" \
 		["nodejs"]="linter docker nodejs" \
 		["phpfpm"]="linter docker phpfpm" \
 	)
@@ -107,6 +100,23 @@ else
 		["nodejs"]="push all nodejs images" \
 		["phpfpm"]="push all phpfpm images" \
 	)
+endif
+
+.PHONY: generate-python
+generate-python: isdocker
+ifeq ($(COMMANDS_ARGS),)
+	@printf "${MISSING_ARGUMENTS}" "generate-python"
+	$(call array_arguments, \
+		["all"]="generate all python images" \
+		["3.9.0"]=" v3.9.0" \
+	)
+else ifeq ($(COMMANDS_ARGS),all)
+	@make generate-python 3.9.0
+else
+	@docker build -t koromerzhin/django:${COMMANDS_ARGS} images/python/${COMMANDS_ARGS} --target build-django-${COMMANDS_ARGS}
+	ifeq ($(COMMANDS_ARGS),3.9.0)
+		@docker image tag koromerzhin/django:${COMMANDS_ARGS} koromerzhin/django:latest
+	endif
 endif
 
 .PHONY: generate-phpfpm

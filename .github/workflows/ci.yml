@@ -42,6 +42,10 @@ jobs:
       - name: 'Generate image'
         run: make generate nodejs
   python:
+      strategy:
+        matrix:
+          python: [3.9.0]
+      name: DJANGO ${{ matrix.python }}
       needs: tests
       runs-on: ubuntu-20.04
       steps:
@@ -50,7 +54,7 @@ jobs:
         with:
           submodules: recursive
       - name: 'Generate image'
-        run: make generate python
+        run: make generate-python ${{ matrix.python }}
   phpfpm:
       strategy:
         matrix:
