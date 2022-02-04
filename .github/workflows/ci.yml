@@ -39,16 +39,6 @@ jobs:
         run: make linter readme
       - name: linter docker
         run: make linter dockerfile
-  nodejs:
-      needs: tests
-      runs-on: ubuntu-20.04
-      steps:
-      - name: cdout
-        uses: actions/checkout@v2
-        with:
-          submodules: recursive
-      - name: 'Generate image'
-        run: make generate nodejs
   django:
       strategy:
         matrix:
@@ -83,3 +73,71 @@ jobs:
       - name: 'Set latest'
         if: matrix.php != '8.1.2'
         run: make latest-phpfpm ${{ matrix.php }}
+  angular:
+      strategy:
+        matrix:
+          angular: [10.2.0]
+      name: PHP ${{ matrix.angular }}
+      needs: tests
+      runs-on: ubuntu-20.04
+      steps:
+      - name: cdout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: 'Generate image'
+        run: make generate-angular ${{ matrix.angular }}
+      - name: 'Set latest'
+        if: matrix.angular != '10.2.0'
+        run: make latest-angular ${{ matrix.angular }}
+  quasar:
+      strategy:
+        matrix:
+          quasar: [1.1.3]
+      name: PHP ${{ matrix.quasar }}
+      needs: tests
+      runs-on: ubuntu-20.04
+      steps:
+      - name: cdout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: 'Generate image'
+        run: make generate-quasar ${{ matrix.quasar }}
+      - name: 'Set latest'
+        if: matrix.quasar != '1.1.3'
+        run: make latest-quasar ${{ matrix.quasar }}
+  remotion:
+      strategy:
+        matrix:
+          remotion: [1.3.0]
+      name: PHP ${{ matrix.remotion }}
+      needs: tests
+      runs-on: ubuntu-20.04
+      steps:
+      - name: cdout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: 'Generate image'
+        run: make generate-remotion ${{ matrix.remotion }}
+      - name: 'Set latest'
+        if: matrix.remotion != '1.3.0'
+        run: make latest-remotion ${{ matrix.remotion }}
+  nodejs:
+      strategy:
+        matrix:
+          nodejs: [15.1.0]
+      name: PHP ${{ matrix.nodejs }}
+      needs: tests
+      runs-on: ubuntu-20.04
+      steps:
+      - name: cdout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: 'Generate image'
+        run: make generate-nodejs ${{ matrix.nodejs }}
+      - name: 'Set latest'
+        if: matrix.nodejs != '15.1.0'
+        run: make latest-nodejs ${{ matrix.nodejs }}
