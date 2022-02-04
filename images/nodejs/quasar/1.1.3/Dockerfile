@@ -35,7 +35,7 @@ ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 
 EXPOSE 8000
 
-CMD ["npm", "run", "server"] 
+CMD ["npm", "run", "server"]
 
 FROM build-nodejs-15.1.0 AS build-angular-10.2.0
 
@@ -44,5 +44,3 @@ RUN npm install -g @angular/cli@10.2.0
 
 # start app
 CMD ng serve --host 0.0.0.0 --disableHostCheck
-
-
