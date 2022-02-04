@@ -8,7 +8,7 @@ ifneq "$(NODEJS_SUPPORTS_MAKE_ARGS)" ""
 endif
 
 DOCKER_NODEJS = $(call array_arguments, \
-		["15.1.0"]=" v15.1.0" \
+		["15.14.0"]=" v15.14.0" \
 	)
 
 .PHONY: generate-nodejs

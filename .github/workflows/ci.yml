@@ -74,7 +74,7 @@ jobs:
   phpfpm:
       strategy:
         matrix:
-          php: [7.4.27, 8.0.15, 8.1.2]
+          php: [5.6.40, 7.4.27, 8.0.15, 8.1.2]
       name: PHP ${{ matrix.php }}
       needs: tests
       runs-on: ubuntu-20.04
@@ -202,7 +202,7 @@ jobs:
   nodejs:
       strategy:
         matrix:
-          nodejs: [15.1.0]
+          nodejs: [15.14.0]
       name: NODEJS ${{ matrix.nodejs }}
       needs: tests
       runs-on: ubuntu-20.04
@@ -214,7 +214,7 @@ jobs:
       - name: 'Generate image'
         run: make generate-nodejs ${{ matrix.nodejs }}
       - name: 'Set latest'
-        if: matrix.nodejs == '15.1.0'
+        if: matrix.nodejs == '15.14.0'
         run: make latest-nodejs ${{ matrix.nodejs }}
       - name: Set up QEMU
         if: github.ref == 'refs/heads/main'
