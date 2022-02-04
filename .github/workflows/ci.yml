@@ -70,7 +70,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Push Docker
         if: github.ref == 'refs/heads/main'
-        run: make push angular
+        run: make push django
   phpfpm:
       strategy:
         matrix:
