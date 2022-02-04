@@ -23,10 +23,6 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /var/www
 
-ADD composer.json /var/www
-
-RUN composer install
-
 EXPOSE 9000
 
 FROM build-phpfpm-7.4.12 AS build-phpfpm-xdebug-7.4.12
