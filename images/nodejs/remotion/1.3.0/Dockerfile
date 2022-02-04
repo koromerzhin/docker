@@ -1,5 +1,5 @@
 # base image
-FROM node:15.1.0 AS build-nodejs-15.1.0
+FROM node:15.14.0 AS build-nodejs-15.14.0
 
 # set working directory
 WORKDIR /app
@@ -11,7 +11,7 @@ RUN npm install
 # start app
 CMD npm run start
 
-FROM build-nodejs-15.1.0 AS build-remotion-1.3.0
+FROM build-nodejs-15.14.0 AS build-remotion-1.3.0
 
 # Installs latest Chromium (85) package.
 RUN apt-get update && apt-get install -y \
