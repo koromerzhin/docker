@@ -1,7 +1,7 @@
 include make/general/Makefile
 include make/docker/Makefile
 
-COMMANDS_SUPPORTED_COMMANDS := generate linter push
+COMMANDS_SUPPORTED_COMMANDS := generate linter push generate-phpfpm
 COMMANDS_SUPPORTS_MAKE_ARGS := $(findstring $(firstword $(MAKECMDGOALS)), $(COMMANDS_SUPPORTED_COMMANDS))
 ifneq "$(COMMANDS_SUPPORTS_MAKE_ARGS)" ""
   COMMANDS_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
@@ -40,37 +40,6 @@ else ifeq ($(COMMANDS_ARGS),nodejs-quasar)
 	@echo "Generate Quarsar"
 	@docker build -t koromerzhin/nodejs:latest-quasar images/nodejs --target build-quasar-1.1.3
 	@docker image tag koromerzhin/nodejs:latest-quasar koromerzhin/nodejs:1.1.3-quasar
-else ifeq ($(COMMANDS_ARGS),phpfpm)
-	@make generate phpfpm-phpfpm -i
-	@make generate phpfpm-xdebug -i
-	@make generate phpfpm-symfony -i
-	@make generate phpfpm-symfony-xdebug -i
-	@make generate phpfpm-wordpress -i
-	@make generate phpfpm-wordpress-xdebug -i
-else ifeq ($(COMMANDS_ARGS),phpfpm-phpfpm)
-	@echo "Generate PHPFPM"
-	@docker build -t koromerzhin/phpfpm:latest images/phpfpm --target build-phpfpm-8.1.2
-	@docker image tag koromerzhin/phpfpm:latest koromerzhin/phpfpm:8.1.2
-else ifeq ($(COMMANDS_ARGS),phpfpm-xdebug)
-	@echo "Generate XDEBUG"
-	@docker build -t koromerzhin/phpfpm:latest-xdebug images/phpfpm --target build-phpfpm-xdebug-8.1.2
-	@docker image tag koromerzhin/phpfpm:latest-xdebug koromerzhin/phpfpm:8.1.2-xdebug
-else ifeq ($(COMMANDS_ARGS),phpfpm-symfony)
-	@echo "Generate Symfony"
-	@docker build -t koromerzhin/phpfpm:latest-symfony images/phpfpm --target build-phpfpm-symfony-8.1.2
-	@docker image tag koromerzhin/phpfpm:latest-symfony koromerzhin/phpfpm:8.1.2-symfony
-else ifeq ($(COMMANDS_ARGS),phpfpm-symfony-xdebug)
-	@echo "Generate Symfony XDEBUG"
-	@docker build -t koromerzhin/phpfpm:latest-symfony-xdebug images/phpfpm --target build-phpfpm-symfony-xdebug-8.1.2
-	@docker image tag koromerzhin/phpfpm:latest-symfony-xdebug koromerzhin/phpfpm:8.1.2-symfony-xdebug
-else ifeq ($(COMMANDS_ARGS),phpfpm-wordpress)
-	@echo "Generate wordpress"
-	@docker build -t koromerzhin/phpfpm:latest-wordpress images/phpfpm --target build-phpfpm-wordpress-8.1.2
-	@docker image tag koromerzhin/phpfpm:latest-wordpress koromerzhin/phpfpm:8.1.2-wordpress
-else ifeq ($(COMMANDS_ARGS),phpfpm-wordpress-xdebug)
-	@echo "Generate wordpress XDEBUG"
-	@docker build -t koromerzhin/phpfpm:latest-wordpress-xdebug images/phpfpm --target build-phpfpm-wordpress-xdebug-8.1.2
-	@docker image tag koromerzhin/phpfpm:latest-wordpress-xdebug koromerzhin/phpfpm:8.1.2-wordpress-xdebug
 else
 	@printf "${MISSING_ARGUMENTS}" generate
 	$(call array_arguments, \
@@ -86,13 +55,6 @@ else
 		["nodejs-sveltejs"]="generate sveltejs" \
 		["nodejs-vuejs"]="generate vuejs" \
 		["nodejs-quasar"]="generate quasar" \
-		["phpfpm"]="generate all phpfpm images" \
-		["phpfpm-phpfpm"]="generate phpfpm" \
-		["phpfpm-xdebug"]="generate xdebug" \
-		["phpfpm-symfony"]="generate symfony" \
-		["phpfpm-symfony-xdebug"]="generate symfony-xdebug" \
-		["phpfpm-wordpress"]="generate wordpress" \
-		["phpfpm-wordpress-xdebug"]="generate wordpress-xdebug" \
 	)
 endif
 
@@ -145,4 +107,27 @@ else
 		["nodejs"]="push all nodejs images" \
 		["phpfpm"]="push all phpfpm images" \
 	)
+endif
+
+.PHONY: generate-phpfpm
+generate-phpfpm: isdocker
+ifeq ($(COMMANDS_ARGS),)
+	@printf "${MISSING_ARGUMENTS}" "generate-phpfpm"
+	$(call array_arguments, \
+		["all"]="generate all phpfpm images" \
+		["7.4.12"]=" v7.4.12" \
+		["8.0.15"]=" v8.0.15" \
+		["8.1.2"]=" v8.1.2" \
+	)
+else ifeq ($(COMMANDS_ARGS),all)
+	@make generate-phpfpm 7.4.12
+	@make generate-phpfpm 8.0.15
+	@make generate-phpfpm 8.1.2
+else
+	@docker build -t koromerzhin/phpfpm:${COMMANDS_ARGS} images/phpfpm/${COMMANDS_ARGS} --target build-phpfpm-${COMMANDS_ARGS}
+	@docker build -t koromerzhin/phpfpm:${COMMANDS_ARGS}-xdebug images/phpfpm/${COMMANDS_ARGS} --target build-phpfpm-xdebug-${COMMANDS_ARGS}
+	ifeq ($(COMMANDS_ARGS),8.1.2)
+		@docker image tag koromerzhin/phpfpm:${COMMANDS_ARGS} koromerzhin/phpfpm:latest
+		@docker image tag koromerzhin/phpfpm:${COMMANDS_ARGS}-xdebug koromerzhin/phpfpm:latest-xdebug
+	endif
 endif

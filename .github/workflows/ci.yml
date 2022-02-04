@@ -68,6 +68,10 @@ jobs:
       - name: 'Generate image'
         run: make generate python
   phpfpm:
+      strategy:
+        matrix:
+          php: [7.4.12, 8.0.15, 8.1.2]
+      name: PHP ${{ matrix.php }}
       needs: tests
       runs-on: ubuntu-20.04
       steps:
@@ -76,4 +80,4 @@ jobs:
         with:
           name: tests
       - name: 'Generate image'
-        run: make generate phpfpm
+        run: make generate-phpfpm ${{ matrix.php }}
