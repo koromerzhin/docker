@@ -15,7 +15,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ 
 # Wordpress
 RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && chmod +x wp-cli.phar && mv wp-cli.phar /usr/local/bin/wp
 # Symfony
-RUN wget https://github.com/symfony-cli/symfony-cli/releases/download/v5.2.2/symfony-cli_5.2.2_amd64.deb && dpkg -i symfony-cli_5.2.2_amd64.deb && rm symfony-cli_5.2.2_amd64.deb
+RUN wget https://github.com/symfony-cli/symfony-cli/releases/download/v5.3.2/symfony-cli_5.3.2_amd64.deb && dpkg -i symfony-cli_5.3.2_amd64.deb && rm symfony-cli_5.3.2_amd64.deb
 
 RUN apt-get update && apt-get install -y \
     graphviz \
