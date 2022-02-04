@@ -1,13 +1,13 @@
 include make/general/Makefile
 include make/docker/Makefile
 
-COMMANDS_SUPPORTED_COMMANDS := generate linter push generate-phpfpm generate-django
+COMMANDS_SUPPORTED_COMMANDS := generate linter push latest-phpfpm generate-phpfpm generate-django latest-django
+
 COMMANDS_SUPPORTS_MAKE_ARGS := $(findstring $(firstword $(MAKECMDGOALS)), $(COMMANDS_SUPPORTED_COMMANDS))
 ifneq "$(COMMANDS_SUPPORTS_MAKE_ARGS)" ""
   COMMANDS_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
   $(eval $(COMMANDS_ARGS):;@:)
 endif
-
 install: node_modules ## Installation application
 
 .PHONY: generate
@@ -119,6 +119,17 @@ else
 	endif
 endif
 
+.PHONY: latest-django
+latest-django: isdocker
+ifeq ($(COMMANDS_ARGS),)
+	@printf "${MISSING_ARGUMENTS}" "latest-django"
+	$(call array_arguments, \
+		["3.9.0"]=" v3.9.0" \
+	)
+else
+	@docker image tag koromerzhin/django:${COMMANDS_ARGS} koromerzhin/django:latest
+endif
+
 .PHONY: generate-phpfpm
 generate-phpfpm: isdocker
 ifeq ($(COMMANDS_ARGS),)
@@ -136,8 +147,17 @@ else ifeq ($(COMMANDS_ARGS),all)
 else
 	@docker build -t koromerzhin/phpfpm:${COMMANDS_ARGS} images/phpfpm/${COMMANDS_ARGS} --target build-phpfpm-${COMMANDS_ARGS}
 	@docker build -t koromerzhin/phpfpm:${COMMANDS_ARGS}-xdebug images/phpfpm/${COMMANDS_ARGS} --target build-phpfpm-xdebug-${COMMANDS_ARGS}
-	ifeq ($(COMMANDS_ARGS),"8.1.2")
-		@docker image tag koromerzhin/phpfpm:${COMMANDS_ARGS} koromerzhin/phpfpm:latest
-		@docker image tag koromerzhin/phpfpm:${COMMANDS_ARGS}-xdebug koromerzhin/phpfpm:latest-xdebug
-	endif
+endif
+
+latest-phpfpm: isdocker
+ifeq ($(COMMANDS_ARGS),)
+	@printf "${MISSING_ARGUMENTS}" "latest-phpfpm"
+	$(call array_arguments, \
+		["7.4.12"]=" v7.4.12" \
+		["8.0.15"]=" v8.0.15" \
+		["8.1.2"]=" v8.1.2" \
+	)
+else
+	@docker image tag koromerzhin/phpfpm:${COMMANDS_ARGS} koromerzhin/phpfpm:latest
+	@docker image tag koromerzhin/phpfpm:${COMMANDS_ARGS}-xdebug koromerzhin/phpfpm:latest-xdebug
 endif

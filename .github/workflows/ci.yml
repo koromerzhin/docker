@@ -52,8 +52,8 @@ jobs:
   django:
       strategy:
         matrix:
-          python: [3.9.0]
-      name: DJANGO ${{ matrix.python }}
+          django: [3.9.0]
+      name: DJANGO ${{ matrix.django }}
       needs: tests
       runs-on: ubuntu-20.04
       steps:
@@ -62,7 +62,10 @@ jobs:
         with:
           submodules: recursive
       - name: 'Generate image'
-        run: make generate-django ${{ matrix.python }}
+        run: make generate-django ${{ matrix.django }}
+      - name: 'Set latest'
+        if: matrix.django != "8.1.2"
+        run: make latest-django ${{ matrix.django }}
   phpfpm:
       strategy:
         matrix:
@@ -77,3 +80,6 @@ jobs:
           submodules: recursive
       - name: 'Generate image'
         run: make generate-phpfpm ${{ matrix.php }}
+      - name: 'Set latest'
+        if: matrix.php != "8.1.2"
+        run: make latest-phpfpm ${{ matrix.php }}
