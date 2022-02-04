@@ -9,6 +9,7 @@ endif
 
 DOCKER_QUASAR = $(call array_arguments, \
 		["1.1.3"]=" v1.1.3" \
+		["1.2.2"]=" v1.2.2" \
 	)
 
 .PHONY: generate-quasar

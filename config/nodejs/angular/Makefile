@@ -8,7 +8,10 @@ ifneq "$(ANGULAR_SUPPORTS_MAKE_ARGS)" ""
 endif
 
 DOCKER_ANGULAR = $(call array_arguments, \
-		["10.2.0"]=" v10.2.0" \
+		["10.2.4"]=" v10.2.4" \
+		["11.2.18"]=" v11.2.18" \
+		["12.2.16"]=" v12.2.16" \
+		["13.2.2"]=" v13.2.2" \
 	)
 
 .PHONY: generate-angular
