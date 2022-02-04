@@ -11,10 +11,10 @@ RUN npm install
 # start app
 CMD npm run start
 
-FROM build-nodejs-15.14.0 AS build-angular-13.2.2
+FROM build-nodejs-15.14.0 AS build-angular-12.2.16
 
 # install and cache app dependencies
-RUN npm install -g @angular/cli@13.2.2
+RUN npm install -g @angular/cli@12.2.16
 
 # start app
 CMD ng serve --host 0.0.0.0 --disableHostCheck

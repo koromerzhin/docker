@@ -11,10 +11,10 @@ RUN npm install
 # start app
 CMD npm run start
 
-FROM build-nodejs-15.14.0 AS build-quasar-1.1.3
+FROM build-nodejs-15.14.0 AS build-quasar-1.2.2
 
 # install and cache app dependencies
-RUN npm install -g @quasar/cli@1.1.3
+RUN npm install -g @quasar/cli@1.2.2
 
 # start app
 CMD quasar dev
