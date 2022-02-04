@@ -26,5 +26,5 @@ ifeq ($(COMMANDS_ARGS),)
 	@printf "${MISSING_ARGUMENTS}" "latest-nodejs"
 	$(DOCKER_NODEJS)
 else
-	@docker image tag koromerzhin/nodejs:${COMMANDS_ARGS}-nodejs koromerzhin/nodejs:latest
+	@docker image tag koromerzhin/nodejs:${COMMANDS_ARGS} koromerzhin/nodejs:latest
 endif

@@ -26,5 +26,5 @@ ifeq ($(COMMANDS_ARGS),)
 	@printf "${MISSING_ARGUMENTS}" "latest-remotion"
 	$(DOCKER_REMOTION)
 else
-	@docker image tag koromerzhin/nodejs:${COMMANDS_ARGS}-remotion koromerzhin/remotion:latest
+	@docker image tag koromerzhin/remotion:${COMMANDS_ARGS} koromerzhin/remotion:latest
 endif

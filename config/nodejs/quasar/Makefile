@@ -26,5 +26,5 @@ ifeq ($(COMMANDS_ARGS),)
 	@printf "${MISSING_ARGUMENTS}" "latest-quasar"
 	$(DOCKER_QUASAR)
 else
-	@docker image tag koromerzhin/nodejs:${COMMANDS_ARGS}-quasar koromerzhin/quasar:latest
+	@docker image tag koromerzhin/quasar:${COMMANDS_ARGS} koromerzhin/quasar:latest
 endif

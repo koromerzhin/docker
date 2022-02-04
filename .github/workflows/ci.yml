@@ -56,6 +56,11 @@ jobs:
       - name: 'Set latest'
         if: matrix.django == '3.9.0'
         run: make latest-django ${{ matrix.django }}
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: user/app:latest
   phpfpm:
       strategy:
         matrix:

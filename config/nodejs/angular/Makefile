@@ -26,5 +26,5 @@ ifeq ($(COMMANDS_ARGS),)
 	@printf "${MISSING_ARGUMENTS}" "latest-angular"
 	$(DOCKER_ANGULAR)
 else
-	@docker image tag koromerzhin/nodejs:${COMMANDS_ARGS}-angular koromerzhin/angular:latest
+	@docker image tag koromerzhin/angular:${COMMANDS_ARGS} koromerzhin/angular:latest
 endif
