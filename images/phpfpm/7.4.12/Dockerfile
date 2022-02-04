@@ -1,4 +1,4 @@
-FROM php:7.4.12-fpm AS build-phpfpm-7.4.12
+FROM php:7.4.27-fpm AS build-phpfpm-7.4.12
 
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
