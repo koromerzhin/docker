@@ -20,7 +20,7 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /var/www
 
-ADD ../composer.json /var/www
+ADD composer.json /var/www
 
 RUN composer install
 
