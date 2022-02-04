@@ -64,7 +64,7 @@ jobs:
       - name: 'Generate image'
         run: make generate-django ${{ matrix.django }}
       - name: 'Set latest'
-        if: matrix.django != "8.1.2"
+        if: matrix.django != '3.9.0'
         run: make latest-django ${{ matrix.django }}
   phpfpm:
       strategy:
@@ -81,5 +81,5 @@ jobs:
       - name: 'Generate image'
         run: make generate-phpfpm ${{ matrix.php }}
       - name: 'Set latest'
-        if: matrix.php != "8.1.2"
+        if: matrix.php != '8.1.2'
         run: make latest-phpfpm ${{ matrix.php }}
