@@ -1,7 +1,7 @@
 include make/general/Makefile
 include make/docker/Makefile
 
-COMMANDS_SUPPORTED_COMMANDS := generate linter push generate-phpfpm generate-python
+COMMANDS_SUPPORTED_COMMANDS := generate linter push generate-phpfpm generate-django
 COMMANDS_SUPPORTS_MAKE_ARGS := $(findstring $(firstword $(MAKECMDGOALS)), $(COMMANDS_SUPPORTED_COMMANDS))
 ifneq "$(COMMANDS_SUPPORTS_MAKE_ARGS)" ""
   COMMANDS_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
@@ -102,19 +102,19 @@ else
 	)
 endif
 
-.PHONY: generate-python
-generate-python: isdocker
+.PHONY: generate-django
+generate-django: isdocker
 ifeq ($(COMMANDS_ARGS),)
-	@printf "${MISSING_ARGUMENTS}" "generate-python"
+	@printf "${MISSING_ARGUMENTS}" "generate-django"
 	$(call array_arguments, \
-		["all"]="generate all python images" \
+		["all"]="generate all django images" \
 		["3.9.0"]=" v3.9.0" \
 	)
 else ifeq ($(COMMANDS_ARGS),all)
-	@make generate-python 3.9.0
+	@make generate-django 3.9.0
 else
-	@docker build -t koromerzhin/django:${COMMANDS_ARGS} images/python/${COMMANDS_ARGS} --target build-django-${COMMANDS_ARGS}
-	ifeq ($(COMMANDS_ARGS),3.9.0)
+	@docker build -t koromerzhin/django:${COMMANDS_ARGS} images/django/${COMMANDS_ARGS} --target build-django-${COMMANDS_ARGS}
+	ifeq ($(COMMANDS_ARGS),"3.9.0")
 		@docker image tag koromerzhin/django:${COMMANDS_ARGS} koromerzhin/django:latest
 	endif
 endif
@@ -136,7 +136,7 @@ else ifeq ($(COMMANDS_ARGS),all)
 else
 	@docker build -t koromerzhin/phpfpm:${COMMANDS_ARGS} images/phpfpm/${COMMANDS_ARGS} --target build-phpfpm-${COMMANDS_ARGS}
 	@docker build -t koromerzhin/phpfpm:${COMMANDS_ARGS}-xdebug images/phpfpm/${COMMANDS_ARGS} --target build-phpfpm-xdebug-${COMMANDS_ARGS}
-	ifeq ($(COMMANDS_ARGS),8.1.2)
+	ifeq ($(COMMANDS_ARGS),"8.1.2")
 		@docker image tag koromerzhin/phpfpm:${COMMANDS_ARGS} koromerzhin/phpfpm:latest
 		@docker image tag koromerzhin/phpfpm:${COMMANDS_ARGS}-xdebug koromerzhin/phpfpm:latest-xdebug
 	endif

@@ -41,7 +41,7 @@ jobs:
           submodules: recursive
       - name: 'Generate image'
         run: make generate nodejs
-  python:
+  django:
       strategy:
         matrix:
           python: [3.9.0]
@@ -54,7 +54,7 @@ jobs:
         with:
           submodules: recursive
       - name: 'Generate image'
-        run: make generate-python ${{ matrix.python }}
+        run: make generate-django ${{ matrix.python }}
   phpfpm:
       strategy:
         matrix:
