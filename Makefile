@@ -46,22 +46,15 @@ endif
 
 .PHONY: push
 push: isdocker ### push image
-ifeq ($(COMMANDS_ARGS),all)
-	@make push django
-	@make push nodejs
-	@make push phpfpm
-else ifeq ($(COMMANDS_ARGS),django)
-	@docker push koromerzhin/django -a
-else ifeq ($(COMMANDS_ARGS),nodejs)
-	@docker push koromerzhin/nodejs -a
-else ifeq ($(COMMANDS_ARGS),phpfpm)
-	@docker push koromerzhin/phpfpm -a
-else
-	@printf "${MISSING_ARGUMENTS}" "push"
+ifeq ($(COMMANDS_ARGS),)
 	$(call array_arguments, \
-		["all"]="push all images" \
+		["angular"]="push all angular images" \
 		["django"]="push all django images" \
 		["nodejs"]="push all nodejs images" \
 		["phpfpm"]="push all phpfpm images" \
+		["quasar"]="push all quasar images" \
+		["remotion"]="push all remotion images" \
 	)
+else
+	@docker push koromerzhin/${COMMANDS_ARGS} -a
 endif
