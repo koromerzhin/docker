@@ -12,7 +12,7 @@ DOCKER_REMOTION = $(call array_arguments, \
 	)
 
 .PHONY: generate-remotion
-generate-remotion: isdocker
+generate-remotion: isdocker ## generate remotion
 ifeq ($(COMMANDS_ARGS),)
 	@printf "${MISSING_ARGUMENTS}" "generate-remotion"
 	$(DOCKER_REMOTION)
@@ -21,7 +21,7 @@ else
 endif
 
 .PHONY: latest-remotion
-latest-remotion: isdocker
+latest-remotion: isdocker ## latest remotion
 ifeq ($(COMMANDS_ARGS),)
 	@printf "${MISSING_ARGUMENTS}" "latest-remotion"
 	$(DOCKER_REMOTION)

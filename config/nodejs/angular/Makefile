@@ -12,7 +12,7 @@ DOCKER_ANGULAR = $(call array_arguments, \
 	)
 
 .PHONY: generate-angular
-generate-angular: isdocker
+generate-angular: isdocker ## generate angular
 ifeq ($(COMMANDS_ARGS),)
 	@printf "${MISSING_ARGUMENTS}" "generate-angular"
 	$(DOCKER_ANGULAR)
@@ -21,7 +21,7 @@ else
 endif
 
 .PHONY: latest-angular
-latest-angular: isdocker
+latest-angular: isdocker ## latest angular
 ifeq ($(COMMANDS_ARGS),)
 	@printf "${MISSING_ARGUMENTS}" "latest-angular"
 	$(DOCKER_ANGULAR)

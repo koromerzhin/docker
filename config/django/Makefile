@@ -13,7 +13,7 @@ DOCKER_DJANGO = $(call array_arguments, \
 	)
 
 .PHONY: generate-django
-generate-django: isdocker
+generate-django: isdocker ## Generate django
 ifeq ($(COMMANDS_ARGS),)
 	@printf "${MISSING_ARGUMENTS}" "generate-django"
 	$(DOCKER_DJANGO)
@@ -24,7 +24,7 @@ else
 endif
 
 .PHONY: latest-django
-latest-django: isdocker
+latest-django: isdocker ## latest django
 ifeq ($(COMMANDS_ARGS),)
 	@printf "${MISSING_ARGUMENTS}" "latest-django"
 	$(DOCKER_DJANGO)

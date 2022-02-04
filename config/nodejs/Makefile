@@ -12,7 +12,7 @@ DOCKER_NODEJS = $(call array_arguments, \
 	)
 
 .PHONY: generate-nodejs
-generate-nodejs: isdocker
+generate-nodejs: isdocker ## generate nodejs
 ifeq ($(COMMANDS_ARGS),)
 	@printf "${MISSING_ARGUMENTS}" "generate-nodejs"
 	$(DOCKER_NODEJS)
@@ -21,7 +21,7 @@ else
 endif
 
 .PHONY: latest-nodejs
-latest-nodejs: isdocker
+latest-nodejs: isdocker ## latest nodejs
 ifeq ($(COMMANDS_ARGS),)
 	@printf "${MISSING_ARGUMENTS}" "latest-nodejs"
 	$(DOCKER_NODEJS)

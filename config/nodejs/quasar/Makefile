@@ -12,7 +12,7 @@ DOCKER_QUASAR = $(call array_arguments, \
 	)
 
 .PHONY: generate-quasar
-generate-quasar: isdocker
+generate-quasar: isdocker ## generate quasar
 ifeq ($(COMMANDS_ARGS),)
 	@printf "${MISSING_ARGUMENTS}" "generate-quasar"
 	$(DOCKER_QUASAR)
@@ -21,7 +21,7 @@ else
 endif
 
 .PHONY: latest-quasar
-latest-quasar: isdocker
+latest-quasar: isdocker ## latest quasar
 ifeq ($(COMMANDS_ARGS),)
 	@printf "${MISSING_ARGUMENTS}" "latest-quasar"
 	$(DOCKER_QUASAR)

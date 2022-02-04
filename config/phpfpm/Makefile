@@ -14,7 +14,7 @@ DOCKER_PHPFPM = $(call array_arguments, \
 	)
 
 .PHONY: generate-phpfpm
-generate-phpfpm: isdocker
+generate-phpfpm: isdocker ## generate phpfpm
 ifeq ($(COMMANDS_ARGS),)
 	@printf "${MISSING_ARGUMENTS}" "generate-phpfpm"
 	$(DOCKER_PHPFPM)
@@ -24,7 +24,7 @@ else
 endif
 
 .PHONY: latest-phpfpm
-latest-phpfpm: isdocker
+latest-phpfpm: isdocker ## latest phpfpm
 ifeq ($(COMMANDS_ARGS),)
 	@printf "${MISSING_ARGUMENTS}" "latest-phpfpm"
 	$(DOCKER_PHPFPM)
