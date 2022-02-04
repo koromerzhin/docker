@@ -8,6 +8,7 @@ ifneq "$(PHP_SUPPORTS_MAKE_ARGS)" ""
 endif
 
 DOCKER_PHPFPM = $(call array_arguments, \
+		["5.5.38"]=" v5.5.38" \
 		["5.6.40"]=" v5.6.40" \
 		["7.4.27"]=" v7.4.27" \
 		["8.0.15"]=" v8.0.15" \
