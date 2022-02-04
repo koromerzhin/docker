@@ -27,6 +27,14 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: recursive
+      - name: Cache npm packages
+        id: npm-cache
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
       - name: linter markdown
         run: make linter readme
       - name: linter docker
