@@ -7,7 +7,7 @@ RUN chmod +x /usr/local/bin/install-php-extensions
 RUN apt-get update && apt-get install -y wget git fish unzip zip --no-install-recommends
 
 # Add Extension
-RUN install-php-extensions @composer amqp apcu bcmath blackfire gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip
+RUN install-php-extensions @composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip
 
 # Wordpress
 RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && chmod +x wp-cli.phar && mv wp-cli.phar /usr/local/bin/wp
