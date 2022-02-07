@@ -170,7 +170,7 @@ jobs:
   nodejs:
       strategy:
         matrix:
-          nodejs: [15.14.0]
+          nodejs: [4.9.1, 5.12.0, 6.17.1, 7.10.1, 8.17.0, 9.11.2, 10.24.1, 11.15.0, 12.22.10, 13.14.0, 14.19.0, 15.14.0, 16.13.2, 17.4.0]
       name: NODEJS ${{ matrix.nodejs }}
       needs: tests
       runs-on: ubuntu-20.04
@@ -182,7 +182,7 @@ jobs:
       - name: 'Generate image'
         run: make generate-nodejs ${{ matrix.nodejs }}
       - name: 'Set latest'
-        if: matrix.nodejs == '15.14.0'
+        if: matrix.nodejs == '17.4.0'
         run: make latest-nodejs ${{ matrix.nodejs }}
       - name: Set up QEMU
         if: github.ref == 'refs/heads/main'
