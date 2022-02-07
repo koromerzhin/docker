@@ -9,7 +9,9 @@ endif
 
 DOCKER_DJANGO = $(call array_arguments, \
 		["all"]="generate all django images" \
-		["3.9.0"]=" v3.9.0" \
+		["2.2.27"]=" v2.2.27" \
+		["3.2.12"]=" v3.2.12" \
+		["4.0.2"]=" v4.0.2" \
 	)
 
 .PHONY: generate-django

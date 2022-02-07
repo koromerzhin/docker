@@ -42,7 +42,7 @@ jobs:
   django:
       strategy:
         matrix:
-          django: [3.9.0]
+          django: [2.2.27, 3.2.12, 4.0.2]
       name: DJANGO ${{ matrix.django }}
       needs: tests
       runs-on: ubuntu-20.04
@@ -54,7 +54,7 @@ jobs:
       - name: 'Generate image'
         run: make generate-django ${{ matrix.django }}
       - name: 'Set latest'
-        if: matrix.django == '3.9.0'
+        if: matrix.django == '4.0.2'
         run: make latest-django ${{ matrix.django }}
       - name: Set up QEMU
         if: github.ref == 'refs/heads/main'

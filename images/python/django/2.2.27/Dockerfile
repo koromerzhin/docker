@@ -1,9 +1,8 @@
-FROM python:3.9.0 as build-django-3.9.0
-
+FROM python:3.9.0 as build-django-2.2.27
 WORKDIR /app
 
 RUN python -m pip install --upgrade pip
 
-RUN python -m pip install Django
+RUN python -m pip install Django==2.2.27
 
 CMD python manage.py runserver 0.0.0.0:8080
