@@ -5,7 +5,6 @@ include config/django/Makefile
 include config/nodejs/Makefile
 include config/nodejs/angular/Makefile
 include config/nodejs/quasar/Makefile
-include config/nodejs/remotion/Makefile
 
 COMMANDS_SUPPORTED_COMMANDS := linter push
 
@@ -53,7 +52,6 @@ ifeq ($(COMMANDS_ARGS),)
 		["nodejs"]="push all nodejs images" \
 		["phpfpm"]="push all phpfpm images" \
 		["quasar"]="push all quasar images" \
-		["remotion"]="push all remotion images" \
 	)
 else
 	@docker push koromerzhin/${COMMANDS_ARGS} -a
