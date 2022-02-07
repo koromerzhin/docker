@@ -1,5 +1,5 @@
 # base image
-FROM node:7.10.1 AS build-nodejs-7.10.1
+FROM node:17.4.0 AS build-nodejs-7.10.1
 
 # set working directory
 WORKDIR /app
