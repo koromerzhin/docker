@@ -11,7 +11,7 @@ DOCKER_PHPFPM = $(call array_arguments, \
 		["5.6.40"]=" v5.6.40" \
 		["7.4.28"]=" v7.4.28" \
 		["8.0.15"]=" v8.0.15" \
-		["8.1.3"]=" v8.1.3" \
+		["8.1.4"]=" v8.1.4" \
 	)
 
 .PHONY: generate-phpfpm
