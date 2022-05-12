@@ -1,4 +1,4 @@
-FROM python:3.10.2 as build-django-3.2.12
+FROM python:3.2.12 as build-django-3.2.12
 
 WORKDIR /app
 
@@ -10,6 +10,6 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 RUN python -m pip install --upgrade pip
 
-RUN pip install Django==3.2.12
+RUN pip install Django
 
 CMD python manage.py runserver 0.0.0.0:8080
