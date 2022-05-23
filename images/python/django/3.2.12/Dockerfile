@@ -10,6 +10,6 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 RUN python -m pip install --upgrade pip
 
-RUN pip install Django
+RUN pip install Django==3.2.12
 
 CMD python manage.py runserver 0.0.0.0:8080
