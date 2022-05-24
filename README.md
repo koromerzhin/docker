@@ -23,6 +23,14 @@ Software:
 - docker
 - npm
 
+## Download
+
+```sh
+git clone git@github.com:koromerzhin/docker.git docker
+cd docker
+git submodule update --init
+```
+
 ## Install
 
 ```sh
