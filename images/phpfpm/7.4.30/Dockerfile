@@ -1,4 +1,4 @@
-FROM php:8.1.9-fpm AS build-phpfpm-7.4.30
+FROM php:7.4.30-fpm AS build-phpfpm-7.4.30
 
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
