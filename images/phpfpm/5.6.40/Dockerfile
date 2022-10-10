@@ -1,5 +1,5 @@
 
-FROM php:5.6.40-fpm AS build-phpfpm-5.6.40
+FROM php:8.1.11-fpm AS build-phpfpm-5.6.40
 
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
