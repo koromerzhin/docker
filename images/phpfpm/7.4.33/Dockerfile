@@ -1,4 +1,4 @@
-FROM php:7.4.32-fpm AS build-phpfpm-7.4.32
+FROM php:7.4.33-fpm AS build-phpfpm-7.4.33
 
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
@@ -22,6 +22,6 @@ WORKDIR /var/www
 
 EXPOSE 9000
 
-FROM build-phpfpm-7.4.32 AS build-phpfpm-xdebug-7.4.32
+FROM build-phpfpm-7.4.33 AS build-phpfpm-xdebug-7.4.33
 
 RUN install-php-extensions xdebug
