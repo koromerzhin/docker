@@ -12,7 +12,7 @@ RUN install-php-extensions @composer amqp apcu bcmath blackfire exif gd imagick 
 # Wordpress
 RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && chmod +x wp-cli.phar && mv wp-cli.phar /usr/local/bin/wp
 # Symfony
-RUN wget https://github.com/symfony-cli/symfony-cli/releases/download/v5.4.19/symfony-cli_5.4.19_amd64.deb && dpkg -i symfony-cli_5.4.19_amd64.deb && rm symfony-cli_5.4.19_amd64.deb
+RUN wget https://github.com/symfony-cli/symfony-cli/releases/download/v5.4.13/symfony-cli_5.4.13_amd64.deb && dpkg -i symfony-cli_5.4.13_amd64.deb && rm symfony-cli_5.4.13_amd64.deb
 
 RUN apt-get update && apt-get install -y \
     graphviz \
