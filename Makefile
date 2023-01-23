@@ -1,6 +1,7 @@
 include make/general/Makefile
 include make/docker/Makefile
 include config/phpfpm/Makefile
+include config/php-apache/Makefile
 include config/django/Makefile
 
 COMMANDS_SUPPORTED_COMMANDS := linter push
@@ -23,9 +24,12 @@ else ifeq ($(COMMANDS_ARGS),django)
 	@npm run linter-docker $$(find images/django -name "Dockerfile")
 else ifeq ($(COMMANDS_ARGS),phpfpm)
 	@npm run linter-docker $$(find images/phpfpm -name "Dockerfile")
+else ifeq ($(COMMANDS_ARGS),php-apache)
+	@npm run linter-docker $$(find images/php-apache -name "Dockerfile")
 else ifeq ($(COMMANDS_ARGS),dockerfile)
 	@make linter django -i
 	@make linter phpfpm -i
+	@make linter php-apache -i
 else
 	@printf "${MISSING_ARGUMENTS}" "linter"
 	$(call array_arguments, \
@@ -33,6 +37,7 @@ else
 		["readme"]="linter README.md" \
 		["dockerfile"]="linter docker all " \
 		["phpfpm"]="linter docker phpfpm" \
+		["php-apache"]="linter docker php-apache" \
 	)
 endif
 
@@ -43,6 +48,7 @@ ifeq ($(COMMANDS_ARGS),)
 		["angular"]="push all angular images" \
 		["django"]="push all django images" \
 		["phpfpm"]="push all phpfpm images" \
+		["php-apache"]="push all php-apache images" \
 		["quasar"]="push all quasar images" \
 	)
 else
