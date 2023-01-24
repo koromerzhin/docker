@@ -3,12 +3,7 @@
   "version": "1.0.0",
   "description": "images docker",
   "scripts": {
-    "contributors": "all-contributors",
-    "linter-docker": "dockerfilelint",
-    "linter-markdown": "markdownlint",
-    "readme": "readme",
-    "licenses": "license-checker",
-    "changelog": "changelog"
+    "lint:markdown": "markdownlint README.md"
   },
   "repository": {
     "type": "git",
@@ -23,6 +18,6 @@
   "homepage": "https://github.com/koromerzhin/docker#readme",
   "dependencies": {
     "dockerfilelint": "1.8.0",
-    "koromerzhin-dependencies": "1.3.4"
+    "korojscommands": "^1.2.11"
   }
 }
