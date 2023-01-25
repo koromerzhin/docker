@@ -14,10 +14,11 @@ jobs:
           submodules: recursive
       - name: Install npm dependencies
         run: npm install
-      - name: Check contributors
-        if: github.ref == 'refs/heads/develop'
-        run: npx all-contributors check
-  tests:
+      - name: linter markdown
+        run: npm run lint:markdown
+      - name: linter docker
+        run: npm run lint:docker
+  django:
     needs: start
     runs-on: ${{ matrix.operating-system }}
     strategy:
@@ -31,21 +32,6 @@ jobs:
           submodules: recursive
       - name: Install npm dependencies
         run: npm install
-      - name: linter markdown
-        run: npm run lint:markdown
-      - name: linter docker
-        run: npm run lint:docker
-  django:
-    runs-on: ${{ matrix.operating-system }}
-    strategy:
-      fail-fast: false
-      matrix:
-        operating-system: [ubuntu-22.04]
-    steps:
-      - name: cdout
-        uses: actions/checkout@v3
-        with:
-          submodules: recursive
       - name: "Generate image"
         run: npm run docker:build:django
       - name: Set up QEMU
@@ -64,14 +50,19 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: npm run docker:push:django
   php:
-    name: PHP ${{ matrix.php }}
-    needs: tests
-    runs-on: ubuntu-22.04
+    needs: start
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: [ubuntu-22.04]
     steps:
       - name: cdout
         uses: actions/checkout@v3
         with:
           submodules: recursive
+      - name: Install npm dependencies
+        run: npm install
       - name: "Generate image"
         run: npm run docker:build:php
       - name: Set up QEMU
