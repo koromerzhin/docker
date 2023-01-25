@@ -11,8 +11,8 @@
     "docker:push:django": "docker push koromerzhin/django",
     "docker:push:php": "docker push koromerzhin/php",
     "lint:all": "npm-run-all lint:docker lint:markdown",
-    "lint:docker:django": "dockerfilelint $(find images/django -name \"Dockerfile\") -j",
-    "lint:docker:php": "dockerfilelint $(find images/php -name \"Dockerfile\") -j",
+    "lint:docker:django": "dockerfilelint $(find images/django -name \"Dockerfile\") && exit 1",
+    "lint:docker:php": "dockerfilelint $(find images/php -name \"Dockerfile\") && exit 1",
     "lint:docker": "npm-run-all lint:docker:django lint:docker:php",
     "lint:markdown": "markdownlint README.md"
   },
