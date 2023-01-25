@@ -14,7 +14,9 @@
     "docker:image:ls": "korojscommands docker_getlocal-image",
     "lint:all": "npm-run-all lint:docker lint:markdown",
     "lint:docker:django": "dockerfilelint $(find images/django -name \"Dockerfile\")",
-    "lint:docker:php": "dockerfilelint $(find images/php -name \"Dockerfile\")",
+    "lint:docker:php": "npm-run-all lint:docker:php:fpm lint:docker:php:apache",
+    "lint:docker:php:fpm": "dockerfilelint $(find images/phpfpm -name \"Dockerfile\")",
+    "lint:docker:php:apache": "dockerfilelint $(find images/php-apache -name \"Dockerfile\")",
     "lint:docker": "npm-run-all lint:docker:django lint:docker:php",
     "lint:markdown": "markdownlint README.md"
   },
