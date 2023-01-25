@@ -1,4 +1,4 @@
-FROM python:3.11.0 as build-django-2.2.27
+FROM python:3.11.1 as build-django-2.2.27
 
 WORKDIR /app
 
