@@ -34,7 +34,7 @@ jobs:
       - name: Install npm dependencies
         run: npm install
       - name: "Generate file SH"
-        run: npm run docker:build:django --folder=${{ matrix.php }}
+        run: npm run docker:build:django --folder=${{ matrix.django }}
       - name: "Build image"
         run: ./build-django-${{ matrix.php }}.sh
       - name: "Show images"
