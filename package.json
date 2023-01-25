@@ -2,7 +2,18 @@
   "name": "@koromerzhin/docker",
   "version": "1.0.0",
   "description": "images docker",
+  "main": "main.js",
   "scripts": {
+    "docker:build:all": "npm-run-all docker:build:django docker:build:php",
+    "docker:build:django": "node main.js build:django && ./django.sh",
+    "docker:build:php": "node main.js build:php && ./php.sh",
+    "docker:push:all": "npm-run-all docker:push:django docker:push:php",
+    "docker:push:django": "docker push koromerzhin/django",
+    "docker:push:php": "docker push koromerzhin/php",
+    "lint:all": "npm-run-all lint:docker lint:markdown",
+    "lint:docker:django": "dockerfilelint $(find images/django -name \"Dockerfile\")",
+    "lint:docker:php": "dockerfilelint $(find images/php -name \"Dockerfile\")",
+    "lint:docker": "npm-run-all lint:docker:django lint:docker:php",
     "lint:markdown": "markdownlint README.md"
   },
   "repository": {
