@@ -1,3 +1,2 @@
 /node_modules
-django.sh
-php.sh
+*.sh
