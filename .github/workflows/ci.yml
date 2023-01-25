@@ -36,7 +36,7 @@ jobs:
       - name: "Generate file SH"
         run: npm run docker:build:django --folder=${{ matrix.django }}
       - name: "Build image"
-        run: ./build-django-${{ matrix.php }}.sh
+        run: ./build-django-${{ matrix.django }}.sh
       - name: "Show images"
         run: npm run docker:image:ls
       - name: Set up QEMU
