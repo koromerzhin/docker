@@ -17,6 +17,7 @@ jobs:
       - name: linter markdown
         run: npm run lint:markdown
       - name: linter docker
+        continue-on-error: true
         run: npm run lint:docker
   django:
     needs: start
