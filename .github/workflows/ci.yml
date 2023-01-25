@@ -88,7 +88,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Push Docker
         if: github.ref == 'refs/heads/main'
-        run: npm run docker:push:php:fpm
+        run: npm run docker:push:php
   php-apache:
     strategy:
       matrix:
@@ -123,5 +123,5 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Push Docker
         if: github.ref == 'refs/heads/main'
-        run: npm run docker:push:php:apache
+        run: npm run docker:push:php
 
