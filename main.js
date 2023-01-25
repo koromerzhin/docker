@@ -36,7 +36,7 @@ program.command('build:django')
   .action(async (options) => {
     selectfolder = (process.env.npm_config_folder != undefined) ? process.env.npm_config_folder : options.folder;
     console.log('folder', selectfolder);
-    folder += '/php';
+    folder += '/phpfpm';
     const versions = fs.readdirSync(folder, { withFileTypes: true })
       .filter((item) => item.isDirectory())
       .map((item) => item.name);
@@ -58,7 +58,7 @@ program.command('build:php:apache')
 .action(async (options) => {
   selectfolder = (process.env.npm_config_folder != undefined) ? process.env.npm_config_folder : options.folder;
   console.log('folder', selectfolder);
-  folder += '/php';
+  folder += '/php-apache';
   const versions = fs.readdirSync(folder, { withFileTypes: true })
     .filter((item) => item.isDirectory())
     .map((item) => item.name);
