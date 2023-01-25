@@ -2,13 +2,23 @@
   "name": "@koromerzhin/docker",
   "version": "1.0.0",
   "description": "images docker",
+  "main": "main.js",
   "scripts": {
-    "contributors": "all-contributors",
-    "linter-docker": "dockerfilelint",
-    "linter-markdown": "markdownlint",
-    "readme": "readme",
-    "licenses": "license-checker",
-    "changelog": "changelog"
+    "docker:build:all": "npm-run-all docker:build:django docker:build:php",
+    "docker:build:django": "node main.js build:django",
+    "docker:build:php:fpm": "node main.js build:php:fpm",
+    "docker:build:php:apache": "node main.js build:php:apache",
+    "docker:push:all": "npm-run-all docker:push:django docker:push:php",
+    "docker:push:django": "docker push koromerzhin/django",
+    "docker:push:php": "docker push koromerzhin/php",
+    "docker:image:ls": "korojscommands docker_getlocal-image",
+    "lint:all": "npm-run-all lint:docker lint:markdown",
+    "lint:docker:django": "dockerfilelint $(find images/django -name \"Dockerfile\")",
+    "lint:docker:php": "npm-run-all lint:docker:php:fpm lint:docker:php:apache",
+    "lint:docker:php:fpm": "dockerfilelint $(find images/phpfpm -name \"Dockerfile\")",
+    "lint:docker:php:apache": "dockerfilelint $(find images/php-apache -name \"Dockerfile\")",
+    "lint:docker": "npm-run-all lint:docker:django lint:docker:php",
+    "lint:markdown": "markdownlint README.md"
   },
   "repository": {
     "type": "git",
@@ -23,6 +33,6 @@
   "homepage": "https://github.com/koromerzhin/docker#readme",
   "dependencies": {
     "dockerfilelint": "1.8.0",
-    "koromerzhin-dependencies": "1.3.4"
+    "korojscommands": "^1.2.11"
   }
 }
