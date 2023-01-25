@@ -1,4 +1,4 @@
-FROM php:8.2.0-apache AS build-php-apache-8.2.0
+FROM php:8.2.1-fpm AS build-phpfpm-8.2.1
 
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
@@ -51,6 +51,6 @@ WORKDIR /var/www
 EXPOSE 9000
 
 
-FROM build-php-apache-8.2.0 AS build-php-apache-xdebug-8.2.0
+FROM build-phpfpm-8.2.1 AS build-phpfpm-xdebug-8.2.1
 
 RUN install-php-extensions xdebug
