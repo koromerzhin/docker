@@ -1,4 +1,4 @@
-FROM php:5.6.40-apache AS build-php-apache-5.6.40
+FROM php:8.2.1-apache AS build-php-apache-5.6.40
 
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 

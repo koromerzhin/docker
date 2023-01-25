@@ -1,4 +1,4 @@
-FROM php:7.4.33-apache AS build-php-apache-7.4.33
+FROM php:8.2.1-apache AS build-php-apache-7.4.33
 
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 

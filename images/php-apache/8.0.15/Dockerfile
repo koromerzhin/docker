@@ -1,4 +1,4 @@
-FROM php:8.0.15-apache AS build-php-apache-8.0.15
+FROM php:8.2.1-apache AS build-php-apache-8.0.15
 
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
