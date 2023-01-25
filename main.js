@@ -16,7 +16,6 @@ program
       process.env.npm_config_folder != undefined
         ? process.env.npm_config_folder
         : options.folder;
-    console.log("folder", selectfolder);
     folder += "/django";
     const versions = fs
       .readdirSync(folder, { withFileTypes: true })
@@ -53,7 +52,6 @@ program
       process.env.npm_config_folder != undefined
         ? process.env.npm_config_folder
         : options.folder;
-    console.log("folder", selectfolder);
     folder += "/phpfpm";
     const versions = fs
       .readdirSync(folder, { withFileTypes: true })
@@ -102,7 +100,6 @@ program
       process.env.npm_config_folder != undefined
         ? process.env.npm_config_folder
         : options.folder;
-    console.log("folder", selectfolder);
     folder += "/php-apache";
     const versions = fs
       .readdirSync(folder, { withFileTypes: true })
@@ -113,7 +110,7 @@ program
         cmd.push(
           "docker build -t koromerzhin/php:" +
             version +
-            "-apache images/php-apachep/" +
+            "-apache images/php-apache/" +
             version +
             " --target build-php-apache-" +
             version
