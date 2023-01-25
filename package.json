@@ -6,7 +6,8 @@
   "scripts": {
     "docker:build:all": "npm-run-all docker:build:django docker:build:php",
     "docker:build:django": "node main.js build:django",
-    "docker:build:php": "node main.js build:php",
+    "docker:build:php:fpm": "node main.js build:php:fpm",
+    "docker:build:php:apache": "node main.js build:php:apache",
     "docker:push:all": "npm-run-all docker:push:django docker:push:php",
     "docker:push:django": "docker push koromerzhin/django",
     "docker:push:php": "docker push koromerzhin/php",

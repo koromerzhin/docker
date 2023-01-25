@@ -104,9 +104,9 @@ jobs:
       - name: Install npm dependencies
         run: npm install
       - name: "Generate file SH"
-        run: npm run docker:build:php:apache --version ${{ matrix.php }}
+        run: npm run docker:build:php:apache --folder=${{ matrix.php }}
       - name: "Build image"
-        run: ./php-apache-${{ matrix.php }}.sh
+        run: ./build-php-apache-${{ matrix.php }}.sh
       - name: "Show images"
         run: npm run docker:image:ls
       - name: Set up QEMU

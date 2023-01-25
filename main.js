@@ -30,7 +30,29 @@ program.command('build:django')
     saveInFile(cmd, 'django', selectfolder);
   });
 
-program.command('build:php')
+  program.command('build:php:fpm')
+  .description('build php images')
+  .option('--folder <folder>', 'images version')
+  .action(async (options) => {
+    selectfolder = (process.env.npm_config_folder != undefined) ? process.env.npm_config_folder : options.folder;
+    console.log('folder', selectfolder);
+    folder += '/php';
+    const versions = fs.readdirSync(folder, { withFileTypes: true })
+      .filter((item) => item.isDirectory())
+      .map((item) => item.name);
+      versions.forEach(version => {
+        if (selectfolder == undefined || selectfolder == version) {
+          cmd.push('docker build -t koromerzhin/php:' + version + '-fpm images/phpfpm/' + version + ' --target build-phpfpm-' + version);
+          cmd.push('docker build -t koromerzhin/php:' + version + '-fpm-xdebug images/phpfpm/' + version + ' --target build-phpfpm-xdebug-' + version);
+          if (versions[versions.length - 1] == version) {
+            cmd.push('docker image tag koromerzhin/php:' + version + '-fpm koromerzhin/php:fpm-latest');
+            cmd.push('docker image tag koromerzhin/php:' + version + '-fpm-xdebug koromerzhin/php:fpm-latest-xdebug');
+          }
+        }
+      });
+      saveInFile(cmd, 'php-fpm', selectfolder);
+  });
+program.command('build:php:apache')
 .description('build php images')
 .option('--folder <folder>', 'images version')
 .action(async (options) => {
@@ -42,19 +64,15 @@ program.command('build:php')
     .map((item) => item.name);
     versions.forEach(version => {
       if (selectfolder == undefined || selectfolder == version) {
-        cmd.push('docker build -t koromerzhin/php:' + version + '-fpm images/php/' + version + ' --target build-phpfpm-' + version);
-        cmd.push('docker build -t koromerzhin/php:' + version + '-fpm-xdebug images/php/' + version + ' --target build-phpfpm-xdebug-' + version);
-        cmd.push('docker build -t koromerzhin/php:' + version + '-apache images/php/' + version + ' --target build-php-apache-' + version);
-        cmd.push('docker build -t koromerzhin/php:' + version + '-apache-xdebug images/php/' + version + ' --target build-php-apache-xdebug-' + version);
+        cmd.push('docker build -t koromerzhin/php:' + version + '-apache images/php-apachep/' + version + ' --target build-php-apache-' + version);
+        cmd.push('docker build -t koromerzhin/php:' + version + '-apache-xdebug images/php-apache/' + version + ' --target build-php-apache-xdebug-' + version);
         if (versions[versions.length - 1] == version) {
-          cmd.push('docker image tag koromerzhin/php:' + version + '-fpm koromerzhin/php:fpm-latest');
-          cmd.push('docker image tag koromerzhin/php:' + version + '-fpm-xdebug koromerzhin/php:fpm-latest-xdebug');
           cmd.push('docker image tag koromerzhin/php:' + version + '-apache koromerzhin/php:apache-latest');
           cmd.push('docker image tag koromerzhin/php:' + version + '-apache-xdebug koromerzhin/php:apache-latest-xdebug');
         }
       }
     });
-    saveInFile(cmd, 'php', selectfolder);
+    saveInFile(cmd, 'php-apache', selectfolder);
 });
 
 function saveInFile(cmd, image, selectfolder)
