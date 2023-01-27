@@ -1,11 +1,11 @@
-FROM php:5.6.40-fpm AS build-phpfpm-5.6.40
+FROM VERSIONIMAGE AS build-phpfpm
 
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/install-php-extensions
 
 RUN apt-get update && \
-    apt-get install -y wget git fish unzip zip --no-install-recommends && \
+    apt-get install -y wget git fish unzip zip graphviz --no-install-recommends && \
     apt-get clean && \
     rm -fr /var/lib/apt/lists/*
 
@@ -37,20 +37,13 @@ RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli
     chmod +x wp-cli.phar && \
     mv wp-cli.phar /usr/local/bin/wp
 # Symfony
-RUN wget https://github.com/symfony-cli/symfony-cli/releases/download/v5.4.13/symfony-cli_5.4.13_amd64.deb && \
-    dpkg -i symfony-cli_5.4.13_amd64.deb && \
-    rm symfony-cli_5.4.13_amd64.deb
-
-RUN apt-get update && \
-    apt-get install -y graphviz --no-install-recommends && \
-    apt-get clean && \
-    rm -fr /var/lib/apt/lists/*
+RUN curl -sS https://get.symfony.com/cli/installer | bash
 
 WORKDIR /var/www
 
 EXPOSE 9000
 
 
-FROM build-phpfpm-5.6.40 AS build-phpfpm-xdebug-5.6.40
+FROM build-phpfpm AS build-phpfpm-xdebug
 
 RUN install-php-extensions xdebug

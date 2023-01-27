@@ -7,35 +7,67 @@ let cmd = [];
 
 program.name("main.js").description("CLI to build image docker");
 
+function getSelectfolder(options) {
+  const selectfolder =
+    process.env.npm_config_folder != undefined
+      ? process.env.npm_config_folder
+      : options.folder;
+
+  return selectfolder;
+}
+
+function getLatest(options) {
+  const latest =
+    process.env.npm_config_latest != undefined
+      ? process.env.npm_config_latest
+      : options.latest;
+
+  return latest;
+}
+
+function getVersions(folder) {
+  const versions = fs
+    .readdirSync(`images/${folder}`, { withFileTypes: true })
+    .filter((item) => item.isDirectory())
+    .map((item) => item.name);
+
+  return versions;
+}
+
+function setVersionImage(selectfolder, version) {
+  const versionimage = selectfolder == undefined ? version : selectfolder;
+
+  return versionimage;
+}
+
 program
   .command("build:django")
   .description("build django images")
   .option("--folder <folder>", "images version")
+  .option("--latest", "latest")
   .action(async (options) => {
-    selectfolder =
-      process.env.npm_config_folder != undefined
-        ? process.env.npm_config_folder
-        : options.folder;
-    folder += "/django";
-    const versions = fs
-      .readdirSync(folder, { withFileTypes: true })
-      .filter((item) => item.isDirectory())
-      .map((item) => item.name);
+    const selectfolder = getSelectfolder(options);
+    const versions = getVersions("django");
     versions.forEach((version) => {
-      if (selectfolder == undefined || selectfolder == version) {
+      let versionimage = setVersionImage(selectfolder, version);
+      if (
+        selectfolder == undefined ||
+        selectfolder == version ||
+        selectfolder.split(version).length - 1 == 1
+      ) {
+        cmd.push(`mkdir -p build/django/${versionimage}`);
         cmd.push(
-          "docker build -t koromerzhin/django:" +
-            version +
-            " images/django/" +
-            version +
-            " --target build-django-" +
-            version
+          `cp images/django/${version}/Dockerfile build/django/${versionimage}/Dockerfile`
         );
-        if (versions[versions.length - 1] == version) {
+        cmd.push(
+          `sed -i 's/VERSIONIMAGE/${versionimage}/' build/django/${versionimage}/Dockerfile`
+        );
+        cmd.push(
+          `docker build -t koromerzhin/django:${versionimage} build/django/${versionimage} --target build-django`
+        );
+        if (getLatest(options) != undefined) {
           cmd.push(
-            "docker image tag koromerzhin/django:" +
-              version +
-              " koromerzhin/django:latest"
+            `docker image tag koromerzhin/django:${versionimage} koromerzhin/django:latest`
           );
         }
       }
@@ -44,100 +76,75 @@ program
   });
 
 program
-  .command("build:php:fpm")
+  .command("build:php")
   .description("build php images")
   .option("--folder <folder>", "images version")
+  .option("--latest", "latest")
   .action(async (options) => {
-    selectfolder =
-      process.env.npm_config_folder != undefined
-        ? process.env.npm_config_folder
-        : options.folder;
-    folder += "/phpfpm";
-    const versions = fs
-      .readdirSync(folder, { withFileTypes: true })
-      .filter((item) => item.isDirectory())
-      .map((item) => item.name);
+    const selectfolder = getSelectfolder(options);
+    versions = getVersions("phpfpm");
     versions.forEach((version) => {
-      if (selectfolder == undefined || selectfolder == version) {
+      let versionimage = setVersionImage(selectfolder, version);
+      if (
+        selectfolder == undefined ||
+        selectfolder == version ||
+        selectfolder.split(version).length - 1 == 1
+      ) {
+        cmd.push(`mkdir -p build/phpfpm/${versionimage}`);
         cmd.push(
-          "docker build -t koromerzhin/php:" +
-            version +
-            "-fpm images/phpfpm/" +
-            version +
-            " --target build-phpfpm-" +
-            version
+          `cp images/phpfpm/${version}/Dockerfile build/phpfpm/${versionimage}/Dockerfile`
         );
         cmd.push(
-          "docker build -t koromerzhin/php:" +
-            version +
-            "-fpm-xdebug images/phpfpm/" +
-            version +
-            " --target build-phpfpm-xdebug-" +
-            version
+          `sed -i 's/VERSIONIMAGE/php:${versionimage}-fpm/' build/phpfpm/${versionimage}/Dockerfile`
         );
-        if (versions[versions.length - 1] == version) {
+        cmd.push(
+          `docker build -t koromerzhin/php:${versionimage}-fpm build/phpfpm/${versionimage} --target build-phpfpm`
+        );
+        cmd.push(
+          `docker build -t koromerzhin/php:${versionimage}-fpm-xdebug build/phpfpm/${versionimage} --target build-phpfpm-xdebug`
+        );
+        if (getLatest(options) != undefined) {
           cmd.push(
-            "docker image tag koromerzhin/php:" +
-              version +
-              "-fpm koromerzhin/php:fpm-latest"
+            `docker image tag koromerzhin/php:${versionimage}-fpm koromerzhin/php:fpm-latest`
           );
           cmd.push(
-            "docker image tag koromerzhin/php:" +
-              version +
-              "-fpm-xdebug koromerzhin/php:fpm-latest-xdebug"
+            `docker image tag koromerzhin/php:${versionimage}-fpm-xdebug koromerzhin/php:fpm-latest-xdebug`
           );
         }
       }
     });
-    saveInFile(cmd, "php-fpm", selectfolder);
-  });
-program
-  .command("build:php:apache")
-  .description("build php images")
-  .option("--folder <folder>", "images version")
-  .action(async (options) => {
-    selectfolder =
-      process.env.npm_config_folder != undefined
-        ? process.env.npm_config_folder
-        : options.folder;
-    folder += "/php-apache";
-    const versions = fs
-      .readdirSync(folder, { withFileTypes: true })
-      .filter((item) => item.isDirectory())
-      .map((item) => item.name);
+    versions = getVersions("php-apache");
     versions.forEach((version) => {
-      if (selectfolder == undefined || selectfolder == version) {
+      let versionimage = setVersionImage(selectfolder, version);
+      if (
+        selectfolder == undefined ||
+        selectfolder == version ||
+        selectfolder.split(version).length - 1 == 1
+      ) {
+        cmd.push(`mkdir -p build/php-apache/${versionimage}`);
         cmd.push(
-          "docker build -t koromerzhin/php:" +
-            version +
-            "-apache images/php-apache/" +
-            version +
-            " --target build-php-apache-" +
-            version
+          `cp images/php-apache/${version}/Dockerfile build/php-apache/${versionimage}/Dockerfile`
         );
         cmd.push(
-          "docker build -t koromerzhin/php:" +
-            version +
-            "-apache-xdebug images/php-apache/" +
-            version +
-            " --target build-php-apache-xdebug-" +
-            version
+          `sed -i 's/VERSIONIMAGE/php:${versionimage}-apache/' build/php-apache/${versionimage}/Dockerfile`
         );
-        if (versions[versions.length - 1] == version) {
+        cmd.push(
+          `docker build -t koromerzhin/php:${versionimage}-apache build/php-apache/${versionimage} --target build-php-apache`
+        );
+        cmd.push(
+          `docker build -t koromerzhin/php:${versionimage}-apache-xdebug build/php-apache/${versionimage} --target build-php-apache-xdebug`
+        );
+        if (getLatest(options) != undefined) {
           cmd.push(
-            "docker image tag koromerzhin/php:" +
-              version +
-              "-apache koromerzhin/php:apache-latest"
+            `docker image tag koromerzhin/php:${versionimage}-apache koromerzhin/php:apache-latest`
           );
           cmd.push(
-            "docker image tag koromerzhin/php:" +
-              version +
-              "-apache-xdebug koromerzhin/php:apache-latest-xdebug"
+            `docker image tag koromerzhin/php:${versionimage}-apache-xdebug koromerzhin/php:apache-latest-xdebug`
           );
         }
       }
     });
-    saveInFile(cmd, "php-apache", selectfolder);
+    saveInFile(cmd, "php", selectfolder);
   });
 
 function saveInFile(cmd, image, selectfolder) {

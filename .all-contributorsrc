@@ -21,6 +21,61 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "renovate-bot",
+      "name": "Mend Renovate",
+      "avatar_url": "https://avatars.githubusercontent.com/u/25180681?v=4",
+      "profile": "https://www.mend.io/free-developer-tools/renovate/",
+      "contributions": [
+        "bug",
+        "code",
+        "maintenance"
+      ]
+    },
+    {
+      "login": "restyled-commits",
+      "name": "Restyled Commits",
+      "avatar_url": "https://avatars.githubusercontent.com/u/65077583?v=4",
+      "profile": "https://restyled.io/",
+      "contributions": [
+        "bug",
+        "code",
+        "maintenance"
+      ]
+    },
+    {
+      "login": "dependabot[bot]",
+      "name": "dependabot[bot]",
+      "avatar_url": "https://avatars.githubusercontent.com/in/29110?v=4",
+      "profile": "https://github.com/apps/dependabot",
+      "contributions": [
+        "bug",
+        "code",
+        "maintenance"
+      ]
+    },
+    {
+      "login": "renovate[bot]",
+      "name": "renovate[bot]",
+      "avatar_url": "https://avatars.githubusercontent.com/in/2740?v=4",
+      "profile": "https://github.com/apps/renovate",
+      "contributions": [
+        "bug",
+        "code",
+        "maintenance"
+      ]
+    },
+    {
+      "login": "mend-bolt-for-github[bot]",
+      "name": "mend-bolt-for-github[bot]",
+      "avatar_url": "https://avatars.githubusercontent.com/in/16809?v=4",
+      "profile": "https://github.com/apps/mend-bolt-for-github",
+      "contributions": [
+        "bug",
+        "code",
+        "maintenance"
+      ]
     }
   ]
 }
