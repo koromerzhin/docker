@@ -74,7 +74,7 @@ program
   .option("--latest", "latest")
   .action(async (options) => {
     const selectfolder = getSelectfolder(options);
-    const versions = getVersions('phpfpm');
+    versions = getVersions('phpfpm');
     versions.forEach((version) => {
       let versionimage = setVersionImage(selectfolder, version);
       if (selectfolder == undefined || selectfolder == version || selectfolder.split(version).length-1 == 1) {
@@ -89,7 +89,7 @@ program
         }
       }
     });
-    const versions = getVersions('php-apache');
+    versions = getVersions('php-apache');
     versions.forEach((version) => {
       let versionimage = setVersionImage(selectfolder, version);
       if (selectfolder == undefined || selectfolder == version || selectfolder.split(version).length - 1 == 1) {
