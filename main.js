@@ -68,7 +68,7 @@ program
   });
 
 program
-  .command("build:php:fpm")
+  .command("build:php")
   .description("build php images")
   .option("--folder <folder>", "images version")
   .option("--latest", "latest")
@@ -89,15 +89,6 @@ program
         }
       }
     });
-    saveInFile(cmd, "php-fpm", selectfolder);
-  });
-program
-  .command("build:php:apache")
-  .description("build php images")
-  .option("--folder <folder>", "images version")
-  .option("--latest", "latest")
-  .action(async (options) => {
-    const selectfolder = getSelectfolder(options);
     const versions = getVersions('php-apache');
     versions.forEach((version) => {
       let versionimage = setVersionImage(selectfolder, version);
@@ -113,7 +104,7 @@ program
         }
       }
     });
-    saveInFile(cmd, "php-apache", selectfolder);
+    saveInFile(cmd, "php", selectfolder);
   });
 
 function saveInFile(cmd, image, selectfolder) {
