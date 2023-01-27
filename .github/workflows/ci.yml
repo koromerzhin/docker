@@ -76,7 +76,7 @@ jobs:
         if: matrix.php != '8.2.1'
         run: npm run docker:build:php:fpm --folder=${{ matrix.php }}
       - name: "Generate file SH IF LAST"
-        if: matrix.php != '8.2.1'
+        if: matrix.php == '8.2.1'
         run: npm run docker:build:php:fpm --folder=${{ matrix.php }} --latest
       - name: "Build image"
         run: ./build-php-fpm-${{ matrix.php }}.sh
