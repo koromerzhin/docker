@@ -1,4 +1,4 @@
-FROM php:7.4.33-apache AS build-php-apache-7.4.33
+FROM VERSIONIMAGE AS build-php-apache
 
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
@@ -37,9 +37,9 @@ RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli
     chmod +x wp-cli.phar && \
     mv wp-cli.phar /usr/local/bin/wp
 # Symfony
-RUN wget https://github.com/symfony-cli/symfony-cli/releases/download/v5.4.13/symfony-cli_5.4.13_amd64.deb && \
-    dpkg -i symfony-cli_5.4.13_amd64.deb && \
-    rm symfony-cli_5.4.13_amd64.deb
+RUN wget https://github.com/symfony-cli/symfony-cli/releases/download/v5.4.19/symfony-cli_5.4.19_amd64.deb && \
+    dpkg -i symfony-cli_5.4.19_amd64.deb && \
+    rm symfony-cli_5.4.19_amd64.deb
 
 RUN apt-get update && \
     apt-get install -y graphviz --no-install-recommends && \
@@ -51,6 +51,6 @@ WORKDIR /var/www
 EXPOSE 9000
 
 
-FROM build-php-apache-7.4.33 AS build-php-apache-xdebug-7.4.33
+FROM build-php-apache AS build-php-apache-xdebug
 
 RUN install-php-extensions xdebug

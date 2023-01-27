@@ -1,4 +1,4 @@
-FROM php:5.6.40-apache AS build-php-apache-5.6.40
+FROM VERSIONIMAGE AS build-php-apache
 
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
@@ -51,6 +51,6 @@ WORKDIR /var/www
 EXPOSE 9000
 
 
-FROM build-php-apache-5.6.40 AS build-php-apache-xdebug-5.6.40
+FROM build-php-apache AS build-php-apache-xdebug
 
 RUN install-php-extensions xdebug
