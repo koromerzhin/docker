@@ -37,7 +37,7 @@ jobs:
         if: matrix.php != '4.0.2'
         run: npm run docker:build:django --folder=${{ matrix.django }}
       - name: "Generate file SH IF LAST"
-        if: matrix.django != '4.0.2'
+        if: matrix.django == '4.0.2'
         run: npm run docker:build:django --folder=${{ matrix.django }} --latest
       - name: "Build image"
         run: ./build-django-${{ matrix.django }}.sh
