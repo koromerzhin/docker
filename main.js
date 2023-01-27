@@ -58,7 +58,7 @@ program
         cmd.push(`mkdir -p build/django/${versionimage}`);
         cmd.push(`cp images/django/${version}/Dockerfile build/django/${versionimage}/Dockerfile`);
         cmd.push(`sed -i 's/VERSIONIMAGE/${versionimage}/' build/django/${versionimage}/Dockerfile`);
-        cmd.push(`docker build -t koromerzhin/django:${versionimage} build/django/${version} --target build-django`);
+        cmd.push(`docker build -t koromerzhin/django:${versionimage} build/django/${versionimage} --target build-django`);
         if (getLatest(options) != undefined) {
           cmd.push(`docker image tag koromerzhin/django:${versionimage} koromerzhin/django:latest`);
         }
@@ -81,8 +81,8 @@ program
         cmd.push(`mkdir -p build/phpfpm/${versionimage}`);
         cmd.push(`cp images/phpfpm/${version}/Dockerfile build/phpfpm/${versionimage}/Dockerfile`);
         cmd.push(`sed -i 's/VERSIONIMAGE/php:${versionimage}-fpm/' build/phpfpm/${versionimage}/Dockerfile`);
-        cmd.push(`docker build -t koromerzhin/php:${versionimage}-fpm build/phpfpm/${version} --target build-phpfpm`);
-        cmd.push(`docker build -t koromerzhin/php:${versionimage}-fpm-xdebug build/phpfpm/${version} --target build-phpfpm-xdebug`);
+        cmd.push(`docker build -t koromerzhin/php:${versionimage}-fpm build/phpfpm/${versionimage} --target build-phpfpm`);
+        cmd.push(`docker build -t koromerzhin/php:${versionimage}-fpm-xdebug build/phpfpm/${versionimage} --target build-phpfpm-xdebug`);
         if (getLatest(options) != undefined) {
           cmd.push(`docker image tag koromerzhin/php:${versionimage}-fpm koromerzhin/php:fpm-latest`);
           cmd.push(`docker image tag koromerzhin/php:${versionimage}-fpm-xdebug koromerzhin/php:fpm-latest-xdebug`);
