@@ -5,7 +5,7 @@ ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/do
 RUN chmod +x /usr/local/bin/install-php-extensions
 
 RUN apt-get update && \
-    apt-get install -y wget git fish unzip zip --no-install-recommends && \
+    apt-get install -y wget git fish unzip zip graphviz --no-install-recommends && \
     apt-get clean && \
     rm -fr /var/lib/apt/lists/*
 
@@ -37,14 +37,7 @@ RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli
     chmod +x wp-cli.phar && \
     mv wp-cli.phar /usr/local/bin/wp
 # Symfony
-RUN wget https://github.com/symfony-cli/symfony-cli/releases/download/v5.4.19/symfony-cli_5.4.19_amd64.deb && \
-    dpkg -i symfony-cli_5.4.19_amd64.deb && \
-    rm symfony-cli_5.4.19_amd64.deb
-
-RUN apt-get update && \
-    apt-get install -y graphviz --no-install-recommends && \
-    apt-get clean && \
-    rm -fr /var/lib/apt/lists/*
+RUN curl -sS https://get.symfony.com/cli/installer | bash
 
 WORKDIR /var/www
 
