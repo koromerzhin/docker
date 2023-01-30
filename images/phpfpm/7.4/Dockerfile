@@ -39,6 +39,9 @@ RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli
 # Symfony
 RUN curl -sS https://get.symfony.com/cli/installer | bash
 
+RUN chmod 777 /usr/local/bin/docker-entrypoint.sh \
+    && ln -s /usr/local/bin/docker-entrypoint.sh
+
 WORKDIR /var/www
 
 EXPOSE 9000
