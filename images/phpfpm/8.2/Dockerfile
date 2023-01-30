@@ -41,8 +41,6 @@ RUN curl -sS https://get.symfony.com/cli/installer | bash
 
 WORKDIR /var/www
 
-EXPOSE 9000
-
 
 FROM build-phpfpm AS build-phpfpm-xdebug
 
