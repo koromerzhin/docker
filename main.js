@@ -41,41 +41,6 @@ function setVersionImage(selectfolder, version) {
 }
 
 program
-  .command("build:django")
-  .description("build django images")
-  .option("--folder <folder>", "images version")
-  .option("--latest", "latest")
-  .action(async (options) => {
-    const selectfolder = getSelectfolder(options);
-    const versions = getVersions("django");
-    versions.forEach((version) => {
-      let versionimage = setVersionImage(selectfolder, version);
-      if (
-        selectfolder == undefined ||
-        selectfolder == version ||
-        selectfolder.split(version).length - 1 == 1
-      ) {
-        cmd.push(`mkdir -p build/django/${versionimage}`);
-        cmd.push(
-          `cp images/django/${version}/Dockerfile build/django/${versionimage}/Dockerfile`
-        );
-        cmd.push(
-          `sed -i 's/VERSIONIMAGE/${versionimage}/' build/django/${versionimage}/Dockerfile`
-        );
-        cmd.push(
-          `docker build -t koromerzhin/django:${versionimage} build/django/${versionimage} --target build-django`
-        );
-        if (getLatest(options) != undefined) {
-          cmd.push(
-            `docker image tag koromerzhin/django:${versionimage} koromerzhin/django:latest`
-          );
-        }
-      }
-    });
-    saveInFile(cmd, "django", selectfolder);
-  });
-
-program
   .command("build:php")
   .description("build php images")
   .option("--folder <folder>", "images version")

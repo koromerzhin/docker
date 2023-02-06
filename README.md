@@ -38,20 +38,17 @@ npm install
 ## docker generate
 
 ```sh
-npm run docker:build:django
 npm run docker:build:php
 ```
 
 ## docker push
 
 ```sh
-npm run docker:push:django
 npm run docker:push:php
 ```
 
 ## Vues images
 
-- [django](https://hub.docker.com/r/koromerzhin/django)
 - [phpfpm](https://hub.docker.com/r/koromerzhin/php)
 
 ## Author

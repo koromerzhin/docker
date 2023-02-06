@@ -1,6 +1,4 @@
 services:
-  python:
-    image: python:3.11.1
   php56:
     image: php:5.6.40
   php74:
@@ -10,4 +8,4 @@ services:
   php81:
     image: php:8.1.14
   php82:
-    image: php:8.2.1
+    image: php:8.2.2

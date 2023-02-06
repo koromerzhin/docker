@@ -4,19 +4,16 @@
   "description": "images docker",
   "main": "main.js",
   "scripts": {
-    "docker:build:all": "npm-run-all docker:build:django docker:build:php",
-    "docker:build:django": "node main.js build:django",
+    "docker:build:all": "npm-run-all docker:build:php",
     "docker:build:php": "node main.js build:php",
-    "docker:push:all": "npm-run-all docker:push:django docker:push:php",
-    "docker:push:django": "docker push koromerzhin/django -a",
+    "docker:push:all": "npm-run-all docker:push:php",
     "docker:push:php": "docker push koromerzhin/php -a",
     "docker:image:ls": "korojscommands docker_getlocal-image",
     "lint:all": "npm-run-all lint:docker lint:markdown",
-    "lint:docker:django": "dockerfilelint $(find images/django -name \"Dockerfile\")",
     "lint:docker:php": "npm-run-all lint:docker:php:fpm lint:docker:php:apache",
     "lint:docker:php:fpm": "dockerfilelint $(find images/phpfpm -name \"Dockerfile\")",
     "lint:docker:php:apache": "dockerfilelint $(find images/php-apache -name \"Dockerfile\")",
-    "lint:docker": "npm-run-all lint:docker:django lint:docker:php",
+    "lint:docker": "npm-run-all lint:docker:php",
     "lint:markdown": "markdownlint README.md"
   },
   "repository": {
