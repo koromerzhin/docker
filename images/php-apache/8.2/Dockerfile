@@ -1,7 +1,8 @@
 FROM VERSIONIMAGE AS build-php-apache
 
-ADD https://github.com/mlocati/docker-php-extension-installer/releases/download/2.0.3/install-php-extensions /usr/local/bin/ && \
-    chmod +x /usr/local/bin/install-php-extensions
+ADD https://github.com/mlocati/docker-php-extension-installer/releases/download/2.0.3/install-php-extensions /usr/local/bin/
+
+RUN chmod +x /usr/local/bin/install-php-extensions
 
 RUN apt-get update && \
     apt-get install -y wget git fish unzip zip graphviz --no-install-recommends && \
