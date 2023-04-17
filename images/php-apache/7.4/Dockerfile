@@ -37,7 +37,7 @@ RUN wget https://github.com/wp-cli/wp-cli/releases/download/v2.7.1/wp-cli-2.7.1.
     chmod +x wp-cli.phar && \
     mv wp-cli.phar /usr/local/bin/wp
 # Symfony
-RUN wget https://github.com/symfony-cli/symfony-cli/releases/download/v5.5.1/symfony-cli_5.5.1_amd64.deb -O symfony-cli_amd64.deb && \
+RUN wget https://github.com/symfony-cli/symfony-cli/releases/download/v5.5.2/symfony-cli_5.5.2_amd64.deb -O symfony-cli_amd64.deb && \
     dpkg -i symfony-cli_amd64.deb && \
     rm symfony-cli_amd64.deb
 
