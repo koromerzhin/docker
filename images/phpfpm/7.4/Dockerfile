@@ -4,10 +4,11 @@ ADD https://github.com/mlocati/docker-php-extension-installer/releases/download/
 
 RUN chmod +x /usr/local/bin/install-php-extensions
 
-RUN apt-get update
-RUN apt-get install -y wget git fish unzip zip graphviz --no-install-recommends
-RUN apt-get clean
-RUN rm -fr /var/lib/apt/lists/*
+RUN apt-get update && \
+    sed -i 's/stable\/updates/stable-security\/updates/' /etc/apt/sources.list && \
+    apt-get install -y wget git fish unzip zip graphviz --no-install-recommends && \
+    apt-get clean && \
+    rm -fr /var/lib/apt/lists/*
 
 # Add Extension
 RUN install-php-extensions \
