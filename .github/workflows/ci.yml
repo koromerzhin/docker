@@ -26,7 +26,7 @@ jobs:
     outputs:
       strategy: ${{ steps.generate-jobs.outputs.strategy }}
     steps:
-      - uses: actions/checkout@v3x
+      - uses: actions/checkout@v3
       - id: generate-jobs
         name: Generate Jobs
         run: |
