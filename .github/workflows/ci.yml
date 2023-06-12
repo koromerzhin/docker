@@ -26,16 +26,17 @@ jobs:
     outputs:
       strategy: ${{ steps.generate-jobs.outputs.strategy }}
     steps:
-      - uses: actions/checkout@v3
-      - uses: docker-library/bashbrew@HEAD
+      - uses: actions/checkout@v3x
       - id: generate-jobs
         name: Generate Jobs
-        run: jq .php matrix.json >> "$GITHUB_OUTPUT"
+        run: |
+          content=`cat matrix.json`
+          echo "::set-output name=packageJson::$content"
   php:
     strategy:
       fail-fast: false
       matrix: ${{ fromJson(needs.generate-jobs.outputs.strategy) }}
-    name: PHP ${{ matrix.version }}
+    name: PHP ${{ matrix.php.version }}
     needs: generate-jobs
     runs-on: ubuntu-20.04
     steps:
@@ -46,13 +47,13 @@ jobs:
       - name: Install npm dependencies
         run: npm install
       - name: "Generate file SH"
-        if: matrix.latest == 'off'
-        run: npm run docker:build:php --folder=${{ matrix.version }}
+        if: matrix.php.latest == 'off'
+        run: npm run docker:build:php --folder=${{ matrix.php.version }}
       - name: "Generate file SH IF LAST"
-        if: matrix.latest == 'on'
-        run: npm run docker:build:php --folder=${{ matrix.version }} --latest
+        if: matrix.php.latest == 'on'
+        run: npm run docker:build:php --folder=${{ matrix.php.version }} --latest
       - name: "Build image"
-        run: ./build-php-${{ matrix.version }}.sh
+        run: ./build-php-${{ matrix.php.version }}.sh
       - name: "Show images"
         run: npm run docker:image:ls
       - name: Set up QEMU
