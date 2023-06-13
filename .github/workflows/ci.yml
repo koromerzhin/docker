@@ -29,11 +29,10 @@ jobs:
         uses: juliangruber/read-file-action@v1
         with:
           path: ./matrix.json
-
   php:
     strategy:
       fail-fast: false
-      matrix: ${{ fromJson(needs.generate-jobs.outputs.matrix) }}
+      matrix: ${{ fromJson(needs.generate-jobs.steps.package.outputs.content) }}
     name: PHP ${{ matrix.php.version }}
     needs: generate-jobs
     runs-on: ubuntu-20.04
