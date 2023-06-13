@@ -24,11 +24,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: chabad360/matrix-job-generator@v1
+      - name: get jobs by matrix.json (new version)
+        uses: c4co/generate-jobs-by-matrix-json@v1
         with:
-            matrix-file: 'matrix.json'
-            matrix-key: 'php'
-      
+          matrixFile: .github/matrix.json
+
   php:
     strategy:
       fail-fast: false
