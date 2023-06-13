@@ -34,7 +34,7 @@ jobs:
   php:
     strategy:
       fail-fast: false
-      matrix: ${{ fromJson(needs.generatejobs.outputs.php) }}
+      matrix: ${{ needs.generatejobs.outputs.php }}
     name: PHP ${{ matrix.php.version }}
     needs: generatejobs
     runs-on: ubuntu-20.04
