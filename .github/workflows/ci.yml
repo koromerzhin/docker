@@ -25,9 +25,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: get jobs by matrix.json (new version)
-        uses: c4co/generate-jobs-by-matrix-json@v1
+        id: package
+        uses: juliangruber/read-file-action@v1
         with:
-          matrixFile: .github/matrix.json
+          path: ./matrix.json
 
   php:
     strategy:
