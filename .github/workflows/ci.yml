@@ -22,12 +22,11 @@ jobs:
   generate-jobs:
     name: Generate Jobs
     runs-on: ubuntu-latest
-    needs: start
     steps:
       - uses: actions/checkout@v3
       - id: setjobs
         run: |
-          matrix="cat matrix.json"
+          matrix="cat $BASHBREW_SCRIPTS/github-actions/matrix.json"
           echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
           jq . <<<"$matrix" # sanity check / debugging aid
   php:
