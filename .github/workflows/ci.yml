@@ -24,11 +24,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - id: setjobs
-        run: |
-          matrix="cat matrix.json"
-          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
-          jq . <<<"$matrix" # sanity check / debugging aid
+      - name: get jobs by matrix.json
+        run: echo "::set-output name=matrix::$(cat matrix.json)"
   php:
     strategy:
       fail-fast: false
