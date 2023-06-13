@@ -23,7 +23,7 @@ jobs:
     name: Generate Jobs
     runs-on: ubuntu-latest
     outputs:
-        php: ${{ steps.json_properties.outputs }}
+        php: ${{ steps.json_properties.outputs.php }}
     steps:
       - uses: actions/checkout@v3
       - name: get jobs by matrix.json
@@ -35,7 +35,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix: 
-        php: ${{ needs.generatejobs.outputs.php }}
+        php: ${{ fromJson(needs.generatejobs.outputs.php) }}
     name: PHP ${{ matrix.php.version }}
     needs: generatejobs
     runs-on: ubuntu-20.04
