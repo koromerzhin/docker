@@ -23,11 +23,11 @@ jobs:
     name: Generate Jobs
     runs-on: ubuntu-latest
     outputs:
-        json: ${{ steps.json.outputs }}
+        json: ${{ steps.json_properties.outputs }}
     steps:
       - uses: actions/checkout@v3
       - name: get jobs by matrix.json
-        id: json
+        id: json_properties
         uses: zoexx/github-action-json-file-properties@release
         with:
             file_path: "matrix.json"
