@@ -33,7 +33,7 @@ jobs:
       fail-fast: false
       matrix: ${{ fromJson(needs.generatejobs.outputs.matrix) }}
     name: PHP ${{ matrix.php.version }}
-    needs: generate-jobs
+    needs: generatejobs
     runs-on: ubuntu-20.04
     steps:
       - name: cdout
