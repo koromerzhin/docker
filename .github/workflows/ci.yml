@@ -23,15 +23,18 @@ jobs:
     name: Generate Jobs
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
+        json: ${{ steps.json_properties.outputs }}
     steps:
       - uses: actions/checkout@v3
       - name: get jobs by matrix.json
-        run: echo "`cat matrix.json`" >> $GITHUB_OUTPUT
+        id: json
+        uses: zoexx/github-action-json-file-properties@release
+        with:
+            file_path: "matrix.json"
   php:
     strategy:
       fail-fast: false
-      matrix: ${{ fromJson(needs.generatejobs.outputs.matrix) }}
+      matrix: ${{ fromJson(needs.generatejobs.outputs.json) }}
     name: PHP ${{ matrix.php.version }}
     needs: generatejobs
     runs-on: ubuntu-20.04
