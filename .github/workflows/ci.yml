@@ -19,7 +19,7 @@ jobs:
       - name: linter docker
         continue-on-error: true
         run: npm run lint:docker
-  generate-jobs:
+  generatejobs:
     name: Generate Jobs
     runs-on: ubuntu-latest
     outputs:
@@ -27,11 +27,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: get jobs by matrix.json
-        run: echo "content=`cat matrix.json`" >> $GITHUB_OUTPUT
+        run: echo "matrix=`cat matrix.json`" >> $GITHUB_OUTPUT
   php:
     strategy:
       fail-fast: false
-      matrix: ${{ fromJson(needs.generate-jobs.matrix.outputs.content) }}
+      matrix: ${{ fromJson(needs.generatejobs.outputs.matrix) }}
     name: PHP ${{ matrix.php.version }}
     needs: generate-jobs
     runs-on: ubuntu-20.04
