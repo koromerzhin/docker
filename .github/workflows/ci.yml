@@ -25,7 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: get jobs by matrix.json
-        run: echo "::set-output name=matrix::$(cat matrix.json)"
+        run: echo "$(cat matrix.json)" >> $GITHUB_OUTPUT
   php:
     strategy:
       fail-fast: false
