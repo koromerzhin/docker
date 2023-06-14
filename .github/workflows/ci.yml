@@ -19,13 +19,25 @@ jobs:
       - name: linter docker
         continue-on-error: true
         run: npm run lint:docker
+  generatejobs:
+    name: Generate Jobs
+    runs-on: ubuntu-latest
+    outputs:
+        php: ${{ steps.json_properties.outputs.php }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: get jobs by matrix.json
+        id: json_properties
+        uses: zoexx/github-action-json-file-properties@release
+        with:
+            file_path: "matrix.json"
   php:
     strategy:
       fail-fast: false
-      matrix:
-        php: [5.6.40, 7.4.12, 7.4.33, 8.0.15, 8.0.27, 8.1.6, 8.1.11, 8.1.13, 8.2.0, 8.2.1, 8.2.2, 8.2.3, 8.2.4, 8.2.5, 8.2.6]
-    name: PHP ${{ matrix.php }}
-    needs: start
+      matrix: 
+        php: ${{ fromJson(needs.generatejobs.outputs.php) }}
+    name: PHP ${{ matrix.php.version }}
+    needs: generatejobs
     runs-on: ubuntu-20.04
     steps:
       - name: cdout
@@ -35,13 +47,13 @@ jobs:
       - name: Install npm dependencies
         run: npm install
       - name: "Generate file SH"
-        if: matrix.php != '8.2.6'
-        run: npm run docker:build:php --folder=${{ matrix.php }}
+        if: matrix.php.latest == 'off'
+        run: npm run docker:build:php --folder=${{ matrix.php.version }}
       - name: "Generate file SH IF LAST"
-        if: matrix.php == '8.2.6'
-        run: npm run docker:build:php --folder=${{ matrix.php }} --latest
+        if: matrix.php.latest == 'on'
+        run: npm run docker:build:php --folder=${{ matrix.php.version }} --latest
       - name: "Build image"
-        run: ./build-php-${{ matrix.php }}.sh
+        run: ./build-php-${{ matrix.php.version }}.sh
       - name: "Show images"
         run: npm run docker:image:ls
       - name: Set up QEMU
