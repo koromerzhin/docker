@@ -63,10 +63,10 @@ program
           `sed -i 's/VERSIONIMAGE/php:${versionimage}-fpm/' build/phpfpm/${versionimage}/Dockerfile`
         );
         cmd.push(
-          `docker build --squash -t koromerzhin/php:${versionimage}-fpm build/phpfpm/${versionimage} --target build-phpfpm`
+          `docker build -t koromerzhin/php:${versionimage}-fpm build/phpfpm/${versionimage} --target build-phpfpm`
         );
         cmd.push(
-          `docker build --squash -t koromerzhin/php:${versionimage}-fpm-xdebug build/phpfpm/${versionimage} --target build-phpfpm-xdebug`
+          `docker build -t koromerzhin/php:${versionimage}-fpm-xdebug build/phpfpm/${versionimage} --target build-phpfpm-xdebug`
         );
         if (getLatest(options) != undefined) {
           cmd.push(
@@ -94,10 +94,10 @@ program
           `sed -i 's/VERSIONIMAGE/php:${versionimage}-apache/' build/php-apache/${versionimage}/Dockerfile`
         );
         cmd.push(
-          `docker build --squash -t koromerzhin/php:${versionimage}-apache build/php-apache/${versionimage} --target build-php-apache`
+          `docker build -t koromerzhin/php:${versionimage}-apache build/php-apache/${versionimage} --target build-php-apache`
         );
         cmd.push(
-          `docker build --squash -t koromerzhin/php:${versionimage}-apache-xdebug build/php-apache/${versionimage} --target build-php-apache-xdebug`
+          `docker build -t koromerzhin/php:${versionimage}-apache-xdebug build/php-apache/${versionimage} --target build-php-apache-xdebug`
         );
         if (getLatest(options) != undefined) {
           cmd.push(
