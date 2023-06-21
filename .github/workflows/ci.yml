@@ -19,12 +19,25 @@ jobs:
       - name: linter docker
         continue-on-error: true
         run: npm run lint:docker
+  generatejobs:
+    name: Generate Jobs
+    runs-on: ubuntu-latest
+    outputs:
+        php: ${{ steps.json_properties.outputs.php }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: get jobs by matrix.json
+        id: json_properties
+        uses: zoexx/github-action-json-file-properties@release
+        with:
+            file_path: "matrix.json"
   php:
     strategy:
       fail-fast: false
-      matrix: ${{ fromJson(file('php.yml')) }}
-    name: PHP ${{ matrix.version }}
-    needs: start
+      matrix: 
+        php: ${{ fromJson(needs.generatejobs.outputs.php) }}
+    name: PHP ${{ matrix.php.version }}
+    needs: generatejobs
     runs-on: ubuntu-20.04
     steps:
       - name: cdout
@@ -34,28 +47,30 @@ jobs:
       - name: Install npm dependencies
         run: npm install
       - name: "Generate file SH"
-        if: matrix.latest == 'off'
-        run: npm run docker:build:php --folder=${{ matrix.version }}
+        if: matrix.php.latest == 'off' && matrix.php.disable == 'off'
+        run: npm run docker:build:php --folder=${{ matrix.php.version }}
       - name: "Generate file SH IF LAST"
-        if: matrix.latest == 'on'
-        run: npm run docker:build:php --folder=${{ matrix.version }} --latest
+        if: matrix.php.latest == 'on' && matrix.php.disable == 'off'
+        run: npm run docker:build:php --folder=${{ matrix.php.version }} --latest
       - name: "Build image"
-        run: ./build-php-${{ matrix.version }}.sh
+        if: matrix.php.disable == 'off'
+        run: ./build-php-${{ matrix.php.version }}.sh
       - name: "Show images"
+        if: matrix.php.disable == 'off'
         run: npm run docker:image:ls
       - name: Set up QEMU
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' && matrix.php.disable == 'off'
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' && matrix.php.disable == 'off'
         uses: docker/setup-buildx-action@v2
       - name: Login to DockerHub
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' && matrix.php.disable == 'off'
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Push Docker
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' && matrix.php.disable == 'off'
         run: npm run docker:push:php
 
