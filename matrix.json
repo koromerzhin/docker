@@ -26,6 +26,11 @@
       "disable": "off"
     },
     {
+      "version": "8.0.29",
+      "latest": "off",
+      "disable": "off"
+    },
+    {
       "version": "8.1.6",
       "latest": "off",
       "disable": "off"
@@ -37,6 +42,11 @@
     },
     {
       "version": "8.1.13",
+      "latest": "off",
+      "disable": "off"
+    },
+    {
+      "version": "8.1.20",
       "latest": "off",
       "disable": "off"
     },
