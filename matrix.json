@@ -92,7 +92,7 @@
     },
     {
       "version": "8.2.8",
-      "latest": "off",
+      "latest": "on",
       "disable": "off"
     }
   ]
