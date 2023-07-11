@@ -87,8 +87,13 @@
     },
     {
       "version": "8.2.7",
-      "latest": "on",
+      "latest": "off",
       "disable": "on"
+    },
+    {
+      "version": "8.2.7",
+      "latest": "off",
+      "disable": "off"
     }
   ]
 }
