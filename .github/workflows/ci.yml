@@ -38,7 +38,7 @@ jobs:
         php: ${{ fromJson(needs.generatejobs.outputs.php) }}
     name: PHP ${{ matrix.php.version }}
     needs: generatejobs
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: cdout
         uses: actions/checkout@v3
