@@ -13,10 +13,13 @@ jobs:
         with:
           submodules: recursive
       - name: Install npm dependencies
+        timeout-minutes: 60
         run: npm install
       - name: linter markdown
+        timeout-minutes: 60
         run: npm run lint:markdown
       - name: linter docker
+        timeout-minutes: 60
         continue-on-error: true
         run: npm run lint:docker
   generatejobs:
@@ -45,17 +48,22 @@ jobs:
         with:
           submodules: recursive
       - name: Install npm dependencies
+        timeout-minutes: 60
         run: npm install
       - name: "Generate file SH"
+        timeout-minutes: 60
         if: matrix.php.latest == 'off' && matrix.php.disable == 'off'
         run: npm run docker:build:php --folder=${{ matrix.php.version }}
       - name: "Generate file SH IF LAST"
+        timeout-minutes: 60
         if: matrix.php.latest == 'on' && matrix.php.disable == 'off'
         run: npm run docker:build:php --folder=${{ matrix.php.version }} --latest
       - name: "Build image"
+        timeout-minutes: 60
         if: matrix.php.disable == 'off'
         run: ./build-php-${{ matrix.php.version }}.sh
       - name: "Show images"
+        timeout-minutes: 60
         if: matrix.php.disable == 'off'
         run: npm run docker:image:ls
       - name: Set up QEMU
