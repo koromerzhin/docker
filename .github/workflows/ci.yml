@@ -68,7 +68,7 @@ jobs:
         run: npm run docker:image:ls
       - name: Set up QEMU
         if: github.ref == 'refs/heads/main' && matrix.php.disable == 'off'
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
         if: github.ref == 'refs/heads/main' && matrix.php.disable == 'off'
         uses: docker/setup-buildx-action@v2
