@@ -102,6 +102,11 @@
     },
     {
       "version": "8.2.10",
+      "latest": "off",
+      "disable": "on"
+    },
+    {
+      "version": "8.2.11",
       "latest": "on",
       "disable": "off"
     }
