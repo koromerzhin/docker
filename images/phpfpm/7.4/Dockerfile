@@ -1,6 +1,6 @@
 FROM VERSIONIMAGE AS build-phpfpm
 
-ADD https://github.com/mlocati/docker-php-extension-installer/releases/download/2.1.30/install-php-extensions /usr/local/bin/
+ADD https://github.com/mlocati/docker-php-extension-installer/releases/download/2.1.65/install-php-extensions /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/install-php-extensions
 
