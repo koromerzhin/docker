@@ -110,9 +110,10 @@ program
           `docker build -t koromerzhin/php:${versionimage}-apache build/php-apache/${versionimage} --target build-php-apache`
         );
         if (getXdebug(options) == 'on') {
-        cmd.push(
-          `docker build -t koromerzhin/php:${versionimage}-apache-xdebug build/php-apache/${versionimage} --target build-php-apache-xdebug`
-        );
+          cmd.push(
+            `docker build -t koromerzhin/php:${versionimage}-apache-xdebug build/php-apache/${versionimage} --target build-php-apache-xdebug`
+          );
+        }
         if (getLatest(options) != undefined) {
           cmd.push(
             `docker image tag koromerzhin/php:${versionimage}-apache koromerzhin/php:apache-latest`
