@@ -29,6 +29,6 @@
   "homepage": "https://github.com/koromerzhin/docker#readme",
   "dependencies": {
     "dockerfilelint": "1.8.0",
-    "korojscommands": "^1.2.12"
+    "korojscommands": "^1.2.22"
   }
 }
