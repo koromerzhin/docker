@@ -25,6 +25,15 @@ function getLatest(options) {
   return latest;
 }
 
+function getXdebug(options) {
+  const xdebug =
+    process.env.npm_config_xdebug != undefined
+      ? process.env.npm_config_xdebug
+      : options.xdebug;
+
+  return xdebug;
+}
+
 function getVersions(folder) {
   const versions = fs
     .readdirSync(`images/${folder}`, { withFileTypes: true })
@@ -65,16 +74,20 @@ program
         cmd.push(
           `docker build -t koromerzhin/php:${versionimage}-fpm build/phpfpm/${versionimage} --target build-phpfpm`
         );
-        cmd.push(
-          `docker build -t koromerzhin/php:${versionimage}-fpm-xdebug build/phpfpm/${versionimage} --target build-phpfpm-xdebug`
-        );
-        if (getLatest(options) != undefined) {
+        if (getXdebug(options) == 'on') {
+          cmd.push(
+            `docker build -t koromerzhin/php:${versionimage}-fpm-xdebug build/phpfpm/${versionimage} --target build-phpfpm-xdebug`
+          );
+        }
+        if (getLatest(options) == 'on') {
           cmd.push(
             `docker image tag koromerzhin/php:${versionimage}-fpm koromerzhin/php:fpm-latest`
           );
-          cmd.push(
-            `docker image tag koromerzhin/php:${versionimage}-fpm-xdebug koromerzhin/php:fpm-latest-xdebug`
-          );
+          if (getXdebug(options) == 'on') {
+            cmd.push(
+              `docker image tag koromerzhin/php:${versionimage}-fpm-xdebug koromerzhin/php:fpm-latest-xdebug`
+            );
+          }
         }
       }
     });
@@ -96,6 +109,7 @@ program
         cmd.push(
           `docker build -t koromerzhin/php:${versionimage}-apache build/php-apache/${versionimage} --target build-php-apache`
         );
+        if (getXdebug(options) == 'on') {
         cmd.push(
           `docker build -t koromerzhin/php:${versionimage}-apache-xdebug build/php-apache/${versionimage} --target build-php-apache-xdebug`
         );
@@ -103,9 +117,11 @@ program
           cmd.push(
             `docker image tag koromerzhin/php:${versionimage}-apache koromerzhin/php:apache-latest`
           );
-          cmd.push(
-            `docker image tag koromerzhin/php:${versionimage}-apache-xdebug koromerzhin/php:apache-latest-xdebug`
-          );
+          if (getXdebug(options) == 'on') {
+            cmd.push(
+              `docker image tag koromerzhin/php:${versionimage}-apache-xdebug koromerzhin/php:apache-latest-xdebug`
+            );
+          }
         }
       }
     });
