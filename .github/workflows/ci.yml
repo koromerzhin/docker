@@ -50,14 +50,10 @@ jobs:
       - name: Install npm dependencies
         timeout-minutes: 60
         run: npm install
-      - name: "Generate file SH"
-        timeout-minutes: 60
-        if: matrix.php.latest == 'off' && matrix.php.disable == 'off'
-        run: npm run docker:build:php --folder=${{ matrix.php.version }}
       - name: "Generate file SH IF LAST"
         timeout-minutes: 60
-        if: matrix.php.latest == 'on' && matrix.php.disable == 'off'
-        run: npm run docker:build:php --folder=${{ matrix.php.version }} --latest
+        if: matrix.php.disable == 'off'
+        run: npm run docker:build:php --folder=${{ matrix.php.version }} --xdebug=${{ matrix.php.xdebug }} --latest=${{ matrix.php.latest }}
       - name: "Build image"
         timeout-minutes: 60
         if: matrix.php.disable == 'off'

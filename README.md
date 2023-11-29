@@ -49,7 +49,7 @@ npm run docker:push:php
 
 ## Vues images
 
-- [phpfpm](https://hub.docker.com/r/koromerzhin/php)
+- [php](https://hub.docker.com/r/koromerzhin/php)
 
 ## Author
 

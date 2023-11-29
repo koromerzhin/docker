@@ -1,6 +1,6 @@
 FROM VERSIONIMAGE AS build-php-apache
 
-ADD https://github.com/mlocati/docker-php-extension-installer/releases/download/2.1.30/install-php-extensions /usr/local/bin/
+ADD https://github.com/mlocati/docker-php-extension-installer/releases/download/2.1.67/install-php-extensions /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/install-php-extensions
 
@@ -33,11 +33,11 @@ RUN install-php-extensions \
     zip
 
 # Wordpress
-RUN wget https://github.com/wp-cli/wp-cli/releases/download/v2.8.1/wp-cli-2.8.1.phar -O wp-cli.phar && \
+RUN wget https://github.com/wp-cli/wp-cli/releases/download/v2.9.0/wp-cli-2.9.0.phar -O wp-cli.phar && \
     chmod +x wp-cli.phar && \
     mv wp-cli.phar /usr/local/bin/wp
 # Symfony
-RUN wget https://github.com/symfony-cli/symfony-cli/releases/download/v5.5.6/symfony-cli_5.5.6_amd64.deb -O symfony-cli_amd64.deb && \
+RUN wget https://github.com/symfony-cli/symfony-cli/releases/download/v5.7.3/symfony-cli_5.7.3_amd64.deb -O symfony-cli_amd64.deb && \
     dpkg -i symfony-cli_amd64.deb && \
     rm symfony-cli_amd64.deb
 
