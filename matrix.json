@@ -148,7 +148,7 @@
       "version": "8.3.1",
       "latest": "on",
       "disable": "off",
-      "xdebug": "on"
+      "xdebug": "off"
     }
   ]
 }
