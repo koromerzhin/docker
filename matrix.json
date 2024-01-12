@@ -141,8 +141,14 @@
     {
       "version": "8.3.0",
       "latest": "on",
-      "disable": "off",
+      "disable": "on",
       "xdebug": "on"
+    },
+    {
+      "version": "8.3.1",
+      "latest": "on",
+      "disable": "off",
+      "xdebug": "off"
     }
   ]
 }
