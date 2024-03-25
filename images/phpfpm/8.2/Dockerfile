@@ -32,18 +32,32 @@ RUN install-php-extensions \
     tidy \
     zip
 
+WORKDIR /var/www
+
+
+FROM build-phpfpm AS build-phpfpm-wordpress
 # Wordpress
 RUN wget https://github.com/wp-cli/wp-cli/releases/download/v2.9.0/wp-cli-2.9.0.phar -O wp-cli.phar && \
     chmod +x wp-cli.phar && \
     mv wp-cli.phar /usr/local/bin/wp
+
+FROM build-phpfpm AS build-phpfpm-symfony
 # Symfony
 RUN wget https://github.com/symfony-cli/symfony-cli/releases/download/v5.7.3/symfony-cli_5.7.3_amd64.deb -O symfony-cli_amd64.deb && \
     dpkg -i symfony-cli_amd64.deb && \
     rm symfony-cli_amd64.deb
 
-WORKDIR /var/www
-
 
 FROM build-phpfpm AS build-phpfpm-xdebug
+
+RUN install-php-extensions xdebug
+
+
+FROM build-phpfpm-wordpress AS build-phpfpm-xdebug-wordpress
+
+RUN install-php-extensions xdebug
+
+
+FROM build-phpfpm-symfony AS build-phpfpm-xdebug-symfony
 
 RUN install-php-extensions xdebug
