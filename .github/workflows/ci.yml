@@ -49,6 +49,7 @@ jobs:
           submodules: recursive
       - name: Install npm dependencies
         timeout-minutes: 60
+        if: matrix.php.disable == 'off'
         run: npm install
       - name: "Generate file SH IF LAST"
         timeout-minutes: 60
