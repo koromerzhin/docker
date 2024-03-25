@@ -79,7 +79,7 @@ program
             `docker build -t koromerzhin/php:${versionimage}-fpm-xdebug build/phpfpm/${versionimage} --target build-phpfpm-xdebug`
           );
         }
-        if (getLatest(options) == 'on') {
+        if (getLatest(options) != 'undefined') {
           cmd.push(
             `docker image tag koromerzhin/php:${versionimage}-fpm koromerzhin/php:fpm-latest`
           );
