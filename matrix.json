@@ -146,6 +146,12 @@
     },
     {
       "version": "8.3.1",
+      "latest": "off",
+      "disable": "off",
+      "xdebug": "off"
+    },
+    {
+      "version": "8.3.2",
       "latest": "on",
       "disable": "off",
       "xdebug": "off"
