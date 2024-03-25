@@ -74,16 +74,40 @@ program
         cmd.push(
           `docker build -t koromerzhin/php:${versionimage}-fpm build/phpfpm/${versionimage} --target build-phpfpm`
         );
+        cmd.push(
+          `docker build -t koromerzhin/php:${versionimage}-fpm-wordpress build/phpfpm/${versionimage} --target build-phpfpm-wordpress`
+        );
+        cmd.push(
+          `docker build -t koromerzhin/php:${versionimage}-fpm-symfony build/phpfpm/${versionimage} --target build-phpfpm-symfony`
+        );
         if (getXdebug(options) == 'on') {
           cmd.push(
             `docker build -t koromerzhin/php:${versionimage}-fpm-xdebug build/phpfpm/${versionimage} --target build-phpfpm-xdebug`
           );
+          cmd.push(
+            `docker build -t koromerzhin/php:${versionimage}-fpm-wordpress-xdebug build/phpfpm/${versionimage} --target build-phpfpm-wordpress-xdebug`
+          );
+          cmd.push(
+            `docker build -t koromerzhin/php:${versionimage}-fpm-symfony-xdebug build/phpfpm/${versionimage} --target build-phpfpm-symfony-xdebug`
+          );
         }
-        if (getLatest(options) != 'on') {
+        if (getLatest(options) == 'on') {
           cmd.push(
             `docker image tag koromerzhin/php:${versionimage}-fpm koromerzhin/php:fpm-latest`
           );
+          cmd.push(
+            `docker image tag koromerzhin/php:${versionimage}-fpm-wordpress koromerzhin/php:fpm-wordpress-latest`
+          );
+          cmd.push(
+            `docker image tag koromerzhin/php:${versionimage}-fpm-symfony koromerzhin/php:fpm-symfony-latest`
+          );
           if (getXdebug(options) == 'on') {
+            cmd.push(
+              `docker image tag koromerzhin/php:${versionimage}-fpm-wordpress-xdebug koromerzhin/php:fpm-latest-wordpress-xdebug`
+            );
+            cmd.push(
+              `docker image tag koromerzhin/php:${versionimage}-fpm-symfony-xdebug koromerzhin/php:fpm-latest-symfony-xdebug`
+            );
             cmd.push(
               `docker image tag koromerzhin/php:${versionimage}-fpm-xdebug koromerzhin/php:fpm-latest-xdebug`
             );
