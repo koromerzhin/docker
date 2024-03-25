@@ -79,7 +79,7 @@ program
             `docker build -t koromerzhin/php:${versionimage}-fpm-xdebug build/phpfpm/${versionimage} --target build-phpfpm-xdebug`
           );
         }
-        if (getLatest(options) != 'undefined') {
+        if (getLatest(options) != 'on') {
           cmd.push(
             `docker image tag koromerzhin/php:${versionimage}-fpm koromerzhin/php:fpm-latest`
           );
@@ -126,7 +126,7 @@ program
             `docker build -t koromerzhin/php:${versionimage}-apache-symfony-xdebug build/php-apache/${versionimage} --target build-php-apache-symfony-xdebug`
           );
         }
-        if (getLatest(options) != undefined) {
+        if (getLatest(options) == 'on') {
           cmd.push(
             `docker image tag koromerzhin/php:${versionimage}-apache koromerzhin/php:apache-latest`
           );
