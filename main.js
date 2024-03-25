@@ -31,6 +31,15 @@ function getXdebug(options) {
   return xdebug;
 }
 
+function getSelect(options) {
+  const only =
+    process.env.npm_config_select != undefined
+      ? process.env.npm_config_select
+      : options.select;
+
+  return only;
+}
+
 function getVersions(folder) {
   const versions = fs
     .readdirSync(`images/${folder}`, { withFileTypes: true })
@@ -51,134 +60,139 @@ program
   .description("build php images")
   .option("--folder <folder>", "images version")
   .option("--latest", "latest")
+  .option("--select", "select")
   .action(async (options) => {
     const selectfolder = getSelectfolder(options);
-    cmdbuild = [];
-    cmdtag = [];
-    versions = getVersions("phpfpm");
-    versions.forEach((version) => {
-      let versionimage = setVersionImage(selectfolder, version);
-      if (
-        selectfolder == undefined ||
-        selectfolder == version ||
-        selectfolder.split(version).length - 1 == 1
-      ) {
-        cmdbuild.push(`mkdir -p build/phpfpm/${versionimage}`);
-        cmdbuild.push(
-          `cp images/phpfpm/${version}/Dockerfile build/phpfpm/${versionimage}/Dockerfile`
-        );
-        cmdbuild.push(
-          `sed -i 's/VERSIONIMAGE/php:${versionimage}-fpm/' build/phpfpm/${versionimage}/Dockerfile`
-        );
-        cmdbuild.push(
-          `docker build -t koromerzhin/php:${versionimage}-fpm build/phpfpm/${versionimage} --target build-phpfpm`
-        );
-        cmdbuild.push(
-          `docker build -t koromerzhin/php:${versionimage}-fpm-wordpress build/phpfpm/${versionimage} --target build-phpfpm-wordpress`
-        );
-        cmdbuild.push(
-          `docker build -t koromerzhin/php:${versionimage}-fpm-symfony build/phpfpm/${versionimage} --target build-phpfpm-symfony`
-        );
-        if (getXdebug(options) == 'on') {
+    if (getSelect(options) == 'phpfpm' || getSelect(options) == undefined) {
+      cmdbuild = [];
+      cmdtag = [];
+      versions = getVersions("phpfpm");
+      versions.forEach((version) => {
+        let versionimage = setVersionImage(selectfolder, version);
+        if (
+          selectfolder == undefined ||
+          selectfolder == version ||
+          selectfolder.split(version).length - 1 == 1
+        ) {
+          cmdbuild.push(`mkdir -p build/phpfpm/${versionimage}`);
           cmdbuild.push(
-            `docker build -t koromerzhin/php:${versionimage}-fpm-xdebug build/phpfpm/${versionimage} --target build-phpfpm-xdebug`
+            `cp images/phpfpm/${version}/Dockerfile build/phpfpm/${versionimage}/Dockerfile`
           );
           cmdbuild.push(
-            `docker build -t koromerzhin/php:${versionimage}-fpm-wordpress-xdebug build/phpfpm/${versionimage} --target build-phpfpm-wordpress-xdebug`
+            `sed -i 's/VERSIONIMAGE/php:${versionimage}-fpm/' build/phpfpm/${versionimage}/Dockerfile`
           );
           cmdbuild.push(
-            `docker build -t koromerzhin/php:${versionimage}-fpm-symfony-xdebug build/phpfpm/${versionimage} --target build-phpfpm-symfony-xdebug`
+            `docker build -t koromerzhin/php:${versionimage}-fpm build/phpfpm/${versionimage} --target build-phpfpm`
           );
-        }
-        if (getLatest(options) == 'on') {
-          cmdtag.push(
-            `docker image tag koromerzhin/php:${versionimage}-fpm koromerzhin/php:fpm-latest`
+          cmdbuild.push(
+            `docker build -t koromerzhin/php:${versionimage}-fpm-wordpress build/phpfpm/${versionimage} --target build-phpfpm-wordpress`
           );
-          cmdtag.push(
-            `docker image tag koromerzhin/php:${versionimage}-fpm-wordpress koromerzhin/php:fpm-wordpress-latest`
-          );
-          cmdtag.push(
-            `docker image tag koromerzhin/php:${versionimage}-fpm-symfony koromerzhin/php:fpm-symfony-latest`
+          cmdbuild.push(
+            `docker build -t koromerzhin/php:${versionimage}-fpm-symfony build/phpfpm/${versionimage} --target build-phpfpm-symfony`
           );
           if (getXdebug(options) == 'on') {
-            cmdtag.push(
-              `docker image tag koromerzhin/php:${versionimage}-fpm-wordpress-xdebug koromerzhin/php:fpm-latest-wordpress-xdebug`
+            cmdbuild.push(
+              `docker build -t koromerzhin/php:${versionimage}-fpm-xdebug build/phpfpm/${versionimage} --target build-phpfpm-xdebug`
             );
-            cmdtag.push(
-              `docker image tag koromerzhin/php:${versionimage}-fpm-symfony-xdebug koromerzhin/php:fpm-latest-symfony-xdebug`
+            cmdbuild.push(
+              `docker build -t koromerzhin/php:${versionimage}-fpm-wordpress-xdebug build/phpfpm/${versionimage} --target build-phpfpm-wordpress-xdebug`
             );
-            cmdtag.push(
-              `docker image tag koromerzhin/php:${versionimage}-fpm-xdebug koromerzhin/php:fpm-latest-xdebug`
+            cmdbuild.push(
+              `docker build -t koromerzhin/php:${versionimage}-fpm-symfony-xdebug build/phpfpm/${versionimage} --target build-phpfpm-symfony-xdebug`
             );
           }
+          if (getLatest(options) == 'on') {
+            cmdtag.push(
+              `docker image tag koromerzhin/php:${versionimage}-fpm koromerzhin/php:fpm-latest`
+            );
+            cmdtag.push(
+              `docker image tag koromerzhin/php:${versionimage}-fpm-wordpress koromerzhin/php:fpm-wordpress-latest`
+            );
+            cmdtag.push(
+              `docker image tag koromerzhin/php:${versionimage}-fpm-symfony koromerzhin/php:fpm-symfony-latest`
+            );
+            if (getXdebug(options) == 'on') {
+              cmdtag.push(
+                `docker image tag koromerzhin/php:${versionimage}-fpm-wordpress-xdebug koromerzhin/php:fpm-latest-wordpress-xdebug`
+              );
+              cmdtag.push(
+                `docker image tag koromerzhin/php:${versionimage}-fpm-symfony-xdebug koromerzhin/php:fpm-latest-symfony-xdebug`
+              );
+              cmdtag.push(
+                `docker image tag koromerzhin/php:${versionimage}-fpm-xdebug koromerzhin/php:fpm-latest-xdebug`
+              );
+            }
+          }
         }
-      }
-    });
-    saveInFile('build', cmdbuild, "fpm", selectfolder);
-    saveInFile('tag', cmdtag, "fpm", selectfolder);
-    cmdbuild = [];
-    cmdtag = [];
-    versions = getVersions("php-apache");
-    versions.forEach((version) => {
-      let versionimage = setVersionImage(selectfolder, version);
-      if (
-        selectfolder == undefined ||
-        selectfolder == version ||
-        selectfolder.split(version).length - 1 == 1
-      ) {
-        cmdbuild.push(`mkdir -p build/php-apache/${versionimage}`);
-        cmdbuild.push(
-          `cp images/php-apache/${version}/Dockerfile build/php-apache/${versionimage}/Dockerfile`
-        );
-        cmdbuild.push(
-          `sed -i 's/VERSIONIMAGE/php:${versionimage}-apache/' build/php-apache/${versionimage}/Dockerfile`
-        );
-        cmdbuild.push(
-          `docker build -t koromerzhin/php:${versionimage}-apache build/php-apache/${versionimage} --target build-php-apache`
-        );
-        cmdbuild.push(
-          `docker build -t koromerzhin/php:${versionimage}-apache-wordpress build/php-apache/${versionimage} --target build-php-apache-wordpress`
-        );
-        cmdbuild.push(
-          `docker build -t koromerzhin/php:${versionimage}-apache-symfony build/php-apache/${versionimage} --target build-php-apache-symfony`
-        );
-        if (getXdebug(options) == 'on') {
+      });
+      saveInFile('build', cmdbuild, "fpm", selectfolder);
+      saveInFile('tag', cmdtag, "fpm", selectfolder);
+    }
+    if (getSelect(options) == 'apache' || getSelect(options) == undefined) {
+      cmdbuild = [];
+      cmdtag = [];
+      versions = getVersions("php-apache");
+      versions.forEach((version) => {
+        let versionimage = setVersionImage(selectfolder, version);
+        if (
+          selectfolder == undefined ||
+          selectfolder == version ||
+          selectfolder.split(version).length - 1 == 1
+        ) {
+          cmdbuild.push(`mkdir -p build/php-apache/${versionimage}`);
           cmdbuild.push(
-            `docker build -t koromerzhin/php:${versionimage}-apache-xdebug build/php-apache/${versionimage} --target build-php-apache-xdebug`
+            `cp images/php-apache/${version}/Dockerfile build/php-apache/${versionimage}/Dockerfile`
           );
           cmdbuild.push(
-            `docker build -t koromerzhin/php:${versionimage}-apache-wordpress-xdebug build/php-apache/${versionimage} --target build-php-apache-wordpress-xdebug`
+            `sed -i 's/VERSIONIMAGE/php:${versionimage}-apache/' build/php-apache/${versionimage}/Dockerfile`
           );
           cmdbuild.push(
-            `docker build -t koromerzhin/php:${versionimage}-apache-symfony-xdebug build/php-apache/${versionimage} --target build-php-apache-symfony-xdebug`
+            `docker build -t koromerzhin/php:${versionimage}-apache build/php-apache/${versionimage} --target build-php-apache`
           );
-        }
-        if (getLatest(options) == 'on') {
-          cmdtag.push(
-            `docker image tag koromerzhin/php:${versionimage}-apache koromerzhin/php:apache-latest`
+          cmdbuild.push(
+            `docker build -t koromerzhin/php:${versionimage}-apache-wordpress build/php-apache/${versionimage} --target build-php-apache-wordpress`
           );
-          cmdtag.push(
-            `docker image tag koromerzhin/php:${versionimage}-apache-wordpress koromerzhin/php:apache-wordpress-latest`
-          );
-          cmdtag.push(
-            `docker image tag koromerzhin/php:${versionimage}-apache-symfony koromerzhin/php:apache-symfony-latest`
+          cmdbuild.push(
+            `docker build -t koromerzhin/php:${versionimage}-apache-symfony build/php-apache/${versionimage} --target build-php-apache-symfony`
           );
           if (getXdebug(options) == 'on') {
-            cmdtag.push(
-              `docker image tag koromerzhin/php:${versionimage}-apache-xdebug koromerzhin/php:apache-latest-xdebug`
+            cmdbuild.push(
+              `docker build -t koromerzhin/php:${versionimage}-apache-xdebug build/php-apache/${versionimage} --target build-php-apache-xdebug`
             );
-            cmdtag.push(
-              `docker image tag koromerzhin/php:${versionimage}-apache-wordpress-xdebug koromerzhin/php:apache-wordpress-latest-xdebug`
+            cmdbuild.push(
+              `docker build -t koromerzhin/php:${versionimage}-apache-wordpress-xdebug build/php-apache/${versionimage} --target build-php-apache-wordpress-xdebug`
             );
-            cmdtag.push(
-              `docker image tag koromerzhin/php:${versionimage}-apache-symfony-xdebug koromerzhin/php:apache-symfony-latest-xdebug`
+            cmdbuild.push(
+              `docker build -t koromerzhin/php:${versionimage}-apache-symfony-xdebug build/php-apache/${versionimage} --target build-php-apache-symfony-xdebug`
             );
           }
+          if (getLatest(options) == 'on') {
+            cmdtag.push(
+              `docker image tag koromerzhin/php:${versionimage}-apache koromerzhin/php:apache-latest`
+            );
+            cmdtag.push(
+              `docker image tag koromerzhin/php:${versionimage}-apache-wordpress koromerzhin/php:apache-wordpress-latest`
+            );
+            cmdtag.push(
+              `docker image tag koromerzhin/php:${versionimage}-apache-symfony koromerzhin/php:apache-symfony-latest`
+            );
+            if (getXdebug(options) == 'on') {
+              cmdtag.push(
+                `docker image tag koromerzhin/php:${versionimage}-apache-xdebug koromerzhin/php:apache-latest-xdebug`
+              );
+              cmdtag.push(
+                `docker image tag koromerzhin/php:${versionimage}-apache-wordpress-xdebug koromerzhin/php:apache-wordpress-latest-xdebug`
+              );
+              cmdtag.push(
+                `docker image tag koromerzhin/php:${versionimage}-apache-symfony-xdebug koromerzhin/php:apache-symfony-latest-xdebug`
+              );
+            }
+          }
         }
-      }
-    });
-    saveInFile('build', cmdbuild, "php-apache", selectfolder);
-    saveInFile('tag', cmdtag, "php-apache", selectfolder);
+      });
+      saveInFile('build', cmdbuild, "php-apache", selectfolder);
+      saveInFile('tag', cmdtag, "php-apache", selectfolder);
+    }
   });
 
 function saveInFile(type, cmd, image, selectfolder) {
