@@ -125,8 +125,8 @@ program
           }
         }
       });
-      saveInFile('build', cmdbuild, "fpm", selectfolder);
-      saveInFile('tag', cmdtag, "fpm", selectfolder);
+      saveInFile('build', cmdbuild, "php-fpm", selectfolder);
+      saveInFile('tag', cmdtag, "php-fpm", selectfolder);
     }
     if (getSelect(options) == 'apache' || getSelect(options) == undefined) {
       cmdbuild = [];
