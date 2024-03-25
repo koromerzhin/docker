@@ -49,23 +49,18 @@ jobs:
           submodules: recursive
       - name: Install npm dependencies
         timeout-minutes: 60
-        if: matrix.php.disable == 'off'
         run: npm install
       - name: "Generate file SH IF LAST"
         timeout-minutes: 60
-        if: matrix.php.disable == 'off'
         run: npm run docker:build:php --folder=${{ matrix.php.version }} --xdebug=${{ matrix.php.xdebug }} --latest=${{ matrix.php.latest }} --select=phpfpm
       - name: "Build image PHP FPM"
         timeout-minutes: 60
-        if: matrix.php.disable == 'off'
         run: ./build-php-fpm-${{ matrix.php.version }}.sh
       - name: "TAG image PHP FPM"
         timeout-minutes: 60
-        if: matrix.php.disable == 'off'
         run: ./tag-php-fpm-${{ matrix.php.version }}.sh
       - name: "Show images"
         timeout-minutes: 60
-        if: matrix.php.disable == 'off'
         run: npm run docker:image:ls
       - name: Set up QEMU
         if: github.ref == 'refs/heads/main' && matrix.php.disable == 'off'
@@ -97,23 +92,18 @@ jobs:
           submodules: recursive
       - name: Install npm dependencies
         timeout-minutes: 60
-        if: matrix.php.disable == 'off'
         run: npm install
       - name: "Generate file SH IF LAST"
         timeout-minutes: 60
-        if: matrix.php.disable == 'off'
         run: npm run docker:build:php --folder=${{ matrix.php.version }} --xdebug=${{ matrix.php.xdebug }} --latest=${{ matrix.php.latest }} --select=apache
       - name: "Build image PHP APACHE"
         timeout-minutes: 60
-        if: matrix.php.disable == 'off'
         run: ./build-php-apache-${{ matrix.php.version }}.sh
       - name: "TAG image PHP APACHE"
         timeout-minutes: 60
-        if: matrix.php.disable == 'off'
         run: ./tag-php-apache-${{ matrix.php.version }}.sh
       - name: "Show images"
         timeout-minutes: 60
-        if: matrix.php.disable == 'off'
         run: npm run docker:image:ls
       - name: Set up QEMU
         if: github.ref == 'refs/heads/main' && matrix.php.disable == 'off'
