@@ -55,10 +55,10 @@ FROM build-php-apache AS build-php-apache-xdebug
 
 RUN install-php-extensions xdebug
 
-FROM build-php-apache-wordpress AS build-php-apache-xdebug-wordpress
+FROM build-php-apache-wordpress AS build-php-apache-wordpress-xdebug
 
 RUN install-php-extensions xdebug
 
-FROM build-php-apache-symfony AS build-php-apache-xdebug-symfony
+FROM build-php-apache-symfony AS build-php-apache-symfony-xdebug
 
 RUN install-php-extensions xdebug

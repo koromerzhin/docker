@@ -54,10 +54,6 @@ jobs:
         timeout-minutes: 60
         if: matrix.php.disable == 'off'
         run: npm run docker:build:php --folder=${{ matrix.php.version }} --xdebug=${{ matrix.php.xdebug }} --latest=${{ matrix.php.latest }}
-      - name: "Show build image"
-        timeout-minutes: 60
-        if: matrix.php.disable == 'off'
-        run: cat build-php-${{ matrix.php.version }}.sh
       - name: "Build image"
         timeout-minutes: 60
         if: matrix.php.disable == 'off'

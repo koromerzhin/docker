@@ -109,18 +109,42 @@ program
         cmd.push(
           `docker build -t koromerzhin/php:${versionimage}-apache build/php-apache/${versionimage} --target build-php-apache`
         );
+        cmd.push(
+          `docker build -t koromerzhin/php:${versionimage}-apache-wordpress build/php-apache/${versionimage} --target build-php-apache-wordpress`
+        );
+        cmd.push(
+          `docker build -t koromerzhin/php:${versionimage}-apache-symfony build/php-apache/${versionimage} --target build-php-apache-symfony`
+        );
         if (getXdebug(options) == 'on') {
           cmd.push(
             `docker build -t koromerzhin/php:${versionimage}-apache-xdebug build/php-apache/${versionimage} --target build-php-apache-xdebug`
+          );
+          cmd.push(
+            `docker build -t koromerzhin/php:${versionimage}-apache-wordpress-xdebug build/php-apache/${versionimage} --target build-php-apache-wordpress-xdebug`
+          );
+          cmd.push(
+            `docker build -t koromerzhin/php:${versionimage}-apache-symfony-xdebug build/php-apache/${versionimage} --target build-php-apache-symfony-xdebug`
           );
         }
         if (getLatest(options) != undefined) {
           cmd.push(
             `docker image tag koromerzhin/php:${versionimage}-apache koromerzhin/php:apache-latest`
           );
+          cmd.push(
+            `docker image tag koromerzhin/php:${versionimage}-apache-wordpress koromerzhin/php:apache-wordpress-latest`
+          );
+          cmd.push(
+            `docker image tag koromerzhin/php:${versionimage}-apache-symfony koromerzhin/php:apache-symfony-latest`
+          );
           if (getXdebug(options) == 'on') {
             cmd.push(
               `docker image tag koromerzhin/php:${versionimage}-apache-xdebug koromerzhin/php:apache-latest-xdebug`
+            );
+            cmd.push(
+              `docker image tag koromerzhin/php:${versionimage}-apache-wordpress-xdebug koromerzhin/php:apache-wordpress-latest-xdebug`
+            );
+            cmd.push(
+              `docker image tag koromerzhin/php:${versionimage}-apache-symfony-xdebug koromerzhin/php:apache-symfony-latest-xdebug`
             );
           }
         }

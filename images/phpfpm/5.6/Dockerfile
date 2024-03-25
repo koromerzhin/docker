@@ -54,11 +54,11 @@ FROM build-phpfpm AS build-phpfpm-xdebug
 RUN install-php-extensions xdebug
 
 
-FROM build-phpfpm-wordpress AS build-phpfpm-xdebug-wordpress
+FROM build-phpfpm-wordpress AS build-phpfpm-wordpress-xdebug
 
 RUN install-php-extensions xdebug
 
 
-FROM build-phpfpm-symfony AS build-phpfpm-xdebug-symfony
+FROM build-phpfpm-symfony AS build-phpfpm-symfony-xdebug
 
 RUN install-php-extensions xdebug
