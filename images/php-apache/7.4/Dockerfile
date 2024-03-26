@@ -32,20 +32,33 @@ RUN install-php-extensions \
     tidy \
     zip
 
-# Wordpress
-RUN wget https://github.com/wp-cli/wp-cli/releases/download/v2.9.0/wp-cli-2.9.0.phar -O wp-cli.phar && \
-    chmod +x wp-cli.phar && \
-    mv wp-cli.phar /usr/local/bin/wp
-# Symfony
-RUN wget https://github.com/symfony-cli/symfony-cli/releases/download/v5.7.3/symfony-cli_5.7.3_amd64.deb -O symfony-cli_amd64.deb && \
-    dpkg -i symfony-cli_amd64.deb && \
-    rm symfony-cli_amd64.deb
-
 WORKDIR /var/www
 
 EXPOSE 9000
 
 
+FROM build-php-apache AS build-php-apache-wordpress
+# Wordpress
+RUN wget https://github.com/wp-cli/wp-cli/releases/download/v2.9.0/wp-cli-2.9.0.phar -O wp-cli.phar && \
+    chmod +x wp-cli.phar && \
+    mv wp-cli.phar /usr/local/bin/wp
+    
+
+FROM build-php-apache AS build-php-apache-symfony
+# Symfony
+RUN wget https://github.com/symfony-cli/symfony-cli/releases/download/v5.7.3/symfony-cli_5.7.3_amd64.deb -O symfony-cli_amd64.deb && \
+    dpkg -i symfony-cli_amd64.deb && \
+    rm symfony-cli_amd64.deb
+    
+
 FROM build-php-apache AS build-php-apache-xdebug
+
+RUN install-php-extensions xdebug
+
+FROM build-php-apache-wordpress AS build-php-apache-wordpress-xdebug
+
+RUN install-php-extensions xdebug
+
+FROM build-php-apache-symfony AS build-php-apache-symfony-xdebug
 
 RUN install-php-extensions xdebug

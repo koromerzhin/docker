@@ -34,12 +34,12 @@ jobs:
         uses: zoexx/github-action-json-file-properties@release
         with:
             file_path: "matrix.json"
-  php:
+  phpfpm:
     strategy:
       fail-fast: false
       matrix: 
         php: ${{ fromJson(needs.generatejobs.outputs.php) }}
-    name: PHP ${{ matrix.php.version }}
+    name: PHP FPM ${{ matrix.php.version }}
     needs: generatejobs
     runs-on: ubuntu-22.04
     steps:
@@ -49,15 +49,20 @@ jobs:
           submodules: recursive
       - name: Install npm dependencies
         timeout-minutes: 60
+        if: matrix.php.disable == 'off'
         run: npm install
       - name: "Generate file SH IF LAST"
         timeout-minutes: 60
         if: matrix.php.disable == 'off'
-        run: npm run docker:build:php --folder=${{ matrix.php.version }} --xdebug=${{ matrix.php.xdebug }} --latest=${{ matrix.php.latest }}
-      - name: "Build image"
+        run: npm run docker:build:php --folder=${{ matrix.php.version }} --xdebug=${{ matrix.php.xdebug }} --latest=${{ matrix.php.latest }} --select=phpfpm
+      - name: "Build image PHP FPM"
         timeout-minutes: 60
         if: matrix.php.disable == 'off'
-        run: ./build-php-${{ matrix.php.version }}.sh
+        run: ./build-php-fpm-${{ matrix.php.version }}.sh
+      - name: "TAG image PHP FPM"
+        timeout-minutes: 60
+        if: matrix.php.disable == 'off'
+        run: ./tag-php-fpm-${{ matrix.php.version }}.sh
       - name: "Show images"
         timeout-minutes: 60
         if: matrix.php.disable == 'off'
@@ -77,4 +82,54 @@ jobs:
       - name: Push Docker
         if: github.ref == 'refs/heads/main' && matrix.php.disable == 'off'
         run: npm run docker:push:php
+  phpapache:
+    strategy:
+      fail-fast: false
+      matrix: 
+        php: ${{ fromJson(needs.generatejobs.outputs.php) }}
+    name: PHP APACHE ${{ matrix.php.version }}
+    needs: generatejobs
+    runs-on: ubuntu-22.04
+    steps:
+      - name: cdout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Install npm dependencies
+        timeout-minutes: 60
+        if: matrix.php.disable == 'off'
+        run: npm install
+      - name: "Generate file SH IF LAST"
+        if: matrix.php.disable == 'off'
+        timeout-minutes: 60
+        run: npm run docker:build:php --folder=${{ matrix.php.version }} --xdebug=${{ matrix.php.xdebug }} --latest=${{ matrix.php.latest }} --select=apache
+      - name: "Build image PHP APACHE"
+        timeout-minutes: 60
+        if: matrix.php.disable == 'off'
+        run: ./build-php-apache-${{ matrix.php.version }}.sh
+      - name: "TAG image PHP APACHE"
+        timeout-minutes: 60
+        if: matrix.php.disable == 'off'
+        run: ./tag-php-apache-${{ matrix.php.version }}.sh
+      - name: "Show images"
+        timeout-minutes: 60
+        if: matrix.php.disable == 'off'
+        run: npm run docker:image:ls
+      - name: Set up QEMU
+        if: github.ref == 'refs/heads/main' && matrix.php.disable == 'off'
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        if: github.ref == 'refs/heads/main' && matrix.php.disable == 'off'
+        uses: docker/setup-buildx-action@v3
+      - name: Login to DockerHub
+        if: github.ref == 'refs/heads/main' && matrix.php.disable == 'off'
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Push Docker
+        if: github.ref == 'refs/heads/main' && matrix.php.disable == 'off'
+        run: npm run docker:push:php
+
+
 
