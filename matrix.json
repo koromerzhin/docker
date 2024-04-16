@@ -169,12 +169,6 @@
       "xdebug": "on"
     },
     {
-      "version": "8.3.5",
-      "latest": "off",
-      "disable": "off",
-      "xdebug": "on"
-    },
-    {
       "version": "8.3.6",
       "latest": "on",
       "disable": "off",
