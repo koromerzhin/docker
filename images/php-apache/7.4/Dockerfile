@@ -42,14 +42,14 @@ FROM build-php-apache AS build-php-apache-wordpress
 RUN wget https://github.com/wp-cli/wp-cli/releases/download/v2.10.0/wp-cli-2.10.0.phar -O wp-cli.phar && \
     chmod +x wp-cli.phar && \
     mv wp-cli.phar /usr/local/bin/wp
-    
+
 
 FROM build-php-apache AS build-php-apache-symfony
 # Symfony
 RUN wget https://github.com/symfony-cli/symfony-cli/releases/download/v5.8.15/symfony-cli_5.8.15_amd64.deb -O symfony-cli_amd64.deb && \
     dpkg -i symfony-cli_amd64.deb && \
     rm symfony-cli_amd64.deb
-    
+
 
 FROM build-php-apache AS build-php-apache-xdebug
 

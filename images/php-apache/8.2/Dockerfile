@@ -48,7 +48,7 @@ FROM build-php-apache AS build-php-apache-symfony
 RUN wget https://github.com/symfony-cli/symfony-cli/releases/download/v5.8.15/symfony-cli_5.8.15_amd64.deb -O symfony-cli_amd64.deb && \
     dpkg -i symfony-cli_amd64.deb && \
     rm symfony-cli_amd64.deb
-    
+
 
 FROM build-php-apache AS build-php-apache-xdebug
 
