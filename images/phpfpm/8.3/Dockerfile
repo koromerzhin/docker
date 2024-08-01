@@ -1,6 +1,6 @@
 FROM VERSIONIMAGE AS build-phpfpm
 
-ADD https://github.com/mlocati/docker-php-extension-installer/releases/download/2.2.11/install-php-extensions /usr/local/bin/
+ADD https://github.com/mlocati/docker-php-extension-installer/releases/download/2.3.2/install-php-extensions /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/install-php-extensions
 
@@ -18,7 +18,6 @@ RUN install-php-extensions \
     blackfire \
     exif \
     gd \
-    imagick \
     intl \
     ldap \
     mysqli \
