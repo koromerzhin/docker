@@ -9,7 +9,7 @@ ARG GID=1000
 RUN groupadd -g ${GID} appgroup && useradd -u ${UID} -g appgroup appuser
 
 # Fixer les permissions
-RUN chown -R appuser:appgroup /var/www/html
+RUN chown -R appuser:appgroup /var/www
 
 # Exécuter le conteneur en tant qu'utilisateur
 USER appuser
