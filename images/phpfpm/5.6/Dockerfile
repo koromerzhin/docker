@@ -4,16 +4,6 @@ ADD https://github.com/mlocati/docker-php-extension-installer/releases/download/
 
 RUN chmod +x /usr/local/bin/install-php-extensions
 
-ARG UID=1000
-ARG GID=1000
-RUN groupadd -g ${GID} appgroup && useradd -u ${UID} -g appgroup appuser
-
-# Fixer les permissions
-RUN chown -R appuser:appgroup /var/www
-
-# Exécuter le conteneur en tant qu'utilisateur
-USER appuser
-
 RUN apt-get update && \
     apt-get install -y wget git fish unzip zip graphviz --no-install-recommends && \
     apt-get clean && \
