@@ -3,7 +3,7 @@
     {
       "version": "5.6.40",
       "latest": "off",
-      "disable": "off",
+      "disable": "on",
       "xdebug": "on"
     },
     {
