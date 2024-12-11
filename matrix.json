@@ -3,35 +3,41 @@
     {
       "version": "5.6.40",
       "latest": "off",
-      "disable": "on",
+      "disable": "off",
       "xdebug": "on"
     },
     {
       "version": "7.4.33",
       "latest": "off",
-      "disable": "on",
+      "disable": "off",
       "xdebug": "on"
     },
     {
-      "version": "8.0.29",
+      "version": "8.0.30",
       "latest": "off",
-      "disable": "on",
+      "disable": "off",
       "xdebug": "on"
     },
     {
-      "version": "8.1.20",
+      "version": "8.1.31",
       "latest": "off",
-      "disable": "on",
+      "disable": "off",
       "xdebug": "on"
     },
     {
-      "version": "8.2.12",
+      "version": "8.2.26",
       "latest": "off",
-      "disable": "on",
+      "disable": "off",
       "xdebug": "on"
     },
     {
-      "version": "8.3.9",
+      "version": "8.3.14",
+      "latest": "off",
+      "disable": "off",
+      "xdebug": "on"
+    },
+    {
+      "version": "8.4.1",
       "latest": "on",
       "disable": "off",
       "xdebug": "on"

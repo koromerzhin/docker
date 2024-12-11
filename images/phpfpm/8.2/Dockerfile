@@ -1,6 +1,6 @@
 FROM VERSIONIMAGE AS build-phpfpm
 
-ADD https://github.com/mlocati/docker-php-extension-installer/releases/download/2.2.11/install-php-extensions /usr/local/bin/
+ADD https://github.com/mlocati/docker-php-extension-installer/releases/download/2.7.6/install-php-extensions /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/install-php-extensions
 
@@ -43,7 +43,7 @@ RUN wget https://github.com/wp-cli/wp-cli/releases/download/v2.10.0/wp-cli-2.10.
 
 FROM build-phpfpm AS build-phpfpm-symfony
 # Symfony
-RUN wget https://github.com/symfony-cli/symfony-cli/releases/download/v5.8.15/symfony-cli_5.8.15_amd64.deb -O symfony-cli_amd64.deb && \
+RUN wget https://github.com/symfony-cli/symfony-cli/releases/download/v5.10.5/symfony-cli_5.10.5_amd64.deb -O symfony-cli_amd64.deb && \
     dpkg -i symfony-cli_amd64.deb && \
     rm symfony-cli_amd64.deb
 
