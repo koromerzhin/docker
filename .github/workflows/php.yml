@@ -34,7 +34,7 @@ jobs:
         uses: zoexx/github-action-json-file-properties@release
         with:
             file_path: "matrix.json"
-  phpfpm:
+  fpm:
     strategy:
       fail-fast: false
       matrix: 
@@ -82,7 +82,7 @@ jobs:
       - name: Push Docker
         if: github.ref == 'refs/heads/main' && matrix.php.disable == 'off'
         run: npm run docker:push:php
-  phpapache:
+  apache:
     strategy:
       fail-fast: false
       matrix: 
