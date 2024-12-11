@@ -18,6 +18,7 @@ RUN install-php-extensions \
     blackfire \
     exif \
     gd \
+    imagick \
     intl \
     ldap \
     mysqli \
