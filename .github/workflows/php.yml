@@ -41,7 +41,7 @@ jobs:
         php: ${{ fromJson(needs.generatejobs.outputs.php) }}
     name: PHP FPM ${{ matrix.php.version }}
     needs: generatejobs
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: cdout
         uses: actions/checkout@v4
@@ -89,7 +89,7 @@ jobs:
         php: ${{ fromJson(needs.generatejobs.outputs.php) }}
     name: PHP APACHE ${{ matrix.php.version }}
     needs: generatejobs
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: cdout
         uses: actions/checkout@v4
