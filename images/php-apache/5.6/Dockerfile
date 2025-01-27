@@ -4,6 +4,8 @@ ADD https://github.com/mlocati/docker-php-extension-installer/releases/download/
 
 RUN chmod +x /usr/local/bin/install-php-extensions
 
+RUN a2enmod headers rewrite
+
 RUN apt-get update && \
     apt-get install -y wget git fish unzip zip graphviz --no-install-recommends && \
     apt-get clean && \
@@ -51,7 +53,7 @@ RUN wget https://github.com/symfony-cli/symfony-cli/releases/download/v5.10.6/sy
     dpkg -i symfony-cli_amd64.deb && \
     rm symfony-cli_amd64.deb
 
-
+RUN a2enmod headers rewrite
 FROM build-php-apache AS build-php-apache-xdebug
 
 RUN install-php-extensions xdebug
