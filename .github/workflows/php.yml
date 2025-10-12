@@ -43,10 +43,10 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: recursive
-      - name: "Generate file SH IF LAST"
+      - name: "create FPM"
         if: matrix.php.disable == 'off'
         run: task create-fpm NUMBER=${{ matrix.php.number }} VERSION=${{ matrix.php.version }}
-      - name: "Build image PHP FPM"
+      - name: "Build FPM"
         timeout-minutes: 60
         if: matrix.php.disable == 'off'
         run: task build-fpm NUMBER=${{ matrix.php.number }} VERSION=${{ matrix.php.version }}
@@ -81,10 +81,10 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: recursive
-      - name: "Generate file SH IF LAST"
+      - name: "create APACHE"
         if: matrix.php.disable == 'off'
         run: task create-apache NUMBER=${{ matrix.php.number }} VERSION=${{ matrix.php.version }}
-      - name: "Build image PHP APACHE"
+      - name: "build APACHE"
         timeout-minutes: 60
         if: matrix.php.disable == 'off'
         run: task build-apache NUMBER=${{ matrix.php.number }} VERSION=${{ matrix.php.version }}
