@@ -7,7 +7,10 @@ jobs:
     outputs:
         php: ${{ steps.json_properties.outputs.php }}
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
       - name: get jobs by matrix.json
         id: json_properties
         uses: zoexx/github-action-json-file-properties@release
@@ -22,10 +25,12 @@ jobs:
     needs: generatejobs
     runs-on: ubuntu-24.04
     steps:
-      - name: cdout
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           submodules: recursive
+      - name: Setup Task
+        uses: go-task/setup-task@v1
       - name: "create FPM"
         if: matrix.php.disable == 'off'
         run: task create-fpm NUMBER=${{ matrix.php.number }} VERSION=${{ matrix.php.version }}
@@ -60,10 +65,12 @@ jobs:
     needs: generatejobs
     runs-on: ubuntu-24.04
     steps:
-      - name: cdout
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           submodules: recursive
+      - name: Setup Task
+        uses: go-task/setup-task@v1
       - name: "create APACHE"
         if: matrix.php.disable == 'off'
         run: task create-apache NUMBER=${{ matrix.php.number }} VERSION=${{ matrix.php.version }}
