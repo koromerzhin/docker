@@ -106,8 +106,11 @@ tasks:
       VERSION: '{{.VERSION | default ""}}'
     cmds:
       - docker build -t koromerzhin/php:{{.VERSION}}-{{.FOLDER}} build/{{.FOLDER}}/{{.VERSION}} --target build-{{.FOLDER}}
+      - docker build -t koromerzhin/php:{{.VERSION}}-{{.FOLDER}}-xdebug build/{{.FOLDER}}/{{.VERSION}} --target build-{{.FOLDER}}-xdebug
       - docker build -t koromerzhin/php:{{.VERSION}}-{{.FOLDER}}-wordpress build/{{.FOLDER}}/{{.VERSION}} --target build-{{.FOLDER}}-wordpress
+      - docker build -t koromerzhin/php:{{.VERSION}}-{{.FOLDER}}-wordpress-xdebug build/{{.FOLDER}}/{{.VERSION}} --target build-{{.FOLDER}}-wordpress-xdebug
       - docker build -t koromerzhin/php:{{.VERSION}}-{{.FOLDER}}-symfony build/{{.FOLDER}}/{{.VERSION}} --target build-{{.FOLDER}}-symfony
+      - docker build -t koromerzhin/php:{{.VERSION}}-{{.FOLDER}}-symfony-xdebug build/{{.FOLDER}}/{{.VERSION}} --target build-{{.FOLDER}}-symfony-xdebug
 
   build-fpm:
     desc: "Construit l'image Docker pour PHP-FPM"
