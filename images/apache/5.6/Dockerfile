@@ -1,6 +1,6 @@
 FROM VERSIONIMAGE AS build-apache
 
-ADD https://github.com/mlocati/docker-php-extension-installer/releases/download/2.7.14/install-php-extensions /usr/local/bin/
+ADD https://github.com/mlocati/docker-php-extension-installer/releases/download/2.9.13/install-php-extensions /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/install-php-extensions
 
@@ -46,14 +46,14 @@ EXPOSE 9000
 
 FROM build-apache AS build-apache-wordpress
 # Wordpress
-RUN wget https://github.com/wp-cli/wp-cli/releases/download/v2.11.0/wp-cli-2.11.0.phar -O wp-cli.phar && \
+RUN wget https://github.com/wp-cli/wp-cli/releases/download/v2.12.0/wp-cli-2.12.0.phar -O wp-cli.phar && \
     chmod +x wp-cli.phar && \
     mv wp-cli.phar /usr/local/bin/wp
 
 
 FROM build-apache AS build-apache-symfony
 # Symfony
-RUN wget https://github.com/symfony-cli/symfony-cli/releases/download/v5.10.6/symfony-cli_5.10.6_amd64.deb -O symfony-cli_amd64.deb && \
+RUN wget https://github.com/symfony-cli/symfony-cli/releases/download/v5.15.1/symfony-cli_5.15.1_amd64.deb -O symfony-cli_amd64.deb && \
     dpkg -i symfony-cli_amd64.deb && \
     rm symfony-cli_amd64.deb
 
