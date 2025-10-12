@@ -1,0 +1,151 @@
+version: 3
+
+# Taskfile principal - Tâches globales et inclusions
+# Charge automatiquement les variables depuis le fichier .env s'il existe
+dotenv: [ '.env', '.env.example' ]
+
+includes:
+  docker: ./taskfiles/docker/Taskfile.yml
+  utils: ./taskfiles/utils/Taskfile.yml
+  env: ./taskfiles/env/Taskfile.yml
+  nodejs: ./taskfiles/nodejs/Taskfile.yml
+  download: ./taskfiles/download/Taskfile.yml
+
+vars:
+  # Variables avec valeurs par défaut depuis .env ou valeurs de fallback
+  PROJECT_NAME: '{{.PROJECT_NAME | default "docker"}}'
+  PROJECT_VERSION: '1.0.0'
+  ENVIRONMENT: '{{.ENVIRONMENT | default "development"}}'
+  # Variables Flutter et Node.js depuis .env.example
+  NODE_VERSION: '{{.NODE_VERSION | default "20"}}'
+
+tasks:
+  default:
+    desc: "Affiche l'aide et les tâches disponibles"
+    silent: true
+    cmds:
+    - echo "🛠️  Collection de Taskfiles pour le développement"
+    - echo ""
+    - echo "Tâches globales disponibles :"
+    - task --list
+    - echo ""
+
+  info:
+    desc: "Affiche les informations du projet avec les variables d'environnement"
+    silent: true
+    cmds:
+    - |
+      echo "🛠️  {{.PROJECT_NAME}} v{{.PROJECT_VERSION}} - Collection de Taskfiles"
+      echo "Environnement: {{.ENVIRONMENT}}"
+      echo "Node.js version: {{.NODE_VERSION}}"
+
+  help:
+    desc: "Affiche l'aide détaillée"
+    aliases: [ h ]
+    silent: true
+    cmds:
+    - task: default
+
+  create:
+    desc: "Construit les images Docker définies dans les Taskfiles inclus"
+    internal: true
+    silent: true
+    preconditions:
+    - sh: command -v docker
+      msg: "Docker n'est pas installé ou accessible"
+    vars:
+      FOLDER: '{{.FOLDER | default ""}}'
+      NUMBER: '{{.NUMBER | default ""}}'
+      VERSION: '{{.VERSION | default ""}}'
+    cmds:
+      - mkdir -p build/{{.FOLDER}}/{{.VERSION}}
+      - cp images/{{.FOLDER}}/{{.NUMBER}}/Dockerfile build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
+      - sed -i 's/VERSIONIMAGE/php:{{.VERSION}}-{{.FOLDER}}/' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
+
+  create-fpm:
+    desc: "Crée le Dockerfile pour PHP-FPM"
+    silent: true
+    vars:
+      NUMBER: '{{.NUMBER | default ""}}'
+      VERSION: '{{.VERSION | default ""}}'
+    cmds:
+      - task: create
+        vars:
+          FOLDER: "fpm"
+
+  create-apache:
+    desc: "Crée le Dockerfile pour PHP-Apache"
+    silent: true
+    vars:
+      NUMBER: '{{.NUMBER | default ""}}'
+      VERSION: '{{.VERSION | default ""}}'
+    cmds:
+      - task: create
+        vars:
+          FOLDER: "apache"
+
+  create-all:
+    desc: "Crée le Dockerfile pour PHP-Apache"
+    silent: true
+    vars:
+      NUMBER: '{{.NUMBER | default ""}}'
+      VERSION: '{{.VERSION | default ""}}'
+    cmds:
+      - task: create-apache
+      - task: create-fpm
+
+  build:
+    desc: "Construit les images Docker définies dans les Taskfiles inclus"
+    silent: true
+    preconditions:
+    - sh: command -v docker
+      msg: "Docker n'est pas installé ou accessible"
+    vars:
+      FOLDER: '{{.FOLDER | default ""}}'
+      NUMBER: '{{.NUMBER | default ""}}'
+      VERSION: '{{.VERSION | default ""}}'
+    cmds:
+      - docker build -t koromerzhin/php:{{.VERSION}}-{{.FOLDER}} build/{{.FOLDER}}/{{.VERSION}} --target build-{{.FOLDER}}
+      - docker build -t koromerzhin/php:{{.VERSION}}-{{.FOLDER}}-wordpress build/{{.FOLDER}}/{{.VERSION}} --target build-{{.FOLDER}}-wordpress
+      - docker build -t koromerzhin/php:{{.VERSION}}-{{.FOLDER}}-symfony build/{{.FOLDER}}/{{.VERSION}} --target build-{{.FOLDER}}-symfony
+
+  build-fpm:
+    desc: "Construit l'image Docker pour PHP-FPM"
+    silent: true
+    vars:
+      NUMBER: '{{.NUMBER | default ""}}'
+      VERSION: '{{.VERSION | default ""}}'
+    cmds:
+      - task: build
+        vars:
+          FOLDER: "fpm"
+
+  build-apache:
+    desc: "Construit l'image Docker pour PHP-Apache"
+    silent: true
+    vars:
+      NUMBER: '{{.NUMBER | default ""}}'
+      VERSION: '{{.VERSION | default ""}}'
+    cmds:
+      - task: build
+        vars:
+          FOLDER: "apache"
+
+  build-all:
+    desc: "Construit l'image Docker pour PHP-Apache"
+    silent: true
+    vars:
+      NUMBER: '{{.NUMBER | default ""}}'
+      VERSION: '{{.VERSION | default ""}}'
+    cmds:
+      - task: build-apache
+      - task: build-fpm
+
+  push:
+    desc: "Pousse toutes les images Docker vers Docker Hub"
+    preconditions:
+    - sh: command -v docker
+      msg: "Docker n'est pas installé ou accessible"
+    silent: true
+    cmds:
+      - docker push koromerzhin/php -a
