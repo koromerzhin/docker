@@ -1,23 +1,6 @@
 name: ci
 on: [push]
 jobs:
-  start:
-    runs-on: ${{ matrix.operating-system }}
-    strategy:
-      fail-fast: false
-      matrix:
-        operating-system: [ubuntu-20.04]
-    steps:
-      - name: cdout
-        uses: actions/checkout@v4
-        with:
-          submodules: recursive
-      - name: Install npm dependencies
-        timeout-minutes: 60
-        run: npm install
-      - name: linter markdown
-        timeout-minutes: 60
-        run: npm run lint:markdown
   generatejobs:
     name: Generate Jobs
     runs-on: ubuntu-latest
