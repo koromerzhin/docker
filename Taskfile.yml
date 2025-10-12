@@ -18,6 +18,9 @@ vars:
   ENVIRONMENT: '{{.ENVIRONMENT | default "development"}}'
   # Variables Flutter et Node.js depuis .env.example
   NODE_VERSION: '{{.NODE_VERSION | default "20"}}'
+  PHP_EXTENSIONS: "https://github.com/mlocati/docker-php-extension-installer/releases/download/2.9.13/install-php-extensions"
+  WORDPRESS_PHAR: "https://github.com/wp-cli/wp-cli/releases/download/v2.12.0/wp-cli-2.12.0.phar"
+  SYMFONY_CLI: "https://github.com/symfony-cli/symfony-cli/releases/download/v5.15.1/symfony-cli_5.15.1_amd64.deb"
 
 tasks:
   default:
@@ -49,7 +52,7 @@ tasks:
   create:
     desc: "Construit les images Docker définies dans les Taskfiles inclus"
     internal: true
-    silent: true
+    silent: false
     preconditions:
     - sh: command -v docker
       msg: "Docker n'est pas installé ou accessible"
@@ -59,9 +62,13 @@ tasks:
       VERSION: '{{.VERSION | default ""}}'
     cmds:
       - mkdir -p build/{{.FOLDER}}/{{.VERSION}}
-      - cp images/{{.FOLDER}}/{{.NUMBER}}/Dockerfile build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
-      - sed -i 's/VERSIONIMAGE/php:{{.VERSION}}-{{.FOLDER}}/' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
-
+      - cp images/{{.FOLDER}}/Dockerfile build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
+      - sed -i 's#VERSIONIMAGE#php:{{.VERSION}}-{{.FOLDER}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
+      - sed -i 's#PHPEXTENSIONS#{{.PHP_EXTENSIONS}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
+      - sed -i 's#WORDPRESSPHAR#{{.WORDPRESS_PHAR}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
+      - sed -i 's#SYMFONYCLI#{{.SYMFONY_CLI}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
+      - echo "Dockerfile créé dans build/{{.FOLDER}}/{{.VERSION}}/Dockerfile"
+  
   create-fpm:
     desc: "Crée le Dockerfile pour PHP-FPM"
     silent: true
