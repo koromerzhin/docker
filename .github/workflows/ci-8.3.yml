@@ -72,7 +72,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Push Docker
-        if: steps.check_dockerfpm.outcome == 'success' && github.ref == 'refs/heads/main'
+        if: steps.check_dockerfpm.outcome == 'success' && steps.check_dockerkoromerzhin.outcome != 'success' && github.ref == 'refs/heads/main'
         run: task push
   apache:
     strategy:
