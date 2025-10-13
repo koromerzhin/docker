@@ -87,7 +87,7 @@ tasks:
       - echo "https://www.php.net/releases/index.php?json&version={{.VERSION}}&max=1000"
       - wget -O php_versions{{.VERSION}}.json "https://www.php.net/releases/index.php?json&version={{.VERSION}}&max=1000"
       - |
-        jq -s 'reduce .[] as $item ({}; . * $item)' php_versions{{.VERSION}}.json > matrix_{{.VERSION}}.json
+        jq -r '{versions: (keys)}' php_versions{{.VERSION}}.json > matrix_{{.VERSION}}.json
       - rm -rf php_versions{{.VERSION}}.json
 
   matrix-all:
