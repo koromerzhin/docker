@@ -51,7 +51,7 @@ jobs:
         uses: go-task/setup-task@v1
       - name: "create FPM"
         if: steps.check_dockerfpm.outcome == 'success' && steps.check_dockerkoromerzhin.outcome != 'success'
-        run: task create-fpm VERSION=${{ matrix.php }}
+        run: task create-fpm VERSION=${{ matrix.php }} NUMBER=7.1
       - name: "Build FPM"
         if: steps.check_dockerfpm.outcome == 'success' && steps.check_dockerkoromerzhin.outcome != 'success'
         timeout-minutes: 60
@@ -108,7 +108,7 @@ jobs:
         uses: go-task/setup-task@v1
       - name: "create APACHE"
         if: steps.check_dockerapache.outcome == 'success' && steps.check_dockerkoromerzhin.outcome != 'success'
-        run: task create-apache VERSION=${{ matrix.php }}
+        run: task create-apache VERSION=${{ matrix.php }} NUMBER=7.1
       - name: "build APACHE"
         if: steps.check_dockerapache.outcome == 'success' && steps.check_dockerkoromerzhin.outcome != 'success'
         timeout-minutes: 60
