@@ -1,5 +1,6 @@
 name: CI/CD Pipeline PHP 7.3
-on: [push]
+on:
+  workflow_dispatch
 jobs:
   generatejobs:
     name: Generate Jobs
