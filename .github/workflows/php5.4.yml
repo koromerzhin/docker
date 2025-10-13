@@ -1,4 +1,4 @@
-name: ci
+name: PHP 5.4
 on: [push]
 jobs:
   generatejobs:
@@ -15,13 +15,13 @@ jobs:
         id: json_properties
         uses: zoexx/github-action-json-file-properties@release
         with:
-            file_path: "matrix.json"
+            file_path: "5.4_matrix.json"
   fpm:
     strategy:
       fail-fast: false
       matrix: 
         php: ${{ fromJson(needs.generatejobs.outputs.php) }}
-    name: PHP FPM ${{ matrix.php.version }}
+    name: PHP FPM ${{ matrix.versions }}
     needs: generatejobs
     runs-on: ubuntu-24.04
     steps:
@@ -32,14 +32,11 @@ jobs:
       - name: Setup Task
         uses: go-task/setup-task@v1
       - name: "create FPM"
-        if: matrix.php.disable == 'off'
-        run: task create-fpm NUMBER=${{ matrix.php.number }} VERSION=${{ matrix.php.version }}
+        run: task create-fpm VERSION=${{ matrix.versions }}
       - name: "Build FPM"
         timeout-minutes: 60
-        if: matrix.php.disable == 'off'
-        run: task build-fpm NUMBER=${{ matrix.php.number }} VERSION=${{ matrix.php.version }}
+        run: task build-fpm VERSION=${{ matrix.versions }}
       - name: "Show images"
-        if: matrix.php.disable == 'off'
         run: docker images
       - name: Set up QEMU
         if: github.ref == 'refs/heads/main' && matrix.php.disable == 'off'
@@ -61,7 +58,7 @@ jobs:
       fail-fast: false
       matrix: 
         php: ${{ fromJson(needs.generatejobs.outputs.php) }}
-    name: PHP APACHE ${{ matrix.php.version }}
+    name: PHP APACHE ${{ matrix.versions }}
     needs: generatejobs
     runs-on: ubuntu-24.04
     steps:
@@ -72,14 +69,11 @@ jobs:
       - name: Setup Task
         uses: go-task/setup-task@v1
       - name: "create APACHE"
-        if: matrix.php.disable == 'off'
-        run: task create-apache NUMBER=${{ matrix.php.number }} VERSION=${{ matrix.php.version }}
+        run: task create-apache VERSION=${{ matrix.versions }}
       - name: "build APACHE"
         timeout-minutes: 60
-        if: matrix.php.disable == 'off'
-        run: task build-apache NUMBER=${{ matrix.php.number }} VERSION=${{ matrix.php.version }}
+        run: task build-apache VERSION=${{ matrix.versions }}
       - name: "Show images"
-        if: matrix.php.disable == 'off'
         run: docker images
       - name: Set up QEMU
         if: github.ref == 'refs/heads/main' && matrix.php.disable == 'off'
