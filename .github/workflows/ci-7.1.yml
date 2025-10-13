@@ -30,6 +30,8 @@ jobs:
         uses: actions/checkout@v5
         with:
           submodules: recursive
+      - name: Setup Docker Compose
+        uses: docker/setup-compose-action@v1
       - name: Vérifier si l'image Docker PHP FPM existe
         id: check_dockerfpm
         continue-on-error: true
@@ -85,6 +87,8 @@ jobs:
         uses: actions/checkout@v5
         with:
           submodules: recursive
+      - name: Setup Docker Compose
+        uses: docker/setup-compose-action@v1
       - name: Vérifier si l'image Docker existe
         id: check_dockerapache
         continue-on-error: true
