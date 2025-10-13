@@ -58,7 +58,6 @@ tasks:
       msg: "Docker n'est pas installé ou accessible"
     vars:
       FOLDER: '{{.FOLDER | default ""}}'
-      NUMBER: '{{.NUMBER | default ""}}'
       VERSION: '{{.VERSION | default ""}}'
     cmds:
       - mkdir -p build/{{.FOLDER}}/{{.VERSION}}
@@ -73,18 +72,67 @@ tasks:
     desc: "Crée le Dockerfile pour PHP-FPM"
     silent: true
     vars:
-      NUMBER: '{{.NUMBER | default ""}}'
       VERSION: '{{.VERSION | default ""}}'
     cmds:
       - task: create
         vars:
           FOLDER: "fpm"
+    
+  matrix:
+    desc: "Génère une matrice JSON pour les versions PHP à utiliser dans GitHub Actions"
+    silent: true
+    vars:
+      VERSION: '{{.VERSION | default ""}}'
+    cmds:
+      - echo "https://www.php.net/releases/index.php?json&version={{.VERSION}}&max=1000"
+      - wget -O php_versions{{.VERSION}}.json "https://www.php.net/releases/index.php?json&version={{.VERSION}}&max=1000"
+      - |
+        jq -r '{versions: (keys)}' php_versions{{.VERSION}}.json > {{.VERSION}}_matrix.json
+      - rm php_versions{{.VERSION}}.json
+
+  matrix-all:
+    cmds:
+      - task: matrix
+        vars:
+          VERSION: "5.4"
+      - task: matrix
+        vars:
+          VERSION: "5.6"
+      - task: matrix
+        vars:
+          VERSION: "7.0"
+      - task: matrix
+        vars:
+          VERSION: "7.1"
+      - task: matrix
+        vars:
+          VERSION: "7.2"
+      - task: matrix
+        vars:
+          VERSION: "7.3"
+      - task: matrix
+        vars:
+          VERSION: "7.4"
+      - task: matrix
+        vars:
+          VERSION: "8.0"
+      - task: matrix
+        vars:
+          VERSION: "8.1"
+      - task: matrix
+        vars:
+          VERSION: "8.2"
+      - task: matrix
+        vars:
+          VERSION: "8.3"
+      - task: matrix
+        vars:
+          VERSION: "8.4"
 
   create-apache:
     desc: "Crée le Dockerfile pour PHP-Apache"
     silent: true
     vars:
-      NUMBER: '{{.NUMBER | default ""}}'
       VERSION: '{{.VERSION | default ""}}'
     cmds:
       - task: create
@@ -95,7 +143,6 @@ tasks:
     desc: "Crée le Dockerfile pour PHP-Apache"
     silent: true
     vars:
-      NUMBER: '{{.NUMBER | default ""}}'
       VERSION: '{{.VERSION | default ""}}'
     cmds:
       - task: create-apache
@@ -109,7 +156,6 @@ tasks:
       msg: "Docker n'est pas installé ou accessible"
     vars:
       FOLDER: '{{.FOLDER | default ""}}'
-      NUMBER: '{{.NUMBER | default ""}}'
       VERSION: '{{.VERSION | default ""}}'
     cmds:
       - docker build -t koromerzhin/php:{{.VERSION}}-{{.FOLDER}} build/{{.FOLDER}}/{{.VERSION}} --target build-{{.FOLDER}}
@@ -134,7 +180,6 @@ tasks:
     desc: "Construit l'image Docker pour PHP-Apache"
     silent: true
     vars:
-      NUMBER: '{{.NUMBER | default ""}}'
       VERSION: '{{.VERSION | default ""}}'
     cmds:
       - task: build
@@ -145,7 +190,6 @@ tasks:
     desc: "Construit l'image Docker pour PHP-Apache"
     silent: true
     vars:
-      NUMBER: '{{.NUMBER | default ""}}'
       VERSION: '{{.VERSION | default ""}}'
     cmds:
       - task: build-apache
