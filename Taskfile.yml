@@ -94,9 +94,6 @@ tasks:
     cmds:
       - task: matrix
         vars:
-          VERSION: "5.6"
-      - task: matrix
-        vars:
           VERSION: "7.0"
       - task: matrix
         vars:
