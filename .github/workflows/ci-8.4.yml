@@ -1,4 +1,4 @@
-name: CI/CD Pipeline PHP 88.4
+name: CI/CD Pipeline PHP 8.4
 on:
   workflow_dispatch
 jobs:
@@ -12,11 +12,11 @@ jobs:
         uses: actions/checkout@v5
         with:
           submodules: recursive
-      - name: get jobs by matrix_88.4.json
+      - name: get jobs by matrix_8.4.json
         id: json_properties
         uses: zoexx/github-action-json-file-properties@release
         with:
-            file_path: "matrix_88.4.json"
+            file_path: "matrix_8.4.json"
   fpm:
     strategy:
       fail-fast: false
