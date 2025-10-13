@@ -52,7 +52,7 @@ tasks:
   create:
     desc: "Construit les images Docker définies dans les Taskfiles inclus"
     internal: true
-    silent: false
+    silent: true
     preconditions:
     - sh: command -v docker
       msg: "Docker n'est pas installé ou accessible"
