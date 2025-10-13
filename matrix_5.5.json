@@ -1,0 +1,1047 @@
+{
+  "5.5.38": {
+    "announcement": {
+      "English": "/releases/5_5_38.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.5.38.tar.bz2",
+        "name": "PHP 5.5.38 (tar.bz2)",
+        "sha256": "473c81ebb2e48ca468caee031762266651843d7227c18a824add9b07b9393e38",
+        "date": "21 Jul 2016"
+      },
+      {
+        "filename": "php-5.5.38.tar.gz",
+        "name": "PHP 5.5.38 (tar.gz)",
+        "sha256": "4f458c9b504269615715a62f182b7c2f89bb8284f484befc221b56a1571b506e",
+        "date": "21 Jul 2016"
+      },
+      {
+        "filename": "php-5.5.38.tar.xz",
+        "name": "PHP 5.5.38 (tar.xz)",
+        "sha256": "cb527c44b48343c8557fe2446464ff1d4695155a95601083e5d1f175df95580f",
+        "date": "21 Jul 2016"
+      }
+    ],
+    "date": "21 Jul 2016",
+    "museum": false
+  },
+  "5.5.37": {
+    "announcement": {
+      "English": "/releases/5_5_37.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.5.37.tar.bz2",
+        "name": "PHP 5.5.37 (tar.bz2)",
+        "sha256": "d2380ebe46caf17f2c4cd055867d00a82e6702dc5f62dc29ce864a5742905d88",
+        "date": "23 Jun 2016"
+      },
+      {
+        "filename": "php-5.5.37.tar.gz",
+        "name": "PHP 5.5.37 (tar.gz)",
+        "sha256": "7cef04b549fdbe00c26dc785b6ba10439672a1596db518fc46632ecba45f44b9",
+        "date": "23 Jun 2016"
+      },
+      {
+        "filename": "php-5.5.37.tar.xz",
+        "name": "PHP 5.5.37 (tar.xz)",
+        "sha256": "c322444fdf6d3ba26aa67d67ee32d1e815a877f35831351c83763431a80e3612",
+        "date": "23 Jun 2016"
+      }
+    ],
+    "date": "23 Jun 2016",
+    "museum": false
+  },
+  "5.5.36": {
+    "announcement": {
+      "English": "/releases/5_5_36.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.5.36.tar.bz2",
+        "name": "PHP 5.5.36 (tar.bz2)",
+        "sha256": "2484edfaa3de606d74f927b55c5206f51b1ae24ea8e428aa9fc15474c7bb71bb",
+        "date": "26 May 2016"
+      },
+      {
+        "filename": "php-5.5.36.tar.gz",
+        "name": "PHP 5.5.36 (tar.gz)",
+        "sha256": "ef829f9a9600a858e2363533b80c4e4773505bdc8ea3692d703fc893f267728a",
+        "date": "26 May 2016"
+      },
+      {
+        "filename": "php-5.5.36.tar.xz",
+        "name": "PHP 5.5.36 (tar.xz)",
+        "sha256": "e1bbe33d6b4da66b15c483131520a9fc505eeb6629fa70c5cfba79590a1d0801",
+        "date": "26 May 2016"
+      }
+    ],
+    "date": "26 May 2016",
+    "museum": false
+  },
+  "5.5.35": {
+    "announcement": {
+      "English": "/releases/5_5_35.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.5.35.tar.bz2",
+        "name": "PHP 5.5.35 (tar.bz2)",
+        "sha256": "2d648dd648e820fd64693ce72f9bf07064d147220e594e39fb9f6310238258d7",
+        "date": "28 Apr 2016"
+      },
+      {
+        "filename": "php-5.5.35.tar.gz",
+        "name": "PHP 5.5.35 (tar.gz)",
+        "sha256": "21e10a49c62ab34a7edc976af686a952e70142f19135ca8da67758e1c8c3df30",
+        "date": "28 Apr 2016"
+      },
+      {
+        "filename": "php-5.5.35.tar.xz",
+        "name": "PHP 5.5.35 (tar.xz)",
+        "sha256": "9bef96634af853960be085690b2f4cea5850b749ea950942769b22b1a9f24873",
+        "date": "28 Apr 2016"
+      }
+    ],
+    "date": "31 Mar 2016",
+    "museum": false
+  },
+  "5.5.34": {
+    "announcement": {
+      "English": "/releases/5_5_34.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.5.34.tar.bz2",
+        "name": "PHP 5.5.34 (tar.bz2)",
+        "sha256": "af88884416a92619de842ad0fd23f7f7e8140efb0b9194f98a38a78781e5851c",
+        "date": "31 Mar 2016"
+      },
+      {
+        "filename": "php-5.5.34.tar.gz",
+        "name": "PHP 5.5.34 (tar.gz)",
+        "sha256": "0e573b406441294b233e35e1f2e12d7896d68457e3e10bf6e1f4825e75271cca",
+        "date": "31 Mar 2016"
+      },
+      {
+        "filename": "php-5.5.34.tar.xz",
+        "name": "PHP 5.5.34 (tar.xz)",
+        "sha256": "6989a4f9900e6ddec7248790449bbb4aa55728730bff4973acb49d236c9e9e2a",
+        "date": "31 Mar 2016"
+      }
+    ],
+    "date": "31 Mar 2016",
+    "museum": false
+  },
+  "5.5.33": {
+    "announcement": {
+      "English": "/releases/5_5_33.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.5.33.tar.bz2",
+        "name": "PHP 5.5.33 (tar.bz2)",
+        "sha256": "c490b1ed4df596b48eb68f630d89ca512945e2650840e7dace1119cc7e600aa9",
+        "date": "03 Mar 2016"
+      },
+      {
+        "filename": "php-5.5.33.tar.gz",
+        "name": "PHP 5.5.33 (tar.gz)",
+        "sha256": "d2747bcf2cc94f652ac216f522904863a22042c66fabcf82ad7449d261d7a45b",
+        "date": "03 Mar 2016"
+      },
+      {
+        "filename": "php-5.5.33.tar.xz",
+        "name": "PHP 5.5.33 (tar.xz)",
+        "sha256": "b91dbd3c53f9895e8f7b29e5fed25a64dd3a76b454f6ef7265e73c96b4303f30",
+        "date": "03 Mar 2016"
+      }
+    ],
+    "date": "03 Mar 2016",
+    "museum": false
+  },
+  "5.5.32": {
+    "announcement": {
+      "English": "/releases/5_5_32.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.5.32.tar.bz2",
+        "name": "PHP 5.5.32 (tar.bz2)",
+        "sha256": "b0f2c108db8e05db9f6366aaba9a754fd0ee31f3f86ee889561b608dfd6e92ee",
+        "date": "04 Feb 2016"
+      },
+      {
+        "filename": "php-5.5.32.tar.gz",
+        "name": "PHP 5.5.32 (tar.gz)",
+        "sha256": "419aa62a68a640192799928a29e5cd4cd5b965458223bea2b3209a68c3e95989",
+        "date": "04 Feb 2016"
+      },
+      {
+        "filename": "php-5.5.32.tar.xz",
+        "name": "PHP 5.5.32 (tar.xz)",
+        "sha256": "02f569dcf5bd57dd5e390ddcab8609e3957a698e2db0b793cf2c11a7e33743c9",
+        "date": "04 Feb 2016"
+      }
+    ],
+    "date": "04 Feb 2016",
+    "museum": false
+  },
+  "5.5.31": {
+    "announcement": {
+      "English": "/releases/5_5_31.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.5.31.tar.bz2",
+        "name": "PHP 5.5.31 (tar.bz2)",
+        "sha256": "fb4a382b9a9dceb749b7ef047d8251320bc8d371c843714e5b4f4b70d61ba277",
+        "date": "07 Jan 2016"
+      },
+      {
+        "filename": "php-5.5.31.tar.gz",
+        "name": "PHP 5.5.31 (tar.gz)",
+        "sha256": "59a4417029ba5497d17ee02b65f419129ecf9ca8a1d864e0bccd5a3d4407a597",
+        "date": "07 Jan 2016"
+      },
+      {
+        "filename": "php-5.5.31.tar.xz",
+        "name": "PHP 5.5.31 (tar.xz)",
+        "sha256": "a9ac5b94fcc3811b661a090dddd716f81e43947240b35e6a0123e609a135ac54",
+        "date": "07 Jan 2016"
+      }
+    ],
+    "date": "07 Jan 2016",
+    "museum": false
+  },
+  "5.5.30": {
+    "announcement": {
+      "English": "/releases/5_5_30.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.5.30.tar.bz2",
+        "name": "PHP 5.5.30 (tar.bz2)",
+        "sha256": "e7332a713cecdd1cb44a1b1336739885c9789f633f0f51236b25e48ab03c3b29",
+        "date": "01 Oct 2015"
+      },
+      {
+        "filename": "php-5.5.30.tar.gz",
+        "name": "PHP 5.5.30 (tar.gz)",
+        "sha256": "8ad57f4317391354e66c83d26752f67515b2e923277eb97b2b420dfeff3c1007",
+        "date": "01 Oct 2015"
+      },
+      {
+        "filename": "php-5.5.30.tar.xz",
+        "name": "PHP 5.5.30 (tar.xz)",
+        "sha256": "d00dc06fa5e0f3de048fb0cf940b3cc59b43b3f8cad825d4fffb35503cf2e8f2",
+        "date": "01 Oct 2015"
+      }
+    ],
+    "date": "01 Oct 2015",
+    "museum": false
+  },
+  "5.5.29": {
+    "announcement": {
+      "English": "/releases/5_5_29.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.5.29.tar.bz2",
+        "name": "PHP 5.5.29 (tar.bz2)",
+        "sha256": "fbcee579ecc77cad6960a541116aee669cf145c2cd9a54bf60503a870843b946",
+        "date": "03 Sep 2015"
+      },
+      {
+        "filename": "php-5.5.29.tar.gz",
+        "name": "PHP 5.5.29 (tar.gz)",
+        "sha256": "c25a4c4eae558cc9899d2994813dd272eafff9466926f30821a83edaafe620a9",
+        "date": "03 Sep 2015"
+      },
+      {
+        "filename": "php-5.5.29.tar.xz",
+        "name": "PHP 5.5.29 (tar.xz)",
+        "sha256": "22c72d1b88c8d9a8ab9ca565e9ca5844287c006134098805d9a373a862bbbcad",
+        "date": "03 Sep 2015"
+      }
+    ],
+    "date": "03 Sep 2015",
+    "museum": false
+  },
+  "5.5.28": {
+    "announcement": {
+      "English": "/releases/5_5_28.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.5.28.tar.bz2",
+        "name": "PHP 5.5.28 (tar.bz2)",
+        "sha256": "197d2c572e030c177e53d3763d59ac6d363d7c78dc22e6cc1e2ac65573d9c2f3",
+        "date": "06 Aug 2015"
+      },
+      {
+        "filename": "php-5.5.28.tar.gz",
+        "name": "PHP 5.5.28 (tar.gz)",
+        "sha256": "6084f25a39ab2f79ade46bf0258a1cd6c9bbb09a106b40dd996dbdf8cd3b08f2",
+        "date": "06 Aug 2015"
+      },
+      {
+        "filename": "php-5.5.28.tar.xz",
+        "name": "PHP 5.5.28 (tar.xz)",
+        "sha256": "d060455c804c622cda9f3f5f084b10c6ceba73ee76c1720897e17137a0f75ecd",
+        "date": "06 Aug 2015"
+      }
+    ],
+    "date": "06 Aug 2015",
+    "museum": false
+  },
+  "5.5.27": {
+    "announcement": {
+      "English": "/releases/5_5_27.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.5.27.tar.bz2",
+        "name": "PHP 5.5.27 (tar.bz2)",
+        "sha256": "c4b4c6a534c0ca67a9ae39bec4f51e52d13e820135dd016eae230e15337e1f70",
+        "date": "09 Jul 2015"
+      },
+      {
+        "filename": "php-5.5.27.tar.gz",
+        "name": "PHP 5.5.27 (tar.gz)",
+        "sha256": "57cc716ebb37a62654c154582e48a282055b08ce91995c79b0be41b9940237f0",
+        "date": "09 Jul 2015"
+      },
+      {
+        "filename": "php-5.5.27.tar.xz",
+        "name": "PHP 5.5.27 (tar.xz)",
+        "sha256": "7ee398058067a7d8184e402fcdccb25003852cb8dc94eefa3cda051a3e47fdd8",
+        "date": "09 Jul 2015"
+      }
+    ],
+    "date": "09 Jul 2015",
+    "museum": false
+  },
+  "5.5.26": {
+    "announcement": {
+      "English": "/releases/5_5_26.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.5.26.tar.bz2",
+        "name": "PHP 5.5.26 (tar.bz2)",
+        "sha256": "816afffdb03ff4c542bc172a2f77f9c69b817df82d60cce05c1b4f578c2c926e",
+        "date": "11 Jun 2015"
+      },
+      {
+        "filename": "php-5.5.26.tar.gz",
+        "name": "PHP 5.5.26 (tar.gz)",
+        "sha256": "bee980d433bab99d07ee2bf6f2dcb87d746e49d57adec7d0ce7edb39306695ec",
+        "date": "11 Jun 2015"
+      },
+      {
+        "filename": "php-5.5.26.tar.xz",
+        "name": "PHP 5.5.26 (tar.xz)",
+        "sha256": "97672c41cf2f95628dbffb63648147b43b23ea41b99ad22ccf5f4fe9b6e91b51",
+        "date": "11 Jun 2015"
+      }
+    ],
+    "date": "11 Jun 2015",
+    "museum": false
+  },
+  "5.5.25": {
+    "announcement": {
+      "English": "/releases/5_5_25.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.5.25.tar.bz2",
+        "name": "PHP 5.5.25 (tar.bz2)",
+        "sha256": "68df37e725ddd05675c0df906041038127938ecc52113a54d10e1e4029262c63",
+        "date": "14 May 2015"
+      },
+      {
+        "filename": "php-5.5.25.tar.gz",
+        "name": "PHP 5.5.25 (tar.gz)",
+        "sha256": "c9397f60bff139e0df441c5e2766108c5bc7ad690de136eb9f5b2f9bbf771240",
+        "date": "14 May 2015"
+      },
+      {
+        "filename": "php-5.5.25.tar.xz",
+        "name": "PHP 5.5.25 (tar.xz)",
+        "sha256": "ac10015dddfc103b58ccc949504bd50f0d79d0abe74a0cc7842251af06ce8b07",
+        "date": "14 May 2015"
+      }
+    ],
+    "date": "14 May 2015",
+    "museum": false
+  },
+  "5.5.24": {
+    "announcement": {
+      "English": "/releases/5_5_24.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.5.24.tar.bz2",
+        "name": "PHP 5.5.24 (tar.bz2)",
+        "sha256": "801b5cf2e0c01b07314d4ac3c8a7c28d524bdd8263ebdd0e33a99008251316a2",
+        "date": "16 Apr 2015"
+      },
+      {
+        "filename": "php-5.5.24.tar.gz",
+        "name": "PHP 5.5.24 (tar.gz)",
+        "sha256": "43e6b83fe8151f8d2062ca4da915312fc92e47789801049231c705a8b29b05bc",
+        "date": "16 Apr 2015"
+      },
+      {
+        "filename": "php-5.5.24.tar.xz",
+        "name": "PHP 5.5.24 (tar.xz)",
+        "sha256": "ffb6235a25043cab71e6445cfc9e8bf16ae80a2835f0373cdd948fcc31eafe57",
+        "date": "16 Apr 2015"
+      }
+    ],
+    "date": "16 Apr 2015",
+    "museum": false
+  },
+  "5.5.23": {
+    "announcement": {
+      "English": "/releases/5_5_23.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.5.23.tar.bz2",
+        "name": "PHP 5.5.23 (tar.bz2)",
+        "date": "20 Feb 2015",
+        "sha256": "a99ab264dcd40181baa9defeaa4b21eb2c20d4e9316b904cc05f628762e6ada7"
+      },
+      {
+        "filename": "php-5.5.23.tar.gz",
+        "name": "PHP 5.5.23 (tar.gz)",
+        "date": "20 Feb 2015",
+        "sha256": "bf1246d4aca5b1a4e26f5cea273565ad3ee4607f20b7f28a508e3cab1a4d0c82"
+      },
+      {
+        "filename": "php-5.5.23.tar.xz",
+        "name": "PHP 5.5.23 (tar.xz)",
+        "date": "20 Feb 2015",
+        "sha256": "2fc8315606cd6a51dae2e1fe9ac7a9bead76dace3eaf888ba372506695403af4"
+      }
+    ],
+    "date": "20 Feb 2015",
+    "museum": false
+  },
+  "5.5.22": {
+    "announcement": {
+      "English": "/releases/5_5_22.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.5.22.tar.bz2",
+        "name": "PHP 5.5.22 (tar.bz2)",
+        "date": "20 Feb 2015",
+        "sha256": "c218c184bef2905bc79fcdda6040f3d1738261395fb706396935d1c6f6e162bb"
+      },
+      {
+        "filename": "php-5.5.22.tar.gz",
+        "name": "PHP 5.5.22 (tar.gz)",
+        "date": "20 Feb 2015",
+        "sha256": "cb6174e1e74de233ec7b461302f823a7eacf7bcc946d347486c930e53f2b7db7"
+      },
+      {
+        "filename": "php-5.5.22.tar.xz",
+        "name": "PHP 5.5.22 (tar.xz)",
+        "date": "20 Feb 2015",
+        "sha256": "5256a7e3999eb11f8b4b407408ea4780f60aa959e0c48cfcf376091e721df223"
+      }
+    ],
+    "date": "20 Feb 2015",
+    "museum": false
+  },
+  "5.5.21": {
+    "announcement": {
+      "English": "/releases/5_5_21.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.5.21.tar.bz2",
+        "name": "PHP 5.5.21 (tar.bz2)",
+        "date": "22 Jan 2015",
+        "sha256": "62e9429975c4ca5d7067a5052d5388fbf2ac8c51eeee581d59b04cc5a8da83fe"
+      },
+      {
+        "filename": "php-5.5.21.tar.gz",
+        "name": "PHP 5.5.21 (tar.gz)",
+        "date": "22 Jan 2015",
+        "sha256": "45adba5b4d2519f6174b85fd5b07a77389f397603d84084bdd26c44b3d7dc8af"
+      },
+      {
+        "filename": "php-5.5.21.tar.xz",
+        "name": "PHP 5.5.21 (tar.xz)",
+        "date": "22 Jan 2015",
+        "sha256": "f2583540b2698d7d0ee9cfc071c2b56ccc64a52a2b53101511ba8df5b126d6d2"
+      }
+    ],
+    "date": "22 Jan 2015",
+    "museum": false
+  },
+  "5.5.20": {
+    "announcement": {
+      "English": "/releases/5_5_20.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.5.20.tar.bz2",
+        "name": "PHP 5.5.20 (tar.bz2)",
+        "date": "18 Dec 2014",
+        "sha256": "f28a150d1cd8991bd1a41dce4fdff4e343d1dbe01a48b9b44bea74532ce0391a"
+      },
+      {
+        "filename": "php-5.5.20.tar.gz",
+        "name": "PHP 5.5.20 (tar.gz)",
+        "date": "18 Dec 2014",
+        "sha256": "7454e4f2dba3b08b2c88bb178e7bf704ed100f3d7ab6b83ea5046a6e4acb7295"
+      },
+      {
+        "filename": "php-5.5.20.tar.xz",
+        "name": "PHP 5.5.20 (tar.xz)",
+        "date": "18 Dec 2014",
+        "sha256": "a0649450f8b0a23cd4c9ad15d0aa271d956f9516fc37b9e9dc492459b57721c8"
+      }
+    ],
+    "date": "18 Dec 2014",
+    "museum": false
+  },
+  "5.5.19": {
+    "announcement": {
+      "English": "/releases/5_5_19.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.5.19.tar.bz2",
+        "name": "PHP 5.5.19 (tar.bz2)",
+        "date": "13 Nov 2014",
+        "sha256": "4366dbb904cba8c8dd32224ac9408495d20aecaed86a871d78df420f5a23bbff"
+      },
+      {
+        "filename": "php-5.5.19.tar.gz",
+        "name": "PHP 5.5.19 (tar.gz)",
+        "date": "13 Nov 2014",
+        "sha256": "8d39f224424f37644da913353f1e773c20b7fc55bb3cc81526c18f91d1d6394e"
+      },
+      {
+        "filename": "php-5.5.19.tar.xz",
+        "name": "PHP 5.5.19 (tar.xz)",
+        "date": "13 Nov 2014",
+        "sha256": "ccff8dfcd342e48a5b1e8b85c1c8c95d2e2eefab869757dcaa5224f11bb30e21"
+      }
+    ],
+    "date": "13 Nov 2014",
+    "museum": false
+  },
+  "5.5.18": {
+    "announcement": {
+      "English": "/releases/5_5_18.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.5.18.tar.bz2",
+        "name": "PHP 5.5.18 (tar.bz2)",
+        "date": "16 Oct 2014",
+        "sha256": "f974279927b72b672dda4ef4b4362b4847fd3d19ce1d4f2e982230a4e93bb842"
+      },
+      {
+        "filename": "php-5.5.18.tar.gz",
+        "name": "PHP 5.5.18 (tar.gz)",
+        "date": "16 Oct 2014",
+        "sha256": "71f6445cc21c944a3b98592193c62e29a58af3fe26d097312502b4fd400286e4"
+      },
+      {
+        "filename": "php-5.5.18.tar.xz",
+        "name": "PHP 5.5.18 (tar.xz)",
+        "date": "16 Oct 2014",
+        "sha256": "ccfbf6af18d1e56145867454dcbc75d90512f40ee9d3e57fdc6cb5fe3fc9726e"
+      }
+    ],
+    "date": "16 Oct 2014",
+    "museum": false
+  },
+  "5.5.17": {
+    "announcement": {
+      "English": "/releases/5_5_17.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.5.17.tar.bz2",
+        "name": "PHP 5.5.17 (tar.bz2)",
+        "date": "18 Sep 2014",
+        "sha256": "5d81db0c8b2a68da05715c363d037922b82a45c966785d64a77482e5c01e4e1b"
+      },
+      {
+        "filename": "php-5.5.17.tar.gz",
+        "name": "PHP 5.5.17 (tar.gz)",
+        "date": "18 Sep 2014",
+        "sha256": "657169be88ae70625d97bb94dd29140c2b602f1ba8d5e42ca14a400b63cf4720"
+      },
+      {
+        "filename": "php-5.5.17.tar.xz",
+        "name": "PHP 5.5.17 (tar.xz)",
+        "date": "18 Sep 2014",
+        "sha256": "382b2a1cfbf67ca9e30171c9c49bfe260d5e458e07850d4b036e8430e1829093"
+      }
+    ],
+    "date": "18 Sep 2014",
+    "museum": false
+  },
+  "5.5.16": {
+    "announcement": {
+      "English": "/releases/5_5_16.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.5.16.tar.bz2",
+        "name": "PHP 5.5.16 (tar.bz2)",
+        "date": "21 Aug 2014",
+        "sha256": "a1d7c4556a80bed744a348211b33bc35303edd56dd0a34e0a75a948c879cc5f6"
+      },
+      {
+        "filename": "php-5.5.16.tar.gz",
+        "name": "PHP 5.5.16 (tar.gz)",
+        "date": "21 Aug 2014",
+        "sha256": "cdea80ab1b0466f4656b46155e341b700799e78569a5cc582eeaededb448086c"
+      },
+      {
+        "filename": "php-5.5.16.tar.xz",
+        "name": "PHP 5.5.16 (tar.xz)",
+        "date": "21 Aug 2014",
+        "sha256": "8276e8de4928e8e7011d1ac6c841c5adfc4561c7329ef2f5e055e7f4e1af0e48"
+      }
+    ],
+    "date": "21 Aug 2014",
+    "museum": false
+  },
+  "5.5.15": {
+    "announcement": {
+      "English": "/releases/5_5_15.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.5.15.tar.bz2",
+        "name": "PHP 5.5.15 (tar.bz2)",
+        "date": "24 Jul 2014",
+        "sha256": "00f24226b12fee27e332383b6304f1b9ed3f4d9173dd728a68c5c3f5a59b8ba7"
+      },
+      {
+        "filename": "php-5.5.15.tar.gz",
+        "name": "PHP 5.5.15 (tar.gz)",
+        "date": "24 Jul 2014",
+        "sha256": "578febd686018401c4857699b29502b1aecaf82bf43525d810867f583961ac6e"
+      },
+      {
+        "filename": "php-5.5.15.tar.xz",
+        "name": "PHP 5.5.15 (tar.xz)",
+        "date": "24 Jul 2014",
+        "sha256": "c20e360cf06bd4279ab423a7785d36aba0e2a9fdcd0b817883ab01cf0d914dd6"
+      }
+    ],
+    "date": "24 Jul 2014",
+    "museum": false
+  },
+  "5.5.14": {
+    "announcement": {
+      "English": "/releases/5_5_14.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.5.14.tar.bz2",
+        "name": "PHP 5.5.14 (tar.bz2)",
+        "date": "26 Jun 2014",
+        "sha256": "df5a057877f827549e0a60b43fb01e4bd440814bcf04fbd70bacbddf74482610"
+      },
+      {
+        "filename": "php-5.5.14.tar.gz",
+        "name": "PHP 5.5.14 (tar.gz)",
+        "date": "26 Jun 2014",
+        "sha256": "ef7e4f4942c5767e01b96650a5bd4178c663738436f99b5695c3144732ff7166"
+      }
+    ],
+    "date": "26 Jun 2014",
+    "museum": false
+  },
+  "5.5.13": {
+    "announcement": {
+      "English": "/releases/5_5_13.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.5.13.tar.bz2",
+        "name": "PHP 5.5.13 (tar.bz2)",
+        "date": "29 May 2014",
+        "sha256": "e58a4a754eb18d2d8b1a120cad5cce4ed24a7db5d49eca5830a40e4c8ca78b9c"
+      },
+      {
+        "filename": "php-5.5.13.tar.gz",
+        "name": "PHP 5.5.13 (tar.gz)",
+        "date": "29 May 2014",
+        "sha256": "15e34eb7c45e66963cbece29fb41e53cc6c6e3ec4a54c291a53cf6a1527771b6"
+      }
+    ],
+    "date": "29 May 2014",
+    "museum": false
+  },
+  "5.5.12": {
+    "announcement": {
+      "English": "/releases/5_5_12.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.5.12.tar.bz2",
+        "name": "PHP 5.5.12 (tar.bz2)",
+        "date": "30 Apr 2014",
+        "sha256": "519ee29e28532782676f3d8e31a808ffbfee383e0279ccc8cbd2b12ed53c2335"
+      },
+      {
+        "filename": "php-5.5.12.tar.gz",
+        "name": "PHP 5.5.12 (tar.gz)",
+        "date": "30 Apr 2014",
+        "sha256": "a10c6e6ce1145762d6c15ca7ce1aeaab69662c197d24e1294c2519aa85c97bd6"
+      }
+    ],
+    "date": "30 Apr 2014",
+    "museum": false
+  },
+  "5.5.11": {
+    "announcement": {
+      "English": "/releases/5_5_11.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.5.11.tar.bz2",
+        "name": "PHP 5.5.11 (tar.bz2)",
+        "date": "3 Apr 2014",
+        "sha256": "60e14c255f2a461a7a26639b84a2fc448cc2f91c8dead0e9fd00cd8ba27a2e96"
+      },
+      {
+        "filename": "php-5.5.11.tar.gz",
+        "name": "PHP 5.5.11 (tar.gz)",
+        "date": "3 Apr 2014",
+        "sha256": "a8b7bb1049732bf806e94090661f39f8359e0bf36d59ce6b98a53ea80411b450"
+      }
+    ],
+    "date": "3 Apr 2014",
+    "museum": false
+  },
+  "5.5.10": {
+    "announcement": {
+      "English": "/releases/5_5_10.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.5.10.tar.bz2",
+        "name": "PHP 5.5.10 (tar.bz2)",
+        "date": "6 Mar 2014",
+        "sha256": "bb34e61f8e6f56c612867bfe85d144d5045cd5e44497539bc126a4e8c6795419"
+      },
+      {
+        "filename": "php-5.5.10.tar.gz",
+        "name": "PHP 5.5.10 (tar.gz)",
+        "date": "6 Mar 2014",
+        "sha256": "abf751810593844e0897007797210828b193a213d9b204f203e0331019cadb90"
+      }
+    ],
+    "date": "6 Mar 2014",
+    "museum": false
+  },
+  "5.5.9": {
+    "announcement": {
+      "English": "/releases/5_5_9.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.5.9.tar.bz2",
+        "name": "PHP 5.5.9 (tar.bz2)",
+        "date": "6 Feb 2014",
+        "sha256": "9d1dea5195e2bcd928416130a6e19173d02bd36fb76c382522bf145c458fbed3"
+      },
+      {
+        "filename": "php-5.5.9.tar.gz",
+        "name": "PHP 5.5.9 (tar.gz)",
+        "date": "6 Feb 2014",
+        "sha256": "ec1bf0cb3be80240049dbd92c272d4bf242a614fa5f9dcc42a15adb5fd01ccde"
+      },
+      {
+        "filename": "php-5.5.9.tar.xz",
+        "name": "PHP 5.5.9 (tar.xz)",
+        "date": "6 Feb 2014",
+        "sha256": "7f7a7b1189472e59b234233daab9aa9692bb5eb8404485e9a78221f75ee4664a"
+      }
+    ],
+    "date": "6 Feb 2014",
+    "museum": false
+  },
+  "5.5.8": {
+    "announcement": {
+      "English": "/releases/5_5_8.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.5.8.tar.bz2",
+        "name": "PHP 5.5.8 (tar.bz2)",
+        "date": "9 Jan 2014",
+        "sha256": "6d5f45659d13383fc8429f185cc9da0b30c7bb72dcae9baf568f0511eb7f8b68"
+      },
+      {
+        "filename": "php-5.5.8.tar.gz",
+        "name": "PHP 5.5.8 (tar.gz)",
+        "date": "9 Jan 2014",
+        "sha256": "67c74a9a2357dc65f5b1701cadb574f1309c4c3a20a2a5c56aeae4c4be90f2f8"
+      }
+    ],
+    "date": "9 Jan 2014",
+    "museum": false
+  },
+  "5.5.7": {
+    "announcement": {
+      "English": "/releases/5_5_7.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.5.7.tar.bz2",
+        "name": "PHP 5.5.7 (tar.bz2)",
+        "date": "12 Dec 2013",
+        "sha256": "2cb9425ef514b984dd233097d82a66f4623b9bf48f2ef265bc7ba25d697d6008"
+      },
+      {
+        "filename": "php-5.5.7.tar.gz",
+        "name": "PHP 5.5.7 (tar.gz)",
+        "date": "12 Dec 2013",
+        "sha256": "7b954338d7dd538ef6fadbc110e6a0f50d0b39dabec2c12a7f000c17332591b8"
+      },
+      {
+        "filename": "php-5.5.7.tar.xz",
+        "name": "PHP 5.5.7 (tar.xz)",
+        "date": "12 Dec 2013",
+        "sha256": "b7bae5d878b8fc3f4b481eb8f2179b5e71d30dfb3bc3640a5068c1b46633f08c"
+      }
+    ],
+    "date": "12 Dec 2013",
+    "museum": false
+  },
+  "5.5.6": {
+    "announcement": {
+      "English": "/releases/5_5_6.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.5.6.tar.bz2",
+        "name": "PHP 5.5.6 (tar.bz2)",
+        "date": "14 Nov 2013",
+        "sha256": "a9b7d291199d7e6b90ef1d78eb791d738944d66856e76bde9463ce2645b0e4a4"
+      },
+      {
+        "filename": "php-5.5.6.tar.gz",
+        "name": "PHP 5.5.6 (tar.gz)",
+        "date": "14 Nov 2013",
+        "sha256": "01f9c45154d4c9a47a825aa662bd64493082bd57dafdc720cf899ee194220a67"
+      },
+      {
+        "filename": "php-5.5.6.tar.xz",
+        "name": "PHP 5.5.6 (tar.xz)",
+        "date": "14 Nov 2013",
+        "sha256": "3235a5c15e8fc55498dd80fe43f4aecc51dba35a7fc916aee7ef12d4e1f8767a"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.5",
+        "name": "Windows 5.5.6 binaries and source"
+      }
+    ],
+    "date": "14 Nov 2013",
+    "museum": false
+  },
+  "5.5.5": {
+    "announcement": {
+      "English": "/releases/5_5_5.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.5.5.tar.bz2",
+        "name": "PHP 5.5.5 (tar.bz2)",
+        "date": "17 Oct 2013",
+        "sha256": "a400b324ae288eb0c9285e550fe5fd7f92c0f4e126496c3b05f9041da6cc04de"
+      },
+      {
+        "filename": "php-5.5.5.tar.gz",
+        "name": "PHP 5.5.5 (tar.gz)",
+        "date": "17 Oct 2013",
+        "sha256": "483ff2370fa3a8863e6b023383c4bcfcc3ba462137c30c5fc75043e1755b7d17"
+      },
+      {
+        "filename": "php-5.5.5.tar.xz",
+        "name": "PHP 5.5.5 (tar.xz)",
+        "date": "17 Oct 2013",
+        "sha256": "82cc9c88b946354bfe629917a85ed33d8cfc901460d432a75f823667d94f29ee"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.5",
+        "name": "Windows 5.5.5 binaries and source"
+      }
+    ],
+    "date": "17 Oct 2013",
+    "museum": false
+  },
+  "5.5.4": {
+    "announcement": {
+      "English": "/releases/5_5_4.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.5.4.tar.bz2",
+        "name": "PHP 5.5.4 (tar.bz2)",
+        "md5": "456f2eb1ee36f2a277bd4cc778e720eb",
+        "date": "19 Sep 2013"
+      },
+      {
+        "filename": "php-5.5.4.tar.gz",
+        "name": "PHP 5.5.4 (tar.gz)",
+        "md5": "bf842770ac64a47ff599f463e6cf1334",
+        "date": "19 Sep 2013"
+      },
+      {
+        "filename": "php-5.5.4.tar.xz",
+        "name": "PHP 5.5.4 (tar.xz)",
+        "md5": "32c1dc56701d21def91a39a312392b54",
+        "date": "19 Sep 2013"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.5",
+        "name": "Windows 5.5.4 binaries and source"
+      }
+    ],
+    "date": "19 Sep 2013",
+    "museum": true
+  },
+  "5.5.3": {
+    "announcement": {
+      "English": "/releases/5_5_3.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.5.3.tar.bz2",
+        "name": "PHP 5.5.3 (tar.bz2)",
+        "md5": "886b08ee6865d654911a6bb02ae98ee8",
+        "date": "22 Aug 2013"
+      },
+      {
+        "filename": "php-5.5.3.tar.gz",
+        "name": "PHP 5.5.3 (tar.gz)",
+        "md5": "a5dfdd41ccf539942db966310f7429da",
+        "date": "22 Aug 2013"
+      },
+      {
+        "filename": "php-5.5.3.tar.xz",
+        "name": "PHP 5.5.3 (tar.xz)",
+        "md5": "437e98144ef014dfab0922a9eed36853",
+        "date": "22 Aug 2013"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.5",
+        "name": "Windows 5.5.3 binaries and source"
+      }
+    ],
+    "date": "22 Aug 2013",
+    "museum": true
+  },
+  "5.5.2": {
+    "announcement": {
+      "English": "/releases/5_5_2.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.5.2.tar.bz2",
+        "name": "PHP 5.5.2 (tar.bz2)",
+        "md5": "caf7f4d86514a568fb3c8021b096a9f0",
+        "date": "15 Aug 2013"
+      },
+      {
+        "filename": "php-5.5.2.tar.gz",
+        "name": "PHP 5.5.2 (tar.gz)",
+        "md5": "2a90884749f97868071538098b3debc1",
+        "date": "15 Aug 2013"
+      },
+      {
+        "filename": "php-5.5.2.tar.xz",
+        "name": "PHP 5.5.2 (tar.xz)",
+        "md5": "95c6d7a4c36c475b10447954dea056a5",
+        "date": "15 Aug 2013"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.5",
+        "name": "Windows 5.5.2 binaries and source"
+      }
+    ],
+    "date": "15 Aug 2013",
+    "museum": true
+  },
+  "5.5.1": {
+    "announcement": {
+      "English": "/releases/5_5_1.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.5.1.tar.bz2",
+        "name": "PHP 5.5.1 (tar.bz2)",
+        "md5": "e6520ba8f86e03451f1e9226ca2be681",
+        "date": "18 Jul 2013"
+      },
+      {
+        "filename": "php-5.5.1.tar.gz",
+        "name": "PHP 5.5.1 (tar.gz)",
+        "md5": "a7d9598c0e60b47960b8e803e51c4309",
+        "date": "18 Jul 2013"
+      },
+      {
+        "filename": "php-5.5.1.tar.xz",
+        "name": "PHP 5.5.1 (tar.xz)",
+        "md5": "365403c216d22255c3aa57fe54944f8e",
+        "date": "18 Jul 2013"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.5",
+        "name": "Windows 5.5.1 binaries and source"
+      }
+    ],
+    "date": "18 Jul 2013",
+    "museum": true
+  },
+  "5.5.0": {
+    "announcement": {
+      "English": "/releases/5_5_0.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.5.0.tar.bz2",
+        "name": "PHP 5.5.0 (tar.bz2)",
+        "md5": "daf2d54e79def9fd0fb2ac7dfcefb7f3",
+        "date": "20 Jun 2013"
+      },
+      {
+        "filename": "php-5.5.0.tar.gz",
+        "name": "PHP 5.5.0 (tar.gz)",
+        "md5": "79c4e7a8cb0f8e2e072120775b92c523",
+        "date": "20 Jun 2013"
+      },
+      {
+        "filename": "php-5.5.0.tar.xz",
+        "name": "PHP 5.5.0 (tar.xz)",
+        "md5": "c7df0cb28cfff4e277fd9cd9b73cebfb",
+        "date": "20 Jun 2013"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.5",
+        "name": "Windows 5.5.0 binaries and source"
+      }
+    ],
+    "date": "20 Jun 2013",
+    "museum": true
+  }
+}

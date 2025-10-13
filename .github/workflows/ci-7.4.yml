@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: CI/CD Pipeline PHP 7.4
 on: [push]
 jobs:
   generatejobs:
@@ -11,11 +11,11 @@ jobs:
         uses: actions/checkout@v5
         with:
           submodules: recursive
-      - name: get jobs by matrix.json
+      - name: get jobs by matrix_7.4.json
         id: json_properties
         uses: zoexx/github-action-json-file-properties@release
         with:
-            file_path: "matrix.json"
+            file_path: "matrix_7.4.json"
   fpm:
     strategy:
       fail-fast: false

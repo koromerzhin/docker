@@ -86,18 +86,9 @@ tasks:
     cmds:
       - echo "https://www.php.net/releases/index.php?json&version={{.VERSION}}&max=1000"
       - wget -O php_versions{{.VERSION}}.json "https://www.php.net/releases/index.php?json&version={{.VERSION}}&max=1000"
-
-  matrix-merge:
-    silent: true
-    cmds:
       - |
-        jq -s 'reduce .[] as $item ({}; . * $item)' php_versions*.json > matrix_versions.json
-      - rm -rf php_version*.json
-      - |
-        jq -r '{versions: (keys)}' matrix_versions.json > matrix.json
-      - rm -rf matrix_versions.json
-
-      
+        jq -s 'reduce .[] as $item ({}; . * $item)' php_versions{{.VERSION}}.json > matrix_{{.VERSION}}.json
+      - rm -rf php_versions{{.VERSION}}.json
 
   matrix-all:
     cmds:
@@ -140,7 +131,6 @@ tasks:
       - task: matrix
         vars:
           VERSION: "8.4"
-      - task: matrix-merge
 
   create-apache:
     desc: "Crée le Dockerfile pour PHP-Apache"

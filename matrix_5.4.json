@@ -1,0 +1,1136 @@
+{
+  "5.4.45": {
+    "announcement": {
+      "English": "/releases/5_4_45.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.45.tar.bz2",
+        "name": "PHP 5.4.45 (tar.bz2)",
+        "sha256": "4e0d28b1554c95cfaea6fa2b64aac85433f158ce72bb571bcd5574f98f4c6582",
+        "date": "03 Sep 2015"
+      },
+      {
+        "filename": "php-5.4.45.tar.gz",
+        "name": "PHP 5.4.45 (tar.gz)",
+        "sha256": "25bc4723955f4e352935258002af14a14a9810b491a19400d76fcdfa9d04b28f",
+        "date": "03 Sep 2015"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.4",
+        "name": "Windows 5.4.45 binaries and source"
+      }
+    ],
+    "date": "03 Sep 2015",
+    "museum": false
+  },
+  "5.4.44": {
+    "announcement": {
+      "English": "/releases/5_4_44.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.44.tar.bz2",
+        "name": "PHP 5.4.44 (tar.bz2)",
+        "sha256": "8dd59e5ce9248cf36ac3de5412a518b8b24c01ace6c46ce3d12e4ce981a3856d",
+        "date": "06 Aug 2015"
+      },
+      {
+        "filename": "php-5.4.44.tar.gz",
+        "name": "PHP 5.4.44 (tar.gz)",
+        "sha256": "1799998e48da3d8f34722840628e18789e26ea21741d4e498ade6749b3266602",
+        "date": "06 Aug 2015"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.4",
+        "name": "Windows 5.4.44 binaries and source"
+      }
+    ],
+    "date": "06 Aug 2015",
+    "museum": false
+  },
+  "5.4.43": {
+    "announcement": {
+      "English": "/releases/5_4_43.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.43.tar.bz2",
+        "name": "PHP 5.4.43 (tar.bz2)",
+        "sha256": "25d7724fb00ad1b520f5bad2173717031153d0a8e3de2c75e7a084c76f8ecd6b",
+        "date": "09 Jul 2015"
+      },
+      {
+        "filename": "php-5.4.43.tar.gz",
+        "name": "PHP 5.4.43 (tar.gz)",
+        "sha256": "cfc2176adc05f009666ecfab4a1cc66cc546c5d071245b2a048b3d113f67a2af",
+        "date": "09 Jul 2015"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.4",
+        "name": "Windows 5.4.43 binaries and source"
+      }
+    ],
+    "date": "09 Jul 2015",
+    "museum": false
+  },
+  "5.4.42": {
+    "announcement": {
+      "English": "/releases/5_4_42.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.42.tar.bz2",
+        "name": "PHP 5.4.42 (tar.bz2)",
+        "sha256": "6285b2e64bfaa69e5d983d7d981b4f254f5259ad3fd591ca832722a4cc1ae0f9",
+        "date": "11 Jun 2015"
+      },
+      {
+        "filename": "php-5.4.42.tar.gz",
+        "name": "PHP 5.4.42 (tar.gz)",
+        "sha256": "f0b40c097a6f11c4c2f5078d34f50fb9428d79b9e9821117bd7d6cca6af78d11",
+        "date": "11 Jun 2015"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.4",
+        "name": "Windows 5.4.42 binaries and source"
+      }
+    ],
+    "date": "11 Jun 2015",
+    "museum": false
+  },
+  "5.4.41": {
+    "announcement": {
+      "English": "/releases/5_4_41.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.41.tar.bz2",
+        "name": "PHP 5.4.41 (tar.bz2)",
+        "sha256": "5bc4b45a1280ff80a3cf5b8563716f325cfd0121d7fd25aa54d56ff38b3b8272",
+        "date": "14 May 2015"
+      },
+      {
+        "filename": "php-5.4.41.tar.gz",
+        "name": "PHP 5.4.41 (tar.gz)",
+        "sha256": "638cf19c865bc4eba2a4bab8952116a62691d1a72e1e2c9a9a2aadee92d1ce2e",
+        "date": "14 May 2015"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.4",
+        "name": "Windows 5.4.41 binaries and source"
+      }
+    ],
+    "date": "14 May 2015",
+    "museum": false
+  },
+  "5.4.40": {
+    "announcement": {
+      "English": "/releases/5_4_40.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.40.tar.bz2",
+        "name": "PHP 5.4.40 (tar.bz2)",
+        "sha256": "4898ffe8ac3ccb2d8cc94f7d76a9ea0414d954f5d4479895ddfccdc2e158a51a",
+        "date": "16 Apr 2015"
+      },
+      {
+        "filename": "php-5.4.40.tar.gz",
+        "name": "PHP 5.4.40 (tar.gz)",
+        "sha256": "663f5d06cd648e81ba4f2d6ad621bb580d83de70240c832dae527c97954da33d",
+        "date": "16 Apr 2015"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.4",
+        "name": "Windows 5.4.40 binaries and source"
+      }
+    ],
+    "date": "16 Apr 2015",
+    "museum": false
+  },
+  "5.4.39": {
+    "announcement": {
+      "English": "/releases/5_4_39.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.39.tar.bz2",
+        "name": "PHP 5.4.39 (tar.bz2)",
+        "date": "19 Mar 2015",
+        "sha256": "7ceb76538e709c74533210ae41148d5c01c330ac8a73220954bbc4fcae69d77e"
+      },
+      {
+        "filename": "php-5.4.39.tar.gz",
+        "name": "PHP 5.4.39 (tar.gz)",
+        "date": "19 Mar 2015",
+        "sha256": "9af5d2c3782aa94b7336401755dc44b62dc4ea881bf5e39540a4c7181b54d945"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.4",
+        "name": "Windows 5.4.39 binaries and source"
+      }
+    ],
+    "date": "19 Mar 2015",
+    "museum": false
+  },
+  "5.4.38": {
+    "announcement": {
+      "English": "/releases/5_4_38.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.38.tar.bz2",
+        "name": "PHP 5.4.38 (tar.bz2)",
+        "date": "19 Feb 2015",
+        "sha256": "abf37db0cfadc9bb814f9df35f6aa966ad63f4f4c4475e432ec625568a5d3e88"
+      },
+      {
+        "filename": "php-5.4.38.tar.gz",
+        "name": "PHP 5.4.38 (tar.gz)",
+        "date": "19 Feb 2015",
+        "sha256": "e694b7265f314f73c9df43538e0e54e2495cb72252e8a91c1aec66ffcf47241f"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.4",
+        "name": "Windows 5.4.38 binaries and source"
+      }
+    ],
+    "date": "19 Feb 2015",
+    "museum": false
+  },
+  "5.4.37": {
+    "announcement": {
+      "English": "/releases/5_4_37.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.37.tar.bz2",
+        "name": "PHP 5.4.37 (tar.bz2)",
+        "date": "22 Jan 2015",
+        "sha256": "857bf6675eeb0ae9c3cd6f9ccdb2a9b7bf89dcfda7f0a80857638fe023f3a8ad"
+      },
+      {
+        "filename": "php-5.4.37.tar.gz",
+        "name": "PHP 5.4.37 (tar.gz)",
+        "date": "22 Jan 2015",
+        "sha256": "6bf3b3ebefa600cfb6dd7f2678f23b17a958e82e8ce2d012286818d7c36dfd31"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.4",
+        "name": "Windows 5.4.37 binaries and source"
+      }
+    ],
+    "date": "22 Jan 2015",
+    "museum": false
+  },
+  "5.4.36": {
+    "announcement": {
+      "English": "/releases/5_4_36.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.36.tar.bz2",
+        "name": "PHP 5.4.36 (tar.bz2)",
+        "date": "18 Dec 2014",
+        "sha256": "b0951608c3e8afb978a624c7f79a889980210f5258f666c1d997bd6491e13241"
+      },
+      {
+        "filename": "php-5.4.36.tar.gz",
+        "name": "PHP 5.4.36 (tar.gz)",
+        "date": "18 Dec 2014",
+        "sha256": "e11851662222765d6ab6e671adc983c657d5358a183856b43a5bad0c612d2959"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.4",
+        "name": "Windows 5.4.36 binaries and source"
+      }
+    ],
+    "date": "18 Dec 2014",
+    "museum": false
+  },
+  "5.4.35": {
+    "announcement": {
+      "English": "/releases/5_4_35.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.35.tar.bz2",
+        "name": "PHP 5.4.35 (tar.bz2)",
+        "date": "13 Nov 2014",
+        "sha256": "8cdb4265cd0f778befacd1e6b5939ec23315fff38400e17e77a36e4c55b9746b"
+      },
+      {
+        "filename": "php-5.4.35.tar.gz",
+        "name": "PHP 5.4.35 (tar.gz)",
+        "date": "13 Nov 2014",
+        "sha256": "7ecab4ebb880b6d4f68bd4e3e49d837d4704fe26d81dc992b17b74151ee950a7"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.4",
+        "name": "Windows 5.4.35 binaries and source"
+      }
+    ],
+    "date": "13 Nov 2014",
+    "museum": false
+  },
+  "5.4.34": {
+    "announcement": {
+      "English": "/releases/5_4_34.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.34.tar.bz2",
+        "name": "PHP 5.4.34 (tar.bz2)",
+        "date": "16 Oct 2014",
+        "sha256": "57d4ea10f0c18b096a7c8fd0a98dcbe40c8f4dc94453fd3ca0a10e35fb2f8234"
+      },
+      {
+        "filename": "php-5.4.34.tar.gz",
+        "name": "PHP 5.4.34 (tar.gz)",
+        "date": "16 Oct 2014",
+        "sha256": "c8d909062ad7616cedb54dc03d85b40d40f6d4adce986ec8cabd9b8b94872096"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.4",
+        "name": "Windows 5.4.34 binaries and source"
+      }
+    ],
+    "date": "16 Oct 2014",
+    "museum": false
+  },
+  "5.4.33": {
+    "announcement": {
+      "English": "/releases/5_4_33.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.33.tar.bz2",
+        "name": "PHP 5.4.33 (tar.bz2)",
+        "sha256": "1a75b2d0835e74b8886cd3980d9598a0e06691441bb7f91d19b74c2278e40bb5",
+        "date": "18 Sep 2014"
+      },
+      {
+        "filename": "php-5.4.33.tar.gz",
+        "name": "PHP 5.4.33 (tar.gz)",
+        "sha256": "74e542dd2f15ebbc123738a71e867d57d2996a6edb40e6ac62fcf5ab85763d19",
+        "date": "18 Sep 2014"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.4",
+        "name": "Windows 5.4.33 binaries and source"
+      }
+    ],
+    "date": "18 Sep 2014",
+    "museum": false
+  },
+  "5.4.32": {
+    "announcement": {
+      "English": "/releases/5_4_32.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.32.tar.bz2",
+        "name": "PHP 5.4.32 (tar.bz2)",
+        "date": "21 Aug 2014",
+        "sha256": "26d0717669a098f18cd22dc3ae8282101d38508054500c26775ddcc26ca7c826"
+      },
+      {
+        "filename": "php-5.4.32.tar.gz",
+        "name": "PHP 5.4.32 (tar.gz)",
+        "date": "21 Aug 2014",
+        "sha256": "80ebdf34f91b8e1d516080363804137177368777aa9ecffee600f2957e8b0f94"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.4",
+        "name": "Windows 5.4.32 binaries and source"
+      }
+    ],
+    "date": "21 Aug 2014",
+    "museum": false
+  },
+  "5.4.31": {
+    "announcement": {
+      "English": "/releases/5_4_31.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.31.tar.bz2",
+        "name": "PHP 5.4.31 (tar.bz2)",
+        "date": "24 Jul 2014",
+        "sha256": "5e8e491431fd1d99df925d762b05da05c80b02cb38c9b3db616e8894a307914d"
+      },
+      {
+        "filename": "php-5.4.31.tar.gz",
+        "name": "PHP 5.4.31 (tar.gz)",
+        "date": "24 Jul 2014",
+        "sha256": "332f62e4f751482d40ad08544ee97e004170d0382c84d01ce8efe405d0972f66"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.4",
+        "name": "Windows 5.4.31 binaries and source"
+      }
+    ],
+    "date": "24 Jul 2014",
+    "museum": false
+  },
+  "5.4.30": {
+    "announcement": {
+      "English": "/releases/5_4_30.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.30.tar.bz2",
+        "name": "PHP 5.4.30 (tar.bz2)",
+        "date": "26 Jun 2014",
+        "sha256": "32b83644e42d57388d6e5ec700c3502cde5f5e1207395b1e361e4cb2ce496ce6"
+      },
+      {
+        "filename": "php-5.4.30.tar.gz",
+        "name": "PHP 5.4.30 (tar.gz)",
+        "date": "26 Jun 2014",
+        "sha256": "c17da64890b728bdc146bdc69b37085412d4e2585fac98848ac2e824bb564c85"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.4",
+        "name": "Windows 5.4.30 binaries and source"
+      }
+    ],
+    "date": "26 Jun 2014",
+    "museum": false
+  },
+  "5.4.29": {
+    "announcement": {
+      "English": "/releases/5_4_29.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.29.tar.bz2",
+        "name": "PHP 5.4.29 (tar.bz2)",
+        "date": "29 May 2014",
+        "sha256": "62ce3ca063cf04f6065eeac82117e43b44e20487bc0a0a8d05436e17a0b1e2a7"
+      },
+      {
+        "filename": "php-5.4.29.tar.gz",
+        "name": "PHP 5.4.29 (tar.gz)",
+        "date": "29 May 2014",
+        "sha256": "9fa51d3e44783802ea51b910719ad524a8994524f7cf7307f683fe89191bc401"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.4",
+        "name": "Windows 5.4.29 binaries and source"
+      }
+    ],
+    "date": "29 May 2014",
+    "museum": false
+  },
+  "5.4.28": {
+    "announcement": {
+      "English": "/releases/5_4_28.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.28.tar.bz2",
+        "name": "PHP 5.4.28 (tar.bz2)",
+        "date": "2 May 2014",
+        "sha256": "3fe780e5179e90c4d37276e79acc0d0692f1bc0911985af694b92c664c0ef3c4"
+      },
+      {
+        "filename": "php-5.4.28.tar.gz",
+        "name": "PHP 5.4.28 (tar.gz)",
+        "date": "2 May 2014",
+        "sha256": "5140292c94a0301db7a807e6b3aadf6ee966346d0005aa3d15464bd4c595a786"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.4",
+        "name": "Windows 5.4.28 binaries and source"
+      }
+    ],
+    "date": "2 May 2014",
+    "museum": false
+  },
+  "5.4.27": {
+    "announcement": {
+      "English": "/releases/5_4_27.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.27.tar.bz2",
+        "name": "PHP 5.4.27 (tar.bz2)",
+        "date": "3 Apr 2014",
+        "sha256": "09dcc44cded735e1cf1b1b9f2749d1a0fd90e03378b6a70364a662f4740e61e2"
+      },
+      {
+        "filename": "php-5.4.27.tar.gz",
+        "name": "PHP 5.4.27 (tar.gz)",
+        "date": "3 Apr 2014",
+        "sha256": "a70dc68eeed902f8378fded473d53e4e37be645b941554dcf4237559cbda2bb3"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.4",
+        "name": "Windows 5.4.27 binaries and source"
+      }
+    ],
+    "date": "3 Apr 2014",
+    "museum": false
+  },
+  "5.4.26": {
+    "announcement": {
+      "English": "/releases/5_4_26.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.26.tar.bz2",
+        "name": "PHP 5.4.26 (tar.bz2)",
+        "date": "6 Mar 2014",
+        "sha256": "5053649317b9331df40bd836c976a32b31dbc5c5d68997d3ae01cb90db22d240"
+      },
+      {
+        "filename": "php-5.4.26.tar.gz",
+        "name": "PHP 5.4.26 (tar.gz)",
+        "date": "6 Mar 2014",
+        "sha256": "ec3f902b5e8cbdd660e01e784b537f1210a12182d9bbd62164776075bc097eca"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.4",
+        "name": "Windows 5.4.26 binaries and source"
+      }
+    ],
+    "date": "6 Mar 2014",
+    "museum": false
+  },
+  "5.4.25": {
+    "announcement": {
+      "English": "/releases/5_4_25.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.25.tar.bz2",
+        "name": "PHP 5.4.25 (tar.bz2)",
+        "date": "6 Feb 2014",
+        "sha256": "b6c18c07c6bf34f75e601b28829d636e44c1c9f4267aac4ed013443c32a2245f"
+      },
+      {
+        "filename": "php-5.4.25.tar.gz",
+        "name": "PHP 5.4.25 (tar.gz)",
+        "date": "6 Feb 2014",
+        "sha256": "0c66cec73bfbd31f68c96e5a4d8454599271f0b0462c2ff7dedce4262fda8fe3"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.4",
+        "name": "Windows 5.4.25 binaries and source"
+      }
+    ],
+    "date": "6 Feb 2014",
+    "museum": false
+  },
+  "5.4.24": {
+    "announcement": {
+      "English": "/releases/5_4_24.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.24.tar.bz2",
+        "name": "PHP 5.4.24 (tar.bz2)",
+        "date": "9 Jan 2014",
+        "sha256": "97fe70eddaf5b93969714a551870fe03f6b0a387f85b83a6d63a40a76199a327"
+      },
+      {
+        "filename": "php-5.4.24.tar.gz",
+        "name": "PHP 5.4.24 (tar.gz)",
+        "date": "9 Jan 2014",
+        "sha256": "c64d6e3b428e78b44760167557e26cd16a9f83f449a255e69d5e035bdd7057ed"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.4",
+        "name": "Windows 5.4.24 binaries and source"
+      }
+    ],
+    "date": "9 Jan 2014",
+    "museum": false
+  },
+  "5.4.23": {
+    "announcement": {
+      "English": "/releases/5_4_23.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.23.tar.bz2",
+        "name": "PHP 5.4.23 (tar.bz2)",
+        "date": "12 Dec 2013",
+        "sha256": "ae7c070fa9b9e16413ef944d910b68f3ba79192eca4010b0af132b8631bd91cc"
+      },
+      {
+        "filename": "php-5.4.23.tar.gz",
+        "name": "PHP 5.4.23 (tar.gz)",
+        "date": "12 Dec 2013",
+        "sha256": "c9add0e59f41298a253bbb9090c47a03064b099120a563ca8ad289e18fcd1ce7"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.4",
+        "name": "Windows 5.4.23 binaries and source"
+      }
+    ],
+    "date": "12 Dec 2013",
+    "museum": false
+  },
+  "5.4.22": {
+    "announcement": {
+      "English": "/releases/5_4_22.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.22.tar.bz2",
+        "name": "PHP 5.4.22 (tar.bz2)",
+        "date": "14 Nov 2013",
+        "sha256": "3b8619b030e372f2b64e3a059d05a3ef3354e81f8a72923ba45475bf222f7cca"
+      },
+      {
+        "filename": "php-5.4.22.tar.gz",
+        "name": "PHP 5.4.22 (tar.gz)",
+        "date": "14 Nov 2013",
+        "sha256": "ca6e52a0ba11e9521c6a26f293a602cdc00cad1adbb4658e35b8d3f41057cbb8"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.4",
+        "name": "Windows 5.4.22 binaries and source"
+      }
+    ],
+    "date": "14 Nov 2013",
+    "museum": false
+  },
+  "5.4.21": {
+    "announcement": {
+      "English": "/releases/5_4_21.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.21.tar.bz2",
+        "name": "PHP 5.4.21 (tar.bz2)",
+        "md5": "3dcf021e89b039409d0b1c346b936b5f",
+        "date": "17 Oct 2013"
+      },
+      {
+        "filename": "php-5.4.21.tar.gz",
+        "name": "PHP 5.4.21 (tar.gz)",
+        "md5": "cc8da0d18683e3a83b332f264af7ca83",
+        "date": "17 Oct 2013"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.4",
+        "name": "Windows 5.4.21 binaries and source"
+      }
+    ],
+    "date": "17 Oct 2013",
+    "museum": true
+  },
+  "5.4.20": {
+    "announcement": {
+      "English": "/releases/5_4_20.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.20.tar.bz2",
+        "name": "PHP 5.4.20 (tar.bz2)",
+        "md5": "e25db5592ed14842b4239be9d990cce8",
+        "date": "19 Sep 2013"
+      },
+      {
+        "filename": "php-5.4.20.tar.gz",
+        "name": "PHP 5.4.20 (tar.gz)",
+        "md5": "e505b63ebe383ef9a378467216ba69d4",
+        "date": "19 Sep 2013"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.4",
+        "name": "Windows 5.4.20 binaries and source"
+      }
+    ],
+    "date": "19 Sep 2013",
+    "museum": true
+  },
+  "5.4.19": {
+    "announcement": {
+      "English": "/releases/5_4_19.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.19.tar.bz2",
+        "name": "PHP 5.4.19 (tar.bz2)",
+        "md5": "f06f99b9872b503758adab5ba7a7e755",
+        "date": "22 Aug 2013"
+      },
+      {
+        "filename": "php-5.4.19.tar.gz",
+        "name": "PHP 5.4.19 (tar.gz)",
+        "md5": "9e7ad2494ba3de519328f74267de8342",
+        "date": "22 Aug 2013"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.4",
+        "name": "Windows 5.4.19 binaries and source"
+      }
+    ],
+    "date": "22 Aug 2013",
+    "museum": true
+  },
+  "5.4.18": {
+    "announcement": {
+      "English": "/releases/5_4_18.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.18.tar.bz2",
+        "name": "PHP 5.4.18 (tar.bz2)",
+        "md5": "b2e185b46b22a48a385cf21a0dc76e65",
+        "date": "15 Aug 2013"
+      },
+      {
+        "filename": "php-5.4.18.tar.gz",
+        "name": "PHP 5.4.18 (tar.gz)",
+        "md5": "d0a3f55deceaec921f45f76d7b4e764b",
+        "date": "15 Aug 2013"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.4",
+        "name": "Windows 5.4.18 binaries and source"
+      }
+    ],
+    "date": "04 Jul 2013",
+    "museum": true
+  },
+  "5.4.17": {
+    "announcement": {
+      "English": "/releases/5_4_17.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.17.tar.bz2",
+        "name": "PHP 5.4.17 (tar.bz2)",
+        "md5": "1e027e99e2a874310fd518e87e3947af",
+        "date": "04 Jul 2013"
+      },
+      {
+        "filename": "php-5.4.17.tar.gz",
+        "name": "PHP 5.4.17 (tar.gz)",
+        "md5": "cc698032dcdcb9ad158edcc90fe798d6",
+        "date": "04 Jul 2013"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.4",
+        "name": "Windows 5.4.17 binaries and source"
+      }
+    ],
+    "date": "04 Jul 2013",
+    "museum": true
+  },
+  "5.4.16": {
+    "announcement": {
+      "English": "/releases/5_4_16.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.16.tar.bz2",
+        "name": "PHP 5.4.16 (tar.bz2)",
+        "md5": "3d2c694d28861d707b2622c3cc941cff",
+        "date": "06 Jun 2013"
+      },
+      {
+        "filename": "php-5.4.16.tar.gz",
+        "name": "PHP 5.4.16 (tar.gz)",
+        "md5": "3940a5295872964495f9c56596272d68",
+        "date": "06 Jun 2013"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.4",
+        "name": "Windows 5.4.16 binaries and source"
+      }
+    ],
+    "date": "09 May 2013",
+    "museum": true
+  },
+  "5.4.15": {
+    "announcement": {
+      "English": "/releases/5_4_15.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.15.tar.bz2",
+        "name": "PHP 5.4.15 (tar.bz2)",
+        "md5": "145ea5e845e910443ff1eddb3dbcf56a",
+        "date": "09 May 2013"
+      },
+      {
+        "filename": "php-5.4.15.tar.gz",
+        "name": "PHP 5.4.15 (tar.gz)",
+        "md5": "2651b983c18df9d455ec4c69aef45834",
+        "date": "09 May 2013"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.4",
+        "name": "Windows 5.4.15 binaries and source"
+      }
+    ],
+    "date": "09 May 2013",
+    "museum": true
+  },
+  "5.4.14": {
+    "announcement": {
+      "English": "/releases/5_4_14.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.14.tar.bz2",
+        "name": "PHP 5.4.14 (tar.bz2)",
+        "md5": "cfdc044be2c582991a1fe0967898fa38",
+        "date": "11 Apr 2013"
+      },
+      {
+        "filename": "php-5.4.14.tar.gz",
+        "name": "PHP 5.4.14 (tar.gz)",
+        "md5": "08df8196af12bc850409a7bff13bf8f0",
+        "date": "11 Apr 2013"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.4",
+        "name": "Windows 5.4.14 binaries and source"
+      }
+    ],
+    "date": "11 Apr 2013",
+    "museum": true
+  },
+  "5.4.13": {
+    "announcement": {
+      "English": "/releases/5_4_13.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.13.tar.bz2",
+        "name": "PHP 5.4.13 (tar.bz2)",
+        "md5": "cacd308e978b7cf9ba4993196612ccf7",
+        "date": "14 Mar 2013"
+      },
+      {
+        "filename": "php-5.4.13.tar.gz",
+        "name": "PHP 5.4.13 (tar.gz)",
+        "md5": "445025340677d5bfe22eb670d6db6795",
+        "date": "14 Mar 2013"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.4",
+        "name": "Windows 5.4.13 binaries and source"
+      }
+    ],
+    "date": "14 Mar 2013",
+    "museum": true
+  },
+  "5.4.12": {
+    "announcement": {
+      "English": "/releases/5_4_12.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.12.tar.bz2",
+        "name": "PHP 5.4.12 (tar.bz2)",
+        "md5": "5c7b614242ae12e9cacca21c8ab84818",
+        "date": "21 Feb 2013"
+      },
+      {
+        "filename": "php-5.4.12.tar.gz",
+        "name": "PHP 5.4.12 (tar.gz)",
+        "md5": "81b20cac4f977b8764ae904302048d84",
+        "date": "21 Feb 2013"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.4",
+        "name": "Windows 5.4.12 binaries and source"
+      }
+    ],
+    "date": "21 Feb 2013",
+    "museum": true
+  },
+  "5.4.11": {
+    "announcement": {
+      "English": "/releases/5_4_11.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.11.tar.bz2",
+        "name": "PHP 5.4.11 (tar.bz2)",
+        "md5": "9975e68c22b86b013b934743ad2d2276",
+        "date": "17 Jan 2013"
+      },
+      {
+        "filename": "php-5.4.11.tar.gz",
+        "name": "PHP 5.4.11 (tar.gz)",
+        "md5": "32fa16b3abd5527316c3c076b3395914",
+        "date": "17 Jan 2013"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.4",
+        "name": "Windows 5.4.11 binaries and source"
+      }
+    ],
+    "date": "17 Jan 2013",
+    "museum": true
+  },
+  "5.4.10": {
+    "announcement": {
+      "English": "/releases/5_4_10.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.10.tar.bz2",
+        "name": "PHP 5.4.10 (tar.bz2)",
+        "md5": "cb716b657a30570b9b468b9e7bc551a1",
+        "date": "20 Dec 2012"
+      },
+      {
+        "filename": "php-5.4.10.tar.gz",
+        "name": "PHP 5.4.10 (tar.gz)",
+        "md5": "1e7fbe418658d5433bd315030584c45c",
+        "date": "20 Dec 2012"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.4",
+        "name": "Windows 5.4.10 binaries and source"
+      }
+    ],
+    "date": "20 Dec 2012",
+    "museum": true
+  },
+  "5.4.9": {
+    "announcement": {
+      "English": "/releases/5_4_9.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.9.tar.bz2",
+        "name": "PHP 5.4.9 (tar.bz2)",
+        "md5": "076a9f84d861d3f664a2878d5773ba78",
+        "date": "22 Nov 2012"
+      },
+      {
+        "filename": "php-5.4.9.tar.gz",
+        "name": "PHP 5.4.9 (tar.gz)",
+        "md5": "e1ac28e1cf20738f0aeeba8261aa4537",
+        "date": "22 Nov 2012"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.4",
+        "name": "Windows 5.4.9 binaries and source"
+      }
+    ],
+    "date": "22 Nov 2012",
+    "museum": true
+  },
+  "5.4.8": {
+    "announcement": {
+      "English": "/releases/5_4_8.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.8.tar.bz2",
+        "name": "PHP 5.4.8 (tar.bz2)",
+        "md5": "bb8c816a9299be8995255ef70c63b800",
+        "date": "18 Oct 2012"
+      },
+      {
+        "filename": "php-5.4.8.tar.gz",
+        "name": "PHP 5.4.8 (tar.gz)",
+        "md5": "b25b735f342efbfdcdaf00b83189f183",
+        "date": "18 Oct 2012"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.4",
+        "name": "Windows 5.4.8 binaries and source"
+      }
+    ],
+    "date": "18 Oct 2012",
+    "museum": true
+  },
+  "5.4.7": {
+    "announcement": {
+      "English": "/releases/5_4_7.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.7.tar.bz2",
+        "name": "PHP 5.4.7 (tar.bz2)",
+        "md5": "9cd421f1cc8fa8e7f215e44a1b06199f",
+        "date": "13 Sep 2012"
+      },
+      {
+        "filename": "php-5.4.7.tar.gz",
+        "name": "PHP 5.4.7 (tar.gz)",
+        "md5": "94661b761dcfdfdd5108e8b12e0dd4f8",
+        "date": "13 Sep 2012"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.4",
+        "name": "Windows 5.4.7 binaries and source"
+      }
+    ],
+    "date": "13 Sep 2012",
+    "museum": true
+  },
+  "5.4.6": {
+    "announcement": {
+      "English": "/releases/5_4_6.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.6.tar.bz2",
+        "name": "PHP 5.4.6 (tar.bz2)",
+        "md5": "c9aa0f4996d1b91ee9e45afcfaeb5d2e",
+        "date": "16 Aug 2012"
+      },
+      {
+        "filename": "php-5.4.6.tar.gz",
+        "name": "PHP 5.4.6 (tar.gz)",
+        "md5": "efe59afb73190c9bd6d50614998ffceb",
+        "date": "16 Aug 2012"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.4",
+        "name": "Windows 5.4.6 binaries and source"
+      }
+    ],
+    "date": "16 Aug 2012",
+    "museum": true
+  },
+  "5.4.5": {
+    "announcement": {
+      "English": "/releases/5_4_5.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.5.tar.bz2",
+        "name": "PHP 5.4.5 (tar.bz2)",
+        "md5": "ffcc7f4dcf2b79d667fe0c110e6cb724",
+        "date": "19 July 2012"
+      },
+      {
+        "filename": "php-5.4.5.tar.gz",
+        "name": "PHP 5.4.5 (tar.gz)",
+        "md5": "51fb5bf974d92359f0606dffc810735a",
+        "date": "19 July 2012"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.4",
+        "name": "Windows 5.4.5 binaries and source"
+      }
+    ],
+    "date": "19 July 2012",
+    "museum": true
+  },
+  "5.4.4": {
+    "announcement": {
+      "English": "/releases/5_4_4.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.4.tar.bz2",
+        "name": "PHP 5.4.4 (tar.bz2)",
+        "md5": "1fd98dc3f6f3805cd67bff12a26ed77f",
+        "date": "14 June 2012"
+      },
+      {
+        "filename": "php-5.4.4.tar.gz",
+        "name": "PHP 5.4.4 (tar.gz)",
+        "md5": "8366c3626f2275ab8c7ef5e2d6bc5bd7",
+        "date": "14 June 2012"
+      },
+      {
+        "link": "http://windows.php.net/download/#php-5.4",
+        "name": "Windows 5.4.4 binaries and source"
+      }
+    ],
+    "date": "14 June 2012",
+    "museum": true
+  },
+  "5.4.3": {
+    "announcement": {
+      "English": "/releases/5_4_3.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.3.tar.bz2",
+        "name": "PHP 5.4.3 (tar.bz2)",
+        "md5": "51f9488bf8682399b802c48656315cac",
+        "date": "08 May 2012"
+      },
+      {
+        "filename": "php-5.4.3.tar.gz",
+        "name": "PHP 5.4.3 (tar.gz)",
+        "md5": "c9dccc89cc89d39e84f6e6f0cf1c8a65",
+        "date": "08 May 2012"
+      }
+    ],
+    "date": "08 May 2012",
+    "museum": true
+  },
+  "5.4.2": {
+    "announcement": {
+      "English": "/releases/5_4_2.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.2.tar.bz2",
+        "name": "PHP 5.4.2 (tar.bz2)",
+        "md5": "252a6546db3a26260b419a883c875615",
+        "date": "03 May 2012"
+      },
+      {
+        "filename": "php-5.4.2.tar.gz",
+        "name": "PHP 5.4.2 (tar.gz)",
+        "md5": "4b62935cbea385a23335f17d64d716c7",
+        "date": "03 May 2012"
+      }
+    ],
+    "date": "03 May 2012",
+    "museum": true
+  },
+  "5.4.1": {
+    "announcement": {
+      "English": "/releases/5_4_1.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.1.tar.bz2",
+        "name": "PHP 5.4.1 (tar.bz2)",
+        "md5": "5b9529ed89dbc48c498e9693d1af3caf",
+        "date": "26 April 2012"
+      },
+      {
+        "filename": "php-5.4.1.tar.gz",
+        "name": "PHP 5.4.1 (tar.gz)",
+        "md5": "acd566dbd70f855c19d17fc3c0e876a2",
+        "date": "26 April 2012"
+      }
+    ],
+    "date": "26 April 2012",
+    "museum": true
+  },
+  "5.4.0": {
+    "announcement": {
+      "English": "/releases/5_4_0.php"
+    },
+    "source": [
+      {
+        "filename": "php-5.4.0.tar.bz2",
+        "name": "PHP 5.4.0 (tar.bz2)",
+        "md5": "04bb6f9d71ea86ba05685439d50db074",
+        "date": "01 March 2012"
+      },
+      {
+        "filename": "php-5.4.0.tar.gz",
+        "name": "PHP 5.4.0 (tar.gz)",
+        "md5": "46b72e274c6ea7e775245ffdb81c9ce5",
+        "date": "01 March 2012"
+      }
+    ],
+    "date": "01 March 2012",
+    "museum": true
+  }
+}
