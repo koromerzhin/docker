@@ -30,11 +30,8 @@ jobs:
         with:
           submodules: recursive
       - name: Vérifier si l'image Docker existe
-        run: |
-          if ! docker pull php:${{ matrix.php }}-fpm; then
-            echo "L'image n'existe pas, arrêt du job."
-            exit 1
-          fi
+        continue-on-error: false
+        run: docker pull php:${{ matrix.php }}-fpm
       - name: Setup Task
         uses: go-task/setup-task@v1
       - name: "create FPM"
@@ -73,11 +70,8 @@ jobs:
         with:
           submodules: recursive
       - name: Vérifier si l'image Docker existe
-        run: |
-          if ! docker pull php:${{ matrix.php }}-apache; then
-            echo "L'image n'existe pas, arrêt du job."
-            exit 1
-          fi
+        continue-on-error: false
+        run: docker pull php:${{ matrix.php }}-apache
       - name: Setup Task
         uses: go-task/setup-task@v1
       - name: "create APACHE"
