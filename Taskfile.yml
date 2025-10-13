@@ -59,69 +59,106 @@ tasks:
     vars:
       FOLDER: '{{.FOLDER | default ""}}'
       VERSION: '{{.VERSION | default ""}}'
+      PHPLISTEXTENSION56: '{{.PHPLISTEXTENSION | default "@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg"}}'
+      PHPLISTEXTENSION70: '{{.PHPLISTEXTENSION | default "@composer"}}'
+      PHPLISTEXTENSION71: '{{.PHPLISTEXTENSION | default "@composer"}}'
+      PHPLISTEXTENSION72: '{{.PHPLISTEXTENSION | default "@composer"}}'
+      PHPLISTEXTENSION73: '{{.PHPLISTEXTENSION | default "@composer"}}'
+      PHPLISTEXTENSION74: '{{.PHPLISTEXTENSION | default "@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg"}}'
+      PHPLISTEXTENSION80: '{{.PHPLISTEXTENSION | default "@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg"}}'
+      PHPLISTEXTENSION81: '{{.PHPLISTEXTENSION | default "@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg"}}'
+      PHPLISTEXTENSION82: '{{.PHPLISTEXTENSION | default "@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg"}}'
+      PHPLISTEXTENSION83: '{{.PHPLISTEXTENSION | default "@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg"}}'
+      PHPLISTEXTENSION84: '{{.PHPLISTEXTENSION | default "@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg"}}'
     cmds:
-      - mkdir -p build/{{.FOLDER}}/{{.VERSION}}
-      - cp images/{{.FOLDER}}/Dockerfile build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
-      - sed -i 's#VERSIONIMAGE#php:{{.VERSION}}-{{.FOLDER}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
-      - sed -i 's#PHPEXTENSIONS#{{.PHP_EXTENSIONS}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
-      - sed -i 's#WORDPRESSPHAR#{{.WORDPRESS_PHAR}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
-      - sed -i 's#SYMFONYCLI#{{.SYMFONY_CLI}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
-      - echo "Dockerfile créé dans build/{{.FOLDER}}/{{.VERSION}}/Dockerfile"
-  
+    - mkdir -p build/{{.FOLDER}}/{{.VERSION}}
+    - cp images/{{.FOLDER}}/Dockerfile build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
+    - sed -i 's#VERSIONIMAGE#php:{{.VERSION}}-{{.FOLDER}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
+    - sed -i 's#PHPEXTENSIONS#{{.PHP_EXTENSIONS}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
+    - |
+      if [ "{{.VERSION}}" = "5.6" ]; then 
+        sed -i 's#PHPLISTEXTENSION#{{.PHPLISTEXTENSION56}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
+      elif [ "{{.VERSION}}" = "7.0" ]; then 
+        sed -i 's#PHPLISTEXTENSION#{{.PHPLISTEXTENSION70}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
+      elif [ "{{.VERSION}}" = "7.1" ]; then 
+        sed -i 's#PHPLISTEXTENSION#{{.PHPLISTEXTENSION71}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
+      elif [ "{{.VERSION}}" = "7.2" ]; then 
+        sed -i 's#PHPLISTEXTENSION#{{.PHPLISTEXTENSION72}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
+      elif [ "{{.VERSION}}" = "7.3" ]; then 
+        sed -i 's#PHPLISTEXTENSION#{{.PHPLISTEXTENSION73}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
+      elif [ "{{.VERSION}}" = "7.4" ]; then 
+        sed -i 's#PHPLISTEXTENSION#{{.PHPLISTEXTENSION74}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
+      elif [ "{{.VERSION}}" = "8.0" ]; then 
+        sed -i 's#PHPLISTEXTENSION#{{.PHPLISTEXTENSIONN80}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
+      elif [ "{{.VERSION}}" = "8.1" ]; then 
+        sed -i 's#PHPLISTEXTENSION#{{.PHPLISTEXTENSIONN81}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
+      elif [ "{{.VERSION}}" = "8.2" ]; then 
+        sed -i 's#PHPLISTEXTENSION#{{.PHPLISTEXTENSIONN82}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
+      elif [ "{{.VERSION}}" = "8.3" ]; then 
+        sed -i 's#PHPLISTEXTENSION#{{.PHPLISTEXTENSIONN83}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
+      elif [ "{{.VERSION}}" = "8.4" ]; then 
+        sed -i 's#PHPLISTEXTENSION#{{.PHPLISTEXTENSIONN84}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
+      fi
+    - sed -i 's#SYMFONYCLI#{{.SYMFONY_CLI}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
+    - echo "Dockerfile créé dans build/{{.FOLDER}}/{{.VERSION}}/Dockerfile"
+
   create-fpm:
     desc: "Crée le Dockerfile pour PHP-FPM"
     silent: true
     vars:
       VERSION: '{{.VERSION | default ""}}'
     cmds:
-      - task: create
-        vars:
-          FOLDER: "fpm"
-    
+    - task: create
+      vars:
+        FOLDER: "fpm"
+
   matrix:
     desc: "Génère une matrice JSON pour les versions PHP à utiliser dans GitHub Actions"
     silent: true
     vars:
       VERSION: '{{.VERSION | default ""}}'
     cmds:
-      - echo "https://www.php.net/releases/index.php?json&version={{.VERSION}}&max=1000"
-      - wget -O php_versions{{.VERSION}}.json "https://www.php.net/releases/index.php?json&version={{.VERSION}}&max=1000"
-      - |
-        jq -r '{versions: (keys)}' php_versions{{.VERSION}}.json > matrix_{{.VERSION}}.json
-      - rm -rf php_versions{{.VERSION}}.json
+    - echo "https://www.php.net/releases/index.php?json&version={{.VERSION}}&max=1000"
+    - wget -O php_versions{{.VERSION}}.json "https://www.php.net/releases/index.php?json&version={{.VERSION}}&max=1000"
+    - |
+      jq -r '{versions: (keys)}' php_versions{{.VERSION}}.json > matrix_{{.VERSION}}.json
+    - rm -rf php_versions{{.VERSION}}.json
 
   matrix-all:
     cmds:
-      - task: matrix
-        vars:
-          VERSION: "7.0"
-      - task: matrix
-        vars:
-          VERSION: "7.1"
-      - task: matrix
-        vars:
-          VERSION: "7.2"
-      - task: matrix
-        vars:
-          VERSION: "7.3"
-      - task: matrix
-        vars:
-          VERSION: "7.4"
-      - task: matrix
-        vars:
-          VERSION: "8.0"
-      - task: matrix
-        vars:
-          VERSION: "8.1"
-      - task: matrix
-        vars:
-          VERSION: "8.2"
-      - task: matrix
-        vars:
-          VERSION: "8.3"
-      - task: matrix
-        vars:
-          VERSION: "8.4"
+    - task: matrix
+      vars:
+        VERSION: "5.6"
+    - task: matrix
+      vars:
+        VERSION: "7.0"
+    - task: matrix
+      vars:
+        VERSION: "7.1"
+    - task: matrix
+      vars:
+        VERSION: "7.2"
+    - task: matrix
+      vars:
+        VERSION: "7.3"
+    - task: matrix
+      vars:
+        VERSION: "7.4"
+    - task: matrix
+      vars:
+        VERSION: "8.0"
+    - task: matrix
+      vars:
+        VERSION: "8.1"
+    - task: matrix
+      vars:
+        VERSION: "8.2"
+    - task: matrix
+      vars:
+        VERSION: "8.3"
+    - task: matrix
+      vars:
+        VERSION: "8.4"
 
   create-apache:
     desc: "Crée le Dockerfile pour PHP-Apache"
@@ -129,9 +166,9 @@ tasks:
     vars:
       VERSION: '{{.VERSION | default ""}}'
     cmds:
-      - task: create
-        vars:
-          FOLDER: "apache"
+    - task: create
+      vars:
+        FOLDER: "apache"
 
   create-all:
     desc: "Crée le Dockerfile pour PHP-Apache"
@@ -139,8 +176,8 @@ tasks:
     vars:
       VERSION: '{{.VERSION | default ""}}'
     cmds:
-      - task: create-apache
-      - task: create-fpm
+    - task: create-apache
+    - task: create-fpm
 
   build:
     desc: "Construit les images Docker définies dans les Taskfiles inclus"
@@ -152,12 +189,12 @@ tasks:
       FOLDER: '{{.FOLDER | default ""}}'
       VERSION: '{{.VERSION | default ""}}'
     cmds:
-      - docker build -t koromerzhin/php:{{.VERSION}}-{{.FOLDER}} build/{{.FOLDER}}/{{.VERSION}} --target build-{{.FOLDER}}
-      - docker build -t koromerzhin/php:{{.VERSION}}-{{.FOLDER}}-xdebug build/{{.FOLDER}}/{{.VERSION}} --target build-{{.FOLDER}}-xdebug
-      - docker build -t koromerzhin/php:{{.VERSION}}-{{.FOLDER}}-wordpress build/{{.FOLDER}}/{{.VERSION}} --target build-{{.FOLDER}}-wordpress
-      - docker build -t koromerzhin/php:{{.VERSION}}-{{.FOLDER}}-wordpress-xdebug build/{{.FOLDER}}/{{.VERSION}} --target build-{{.FOLDER}}-wordpress-xdebug
-      - docker build -t koromerzhin/php:{{.VERSION}}-{{.FOLDER}}-symfony build/{{.FOLDER}}/{{.VERSION}} --target build-{{.FOLDER}}-symfony
-      - docker build -t koromerzhin/php:{{.VERSION}}-{{.FOLDER}}-symfony-xdebug build/{{.FOLDER}}/{{.VERSION}} --target build-{{.FOLDER}}-symfony-xdebug
+    - docker build -t koromerzhin/php:{{.VERSION}}-{{.FOLDER}} build/{{.FOLDER}}/{{.VERSION}} --target build-{{.FOLDER}}
+    - docker build -t koromerzhin/php:{{.VERSION}}-{{.FOLDER}}-xdebug build/{{.FOLDER}}/{{.VERSION}} --target build-{{.FOLDER}}-xdebug
+    - docker build -t koromerzhin/php:{{.VERSION}}-{{.FOLDER}}-wordpress build/{{.FOLDER}}/{{.VERSION}} --target build-{{.FOLDER}}-wordpress
+    - docker build -t koromerzhin/php:{{.VERSION}}-{{.FOLDER}}-wordpress-xdebug build/{{.FOLDER}}/{{.VERSION}} --target build-{{.FOLDER}}-wordpress-xdebug
+    - docker build -t koromerzhin/php:{{.VERSION}}-{{.FOLDER}}-symfony build/{{.FOLDER}}/{{.VERSION}} --target build-{{.FOLDER}}-symfony
+    - docker build -t koromerzhin/php:{{.VERSION}}-{{.FOLDER}}-symfony-xdebug build/{{.FOLDER}}/{{.VERSION}} --target build-{{.FOLDER}}-symfony-xdebug
 
   build-fpm:
     desc: "Construit l'image Docker pour PHP-FPM"
@@ -166,9 +203,9 @@ tasks:
       NUMBER: '{{.NUMBER | default ""}}'
       VERSION: '{{.VERSION | default ""}}'
     cmds:
-      - task: build
-        vars:
-          FOLDER: "fpm"
+    - task: build
+      vars:
+        FOLDER: "fpm"
 
   build-apache:
     desc: "Construit l'image Docker pour PHP-Apache"
@@ -176,9 +213,9 @@ tasks:
     vars:
       VERSION: '{{.VERSION | default ""}}'
     cmds:
-      - task: build
-        vars:
-          FOLDER: "apache"
+    - task: build
+      vars:
+        FOLDER: "apache"
 
   build-all:
     desc: "Construit l'image Docker pour PHP-Apache"
@@ -186,8 +223,8 @@ tasks:
     vars:
       VERSION: '{{.VERSION | default ""}}'
     cmds:
-      - task: build-apache
-      - task: build-fpm
+    - task: build-apache
+    - task: build-fpm
 
   push:
     desc: "Pousse toutes les images Docker vers Docker Hub"
@@ -196,4 +233,4 @@ tasks:
       msg: "Docker n'est pas installé ou accessible"
     silent: true
     cmds:
-      - docker push koromerzhin/php -a
+    - docker push koromerzhin/php -a

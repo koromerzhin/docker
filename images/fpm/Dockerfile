@@ -10,28 +10,7 @@ RUN apt-get update && \
     rm -fr /var/lib/apt/lists/*
 
 # Add Extension
-RUN install-php-extensions \
-    @composer \
-    amqp \
-    apcu \
-    bcmath \
-    blackfire \
-    exif \
-    gd \
-    imagick \
-    intl \
-    ldap \
-    mysqli \
-    opcache \
-    pdo_mysql \
-    pdo_pgsql \
-    redis \
-    shmop \
-    soap \
-    sockets \
-    tidy \
-    zip \
-    gnupg
+RUN install-php-extensions PHPLISTEXTENSION
 
 WORKDIR /var/www
 
