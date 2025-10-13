@@ -52,13 +52,14 @@ tasks:
   create:
     desc: "Construit les images Docker définies dans les Taskfiles inclus"
     internal: true
-    silent: false
+    silent: true
     preconditions:
     - sh: command -v docker
       msg: "Docker n'est pas installé ou accessible"
     vars:
       FOLDER: '{{.FOLDER | default ""}}'
       VERSION: '{{.VERSION | default ""}}'
+      NUMBER: '{{.NUMBER | default ""}}'
       PHPLISTEXTENSION56: '{{.PHPLISTEXTENSION | default "@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg"}}'
       PHPLISTEXTENSION70: '{{.PHPLISTEXTENSION | default "@composer"}}'
       PHPLISTEXTENSION71: '{{.PHPLISTEXTENSION | default "@composer"}}'
@@ -76,27 +77,27 @@ tasks:
     - sed -i 's#VERSIONIMAGE#php:{{.VERSION}}-{{.FOLDER}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
     - sed -i 's#PHPEXTENSIONS#{{.PHP_EXTENSIONS}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
     - |
-      if [ "{{.VERSION}}" = "5.6" ]; then 
+      if [ "{{.NUMBER}}" = "5.6" ]; then 
         sed -i 's#PHPLISTEXTENSION#{{.PHPLISTEXTENSION56}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
-      elif [ "{{.VERSION}}" = "7.0" ]; then 
+      elif [ "{{.NUMBER}}" = "7.0" ]; then 
         sed -i 's#PHPLISTEXTENSION#{{.PHPLISTEXTENSION70}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
-      elif [ "{{.VERSION}}" = "7.1" ]; then 
+      elif [ "{{.NUMBER}}" = "7.1" ]; then 
         sed -i 's#PHPLISTEXTENSION#{{.PHPLISTEXTENSION71}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
-      elif [ "{{.VERSION}}" = "7.2" ]; then 
+      elif [ "{{.NUMBER}}" = "7.2" ]; then 
         sed -i 's#PHPLISTEXTENSION#{{.PHPLISTEXTENSION72}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
-      elif [ "{{.VERSION}}" = "7.3" ]; then 
+      elif [ "{{.NUMBER}}" = "7.3" ]; then 
         sed -i 's#PHPLISTEXTENSION#{{.PHPLISTEXTENSION73}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
-      elif [ "{{.VERSION}}" = "7.4" ]; then 
+      elif [ "{{.NUMBER}}" = "7.4" ]; then 
         sed -i 's#PHPLISTEXTENSION#{{.PHPLISTEXTENSION74}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
-      elif [ "{{.VERSION}}" = "8.0" ]; then 
+      elif [ "{{.NUMBER}}" = "8.0" ]; then 
         sed -i 's#PHPLISTEXTENSION#{{.PHPLISTEXTENSIONN80}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
-      elif [ "{{.VERSION}}" = "8.1" ]; then 
+      elif [ "{{.NUMBER}}" = "8.1" ]; then 
         sed -i 's#PHPLISTEXTENSION#{{.PHPLISTEXTENSIONN81}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
-      elif [ "{{.VERSION}}" = "8.2" ]; then 
+      elif [ "{{.NUMBER}}" = "8.2" ]; then 
         sed -i 's#PHPLISTEXTENSION#{{.PHPLISTEXTENSIONN82}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
-      elif [ "{{.VERSION}}" = "8.3" ]; then 
+      elif [ "{{.NUMBER}}" = "8.3" ]; then 
         sed -i 's#PHPLISTEXTENSION#{{.PHPLISTEXTENSIONN83}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
-      elif [ "{{.VERSION}}" = "8.4" ]; then 
+      elif [ "{{.NUMBER}}" = "8.4" ]; then 
         sed -i 's#PHPLISTEXTENSION#{{.PHPLISTEXTENSIONN84}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
       fi
     - sed -i 's#SYMFONYCLI#{{.SYMFONY_CLI}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
@@ -107,6 +108,7 @@ tasks:
     silent: true
     vars:
       VERSION: '{{.VERSION | default ""}}'
+      NUMBER: '{{.NUMBER | default ""}}'
     cmds:
     - task: create
       vars:
@@ -165,6 +167,7 @@ tasks:
     silent: true
     vars:
       VERSION: '{{.VERSION | default ""}}'
+      NUMBER: '{{.NUMBER | default ""}}'
     cmds:
     - task: create
       vars:
@@ -175,9 +178,22 @@ tasks:
     silent: true
     vars:
       VERSION: '{{.VERSION | default ""}}'
+      NUMBER: '{{.NUMBER | default ""}}'
     cmds:
     - task: create-apache
     - task: create-fpm
+
+  create-with-matrix:
+    desc: "Crée les Dockerfiles pour toutes les versions PHP définies dans la matrice"
+    silent: true
+    vars:
+      NUMBER: '{{.NUMBER | default ""}}'
+    cmds:
+    - |
+      for version in $(jq -r '.versions[]' matrix_{{.NUMBER}}.json); do
+        echo "Création des Dockerfiles pour PHP $version"
+        task create-all VERSION=$version NUMBER={{.NUMBER}}
+      done
 
   build:
     desc: "Construit les images Docker définies dans les Taskfiles inclus"
