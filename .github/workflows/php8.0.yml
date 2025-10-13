@@ -1,4 +1,4 @@
-name: PHP 5.4
+name: PHP 8.0
 on: [push]
 jobs:
   generatejobs:
@@ -15,7 +15,7 @@ jobs:
         id: json_properties
         uses: zoexx/github-action-json-file-properties@release
         with:
-            file_path: "5.4_matrix.json"
+            file_path: "8.0_matrix.json"
   fpm:
     strategy:
       fail-fast: false
