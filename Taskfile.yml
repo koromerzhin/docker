@@ -14,14 +14,22 @@ includes:
 vars:
   # Variables avec valeurs par défaut depuis .env ou valeurs de fallback
   PROJECT_NAME: '{{.PROJECT_NAME | default "docker"}}'
-  PROJECT_VERSION: '1.0.0'
   ENVIRONMENT: '{{.ENVIRONMENT | default "development"}}'
-  # Variables Flutter et Node.js depuis .env.example
   NODE_VERSION: '{{.NODE_VERSION | default "20"}}'
   PHP_EXTENSIONS: "https://github.com/mlocati/docker-php-extension-installer/releases/download/2.9.13/install-php-extensions"
   WORDPRESS_PHAR: "https://github.com/wp-cli/wp-cli/releases/download/v2.12.0/wp-cli-2.12.0.phar"
   SYMFONY_CLI: "https://github.com/symfony-cli/symfony-cli/releases/download/v5.15.1/symfony-cli_5.15.1_amd64.deb"
-
+  PHPLISTEXTENSION56: '{{.PHPLISTEXTENSION | default "@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg"}}'
+  PHPLISTEXTENSION70: '{{.PHPLISTEXTENSION | default "@composer"}}'
+  PHPLISTEXTENSION71: '{{.PHPLISTEXTENSION | default "@composer"}}'
+  PHPLISTEXTENSION72: '{{.PHPLISTEXTENSION | default "@composer"}}'
+  PHPLISTEXTENSION73: '{{.PHPLISTEXTENSION | default "@composer"}}'
+  PHPLISTEXTENSION74: '{{.PHPLISTEXTENSION | default "@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg"}}'
+  PHPLISTEXTENSION80: '{{.PHPLISTEXTENSION | default "@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg"}}'
+  PHPLISTEXTENSION81: '{{.PHPLISTEXTENSION | default "@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg"}}'
+  PHPLISTEXTENSION82: '{{.PHPLISTEXTENSION | default "@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg"}}'
+  PHPLISTEXTENSION83: '{{.PHPLISTEXTENSION | default "@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg"}}'
+  PHPLISTEXTENSION84: '{{.PHPLISTEXTENSION | default "@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg"}}'
 tasks:
   default:
     desc: "Affiche l'aide et les tâches disponibles"
@@ -38,7 +46,8 @@ tasks:
     silent: true
     cmds:
     - |
-      echo "🛠️  {{.PROJECT_NAME}} v{{.PROJECT_VERSION}} - Collection de Taskfiles"
+      export PROJECT_VERSION=$(jq -r .version package.json)
+      echo "🛠️  {{.PROJECT_NAME}} v$PROJECT_VERSION - Collection de Taskfiles"
       echo "Environnement: {{.ENVIRONMENT}}"
       echo "Node.js version: {{.NODE_VERSION}}"
 
@@ -60,46 +69,27 @@ tasks:
       FOLDER: '{{.FOLDER | default ""}}'
       VERSION: '{{.VERSION | default ""}}'
       NUMBER: '{{.NUMBER | default ""}}'
-      PHPLISTEXTENSION56: '{{.PHPLISTEXTENSION | default "@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg"}}'
-      PHPLISTEXTENSION70: '{{.PHPLISTEXTENSION | default "@composer"}}'
-      PHPLISTEXTENSION71: '{{.PHPLISTEXTENSION | default "@composer"}}'
-      PHPLISTEXTENSION72: '{{.PHPLISTEXTENSION | default "@composer"}}'
-      PHPLISTEXTENSION73: '{{.PHPLISTEXTENSION | default "@composer"}}'
-      PHPLISTEXTENSION74: '{{.PHPLISTEXTENSION | default "@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg"}}'
-      PHPLISTEXTENSION80: '{{.PHPLISTEXTENSION | default "@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg"}}'
-      PHPLISTEXTENSION81: '{{.PHPLISTEXTENSION | default "@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg"}}'
-      PHPLISTEXTENSION82: '{{.PHPLISTEXTENSION | default "@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg"}}'
-      PHPLISTEXTENSION83: '{{.PHPLISTEXTENSION | default "@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg"}}'
-      PHPLISTEXTENSION84: '{{.PHPLISTEXTENSION | default "@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg"}}'
     cmds:
     - mkdir -p build/{{.FOLDER}}/{{.VERSION}}
     - cp images/{{.FOLDER}}/Dockerfile build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
     - sed -i 's#VERSIONIMAGE#php:{{.VERSION}}-{{.FOLDER}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
     - sed -i 's#PHPEXTENSIONS#{{.PHP_EXTENSIONS}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
     - |
-      if [ "{{.NUMBER}}" = "5.6" ]; then 
-        sed -i 's#PHPLISTEXTENSION#{{.PHPLISTEXTENSION56}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
-      elif [ "{{.NUMBER}}" = "7.0" ]; then 
-        sed -i 's#PHPLISTEXTENSION#{{.PHPLISTEXTENSION70}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
-      elif [ "{{.NUMBER}}" = "7.1" ]; then 
-        sed -i 's#PHPLISTEXTENSION#{{.PHPLISTEXTENSION71}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
-      elif [ "{{.NUMBER}}" = "7.2" ]; then 
-        sed -i 's#PHPLISTEXTENSION#{{.PHPLISTEXTENSION72}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
-      elif [ "{{.NUMBER}}" = "7.3" ]; then 
-        sed -i 's#PHPLISTEXTENSION#{{.PHPLISTEXTENSION73}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
-      elif [ "{{.NUMBER}}" = "7.4" ]; then 
-        sed -i 's#PHPLISTEXTENSION#{{.PHPLISTEXTENSION74}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
-      elif [ "{{.NUMBER}}" = "8.0" ]; then 
-        sed -i 's#PHPLISTEXTENSION#{{.PHPLISTEXTENSIONN80}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
-      elif [ "{{.NUMBER}}" = "8.1" ]; then 
-        sed -i 's#PHPLISTEXTENSION#{{.PHPLISTEXTENSIONN81}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
-      elif [ "{{.NUMBER}}" = "8.2" ]; then 
-        sed -i 's#PHPLISTEXTENSION#{{.PHPLISTEXTENSIONN82}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
-      elif [ "{{.NUMBER}}" = "8.3" ]; then 
-        sed -i 's#PHPLISTEXTENSION#{{.PHPLISTEXTENSIONN83}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
-      elif [ "{{.NUMBER}}" = "8.4" ]; then 
-        sed -i 's#PHPLISTEXTENSION#{{.PHPLISTEXTENSIONN84}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
-      fi
+      EXT_MAP=(
+        ["5.6"]="{{.PHPLISTEXTENSION56}}"
+        ["7.0"]="{{.PHPLISTEXTENSION70}}"
+        ["7.1"]="{{.PHPLISTEXTENSION71}}"
+        ["7.2"]="{{.PHPLISTEXTENSION72}}"
+        ["7.3"]="{{.PHPLISTEXTENSION73}}"
+        ["7.4"]="{{.PHPLISTEXTENSION74}}"
+        ["8.0"]="{{.PHPLISTEXTENSION80}}"
+        ["8.1"]="{{.PHPLISTEXTENSION81}}"
+        ["8.2"]="{{.PHPLISTEXTENSION82}}"
+        ["8.3"]="{{.PHPLISTEXTENSION83}}"
+        ["8.4"]="{{.PHPLISTEXTENSION84}}"
+      )
+      EXT="${EXT_MAP[${{.NUMBER}}]}"
+      sed -i 's#PHPLISTEXTENSION#${EXT}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
     - sed -i 's#SYMFONYCLI#{{.SYMFONY_CLI}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
     - echo "Dockerfile créé dans build/{{.FOLDER}}/{{.VERSION}}/Dockerfile"
 
@@ -194,6 +184,44 @@ tasks:
         echo "Création des Dockerfiles pour PHP $version"
         task create-all VERSION=$version NUMBER={{.NUMBER}}
       done
+  
+  create-with-matrix-all:
+    desc: "Crée les Dockerfiles pour toutes les versions PHP définies dans toutes les matrices"
+    silent: true
+    cmds:
+    - task: create-with-matrix
+      vars:
+        NUMBER: "5.6"
+    - task: create-with-matrix
+      vars:
+        NUMBER: "7.0"
+    - task: create-with-matrix
+      vars:
+        NUMBER: "7.1"
+    - task: create-with-matrix
+      vars:
+        NUMBER: "7.2"
+    - task: create-with-matrix
+      vars:
+        NUMBER: "7.3"
+    - task: create-with-matrix
+      vars:
+        NUMBER: "7.4"
+    - task: create-with-matrix
+      vars:
+        NUMBER: "8.0"
+    - task: create-with-matrix
+      vars:
+        NUMBER: "8.1"
+    - task: create-with-matrix
+      vars:
+        NUMBER: "8.2"
+    - task: create-with-matrix
+      vars:
+        NUMBER: "8.3"
+    - task: create-with-matrix
+      vars:
+        NUMBER: "8.4"
 
   build:
     desc: "Construit les images Docker définies dans les Taskfiles inclus"
