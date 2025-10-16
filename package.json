@@ -1,6 +1,6 @@
 {
   "name": "@koromerzhin/docker",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "images docker",
   "scripts": {
     "lint:markdown": "markdownlint README.md",
