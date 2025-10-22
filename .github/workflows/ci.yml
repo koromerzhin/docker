@@ -34,8 +34,7 @@ jobs:
 
       - name: Build with matrix
         id: check_docker
-        continue-on-error: true
-        run: task exec
+        run: task exec VERSIONS=8.4
 
       - name: "Show images"
         run: docker images
