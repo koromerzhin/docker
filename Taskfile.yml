@@ -19,7 +19,18 @@ vars:
   PHP_EXTENSIONS: "https://github.com/mlocati/docker-php-extension-installer/releases/download/2.9.13/install-php-extensions"
   WORDPRESS_PHAR: "https://github.com/wp-cli/wp-cli/releases/download/v2.12.0/wp-cli-2.12.0.phar"
   SYMFONY_CLI: "https://github.com/symfony-cli/symfony-cli/releases/download/v5.15.1/symfony-cli_5.15.1_amd64.deb"
-  VERSIONS: "5.6 7.0 7.1 7.2 7.3 7.4 8.0 8.1 8.2 8.3 8.4"
+  VERSIONS: "7.3 7.4 8.0 8.1 8.2 8.3 8.4"
+  PKG56: 'wget git fish unzip zip'
+  PKG70: 'wget git fish unzip zip'
+  PKG71: 'wget git fish unzip zip'
+  PKG72: 'wget git fish unzip zip'
+  PKG73: 'wget git fish unzip zip'
+  PKG74: 'wget git fish unzip zip graphviz'
+  PKG80: 'wget git fish unzip zip graphviz'
+  PKG81: 'wget git fish unzip zip graphviz'
+  PKG82: 'wget git fish unzip zip graphviz'
+  PKG83: 'wget git fish unzip zip graphviz'
+  PKG84: 'wget git fish unzip zip graphviz'
   PHPLISTEXTENSION56: '@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg'
   PHPLISTEXTENSION70: '@composer'
   PHPLISTEXTENSION71: '@composer'
@@ -83,6 +94,18 @@ tasks:
       EXT_MAP["8.2"]="{{.PHPLISTEXTENSION82}}"
       EXT_MAP["8.3"]="{{.PHPLISTEXTENSION83}}"
       EXT_MAP["8.4"]="{{.PHPLISTEXTENSION84}}"
+      declare -A PKG_MAP
+      PKG_MAP["5.6"]="{{.PKG56}}"
+      PKG_MAP["7.0"]="{{.PKG70}}"
+      PKG_MAP["7.1"]="{{.PKG71}}"
+      PKG_MAP["7.2"]="{{.PKG72}}"
+      PKG_MAP["7.3"]="{{.PKG73}}"
+      PKG_MAP["7.4"]="{{.PKG74}}"
+      PKG_MAP["8.0"]="{{.PKG80}}"
+      PKG_MAP["8.1"]="{{.PKG81}}"
+      PKG_MAP["8.2"]="{{.PKG82}}"
+      PKG_MAP["8.3"]="{{.PKG83}}"
+      PKG_MAP["8.4"]="{{.PKG84}}"
       # Extraction version pour docker pull :
       # - si x.y.0 => x.y
       # - sinon garder la version complète (ex : 5.6.20 => 5.6.20)
@@ -102,7 +125,10 @@ tasks:
         sed -i 's#PHPEXTENSIONS#{{.PHP_EXTENSIONS}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
         EXT="${EXT_MAP["{{.NUMBER}}"]}"
         sed -i "s#PHPLISTEXTENSION#${EXT}#" build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
+        EXT="${PKG_MAP["{{.NUMBER}}"]}"
+        sed -i "s#PKGINSTALL#${EXT}#" build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
         sed -i 's#SYMFONYCLI#{{.SYMFONY_CLI}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
+        sed -i 's#WORDPRESSPHAR#{{.WORDPRESS_PHAR}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
         echo "Dockerfile créé dans build/{{.FOLDER}}/{{.VERSION}}/Dockerfile"
       fi
 
@@ -131,8 +157,7 @@ tasks:
     - sh: command -v docker
       msg: "Docker n'est pas installé ou accessible"
     vars:
-      FOLDER: '{{.FOLDER | default ""}}'
-      VERSION: '{{.VERSION | default ""}}'
+      # FOLDERS: "apache fpm"
       FOLDERS: "apache fpm"
     cmds:
     - rm -rf build
@@ -143,13 +168,15 @@ tasks:
           for folder in {{.FOLDERS}}; do
             task create FOLDER=$folder VERSION=$version NUMBER=$number || true
             if [ -f build/$folder/$version/Dockerfile ]; then
+              echo "Création des images a partir du Dockerfile build/$folder/$version/Dockerfile"
               for variant in "${VARIANTS[@]}"; do
                 image="php:$version-$folder${variant}"
                 tag="koromerzhin/php:$version-$folder${variant}"
                 target="build-$folder${variant}"
                 echo ""
-                echo "Verification de l'image $image"
-                if ! docker pull $image; then
+                echo "Verification de l'image koromerzhin/$image"
+                if ! docker pull koromerzhin/$image; then
+                  echo "Image koromerzhin/$image non trouvée localement, lancement du build."
                   docker build -t $tag build/$folder/$version --target $target || true
                 else
                   echo "Image $image déjà présente localement, build ignoré."

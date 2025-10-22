@@ -4,7 +4,9 @@ ADD PHPEXTENSIONS /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/install-php-extensions
 
-RUN apt-get update && apt-get install -y wget git fish unzip zip graphviz --no-install-recommends && apt-get clean && rm -fr /var/lib/apt/lists/*
+RUN apt-get update && apt-get autoremove
+RUN apt-get install -y PKGINSTALL --no-install-recommends
+RUN apt-get clean && rm -fr /var/lib/apt/lists/*
 
 # Add Extension
 RUN install-php-extensions PHPLISTEXTENSION
