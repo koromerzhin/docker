@@ -198,7 +198,13 @@ tasks:
       msg: "Docker n'est pas installé ou accessible"
     silent: true
     cmds:
-    - docker push koromerzhin/php -a
+    - |
+      if [ -n "$(docker images -q koromerzhin/php)" ]; then
+        echo "Images koromerzhin/php trouvées, lancement du push."
+        docker push koromerzhin/php -a
+      else
+        echo "Aucune image koromerzhin/php trouvée localement, push ignoré."
+      fi
 
   exec:
     vars:
