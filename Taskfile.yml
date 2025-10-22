@@ -19,17 +19,18 @@ vars:
   PHP_EXTENSIONS: "https://github.com/mlocati/docker-php-extension-installer/releases/download/2.9.13/install-php-extensions"
   WORDPRESS_PHAR: "https://github.com/wp-cli/wp-cli/releases/download/v2.12.0/wp-cli-2.12.0.phar"
   SYMFONY_CLI: "https://github.com/symfony-cli/symfony-cli/releases/download/v5.15.1/symfony-cli_5.15.1_amd64.deb"
-  PHPLISTEXTENSION56: '{{.PHPLISTEXTENSION | default "@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg"}}'
-  PHPLISTEXTENSION70: '{{.PHPLISTEXTENSION | default "@composer"}}'
-  PHPLISTEXTENSION71: '{{.PHPLISTEXTENSION | default "@composer"}}'
-  PHPLISTEXTENSION72: '{{.PHPLISTEXTENSION | default "@composer"}}'
-  PHPLISTEXTENSION73: '{{.PHPLISTEXTENSION | default "@composer"}}'
-  PHPLISTEXTENSION74: '{{.PHPLISTEXTENSION | default "@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg"}}'
-  PHPLISTEXTENSION80: '{{.PHPLISTEXTENSION | default "@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg"}}'
-  PHPLISTEXTENSION81: '{{.PHPLISTEXTENSION | default "@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg"}}'
-  PHPLISTEXTENSION82: '{{.PHPLISTEXTENSION | default "@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg"}}'
-  PHPLISTEXTENSION83: '{{.PHPLISTEXTENSION | default "@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg"}}'
-  PHPLISTEXTENSION84: '{{.PHPLISTEXTENSION | default "@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg"}}'
+  VERSIONS: "5.6 7.0 7.1 7.2 7.3 7.4 8.0 8.1 8.2 8.3 8.4"
+  PHPLISTEXTENSION56: '@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg'
+  PHPLISTEXTENSION70: '@composer'
+  PHPLISTEXTENSION71: '@composer'
+  PHPLISTEXTENSION72: '@composer'
+  PHPLISTEXTENSION73: '@composer'
+  PHPLISTEXTENSION74: '@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg'
+  PHPLISTEXTENSION80: '@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg'
+  PHPLISTEXTENSION81: '@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg'
+  PHPLISTEXTENSION82: '@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg'
+  PHPLISTEXTENSION83: '@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg'
+  PHPLISTEXTENSION84: '@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg'
 tasks:
   default:
     desc: "Affiche l'aide et les tâches disponibles"
@@ -60,7 +61,6 @@ tasks:
 
   create:
     desc: "Construit les images Docker définies dans les Taskfiles inclus"
-    internal: true
     silent: true
     preconditions:
     - sh: command -v docker
@@ -70,158 +70,59 @@ tasks:
       VERSION: '{{.VERSION | default ""}}'
       NUMBER: '{{.NUMBER | default ""}}'
     cmds:
-    - mkdir -p build/{{.FOLDER}}/{{.VERSION}}
-    - cp images/{{.FOLDER}}/Dockerfile build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
-    - sed -i 's#VERSIONIMAGE#php:{{.VERSION}}-{{.FOLDER}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
-    - sed -i 's#PHPEXTENSIONS#{{.PHP_EXTENSIONS}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
     - |
-      EXT_MAP=(
-        ["5.6"]="{{.PHPLISTEXTENSION56}}"
-        ["7.0"]="{{.PHPLISTEXTENSION70}}"
-        ["7.1"]="{{.PHPLISTEXTENSION71}}"
-        ["7.2"]="{{.PHPLISTEXTENSION72}}"
-        ["7.3"]="{{.PHPLISTEXTENSION73}}"
-        ["7.4"]="{{.PHPLISTEXTENSION74}}"
-        ["8.0"]="{{.PHPLISTEXTENSION80}}"
-        ["8.1"]="{{.PHPLISTEXTENSION81}}"
-        ["8.2"]="{{.PHPLISTEXTENSION82}}"
-        ["8.3"]="{{.PHPLISTEXTENSION83}}"
-        ["8.4"]="{{.PHPLISTEXTENSION84}}"
-      )
-      EXT="${EXT_MAP[${{.NUMBER}}]}"
-      sed -i 's#PHPLISTEXTENSION#${EXT}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
-    - sed -i 's#SYMFONYCLI#{{.SYMFONY_CLI}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
-    - echo "Dockerfile créé dans build/{{.FOLDER}}/{{.VERSION}}/Dockerfile"
-
-  create-fpm:
-    desc: "Crée le Dockerfile pour PHP-FPM"
-    silent: true
-    vars:
-      VERSION: '{{.VERSION | default ""}}'
-      NUMBER: '{{.NUMBER | default ""}}'
-    cmds:
-    - task: create
-      vars:
-        FOLDER: "fpm"
+      declare -A EXT_MAP
+      EXT_MAP["5.6"]="{{.PHPLISTEXTENSION56}}"
+      EXT_MAP["7.0"]="{{.PHPLISTEXTENSION70}}"
+      EXT_MAP["7.1"]="{{.PHPLISTEXTENSION71}}"
+      EXT_MAP["7.2"]="{{.PHPLISTEXTENSION72}}"
+      EXT_MAP["7.3"]="{{.PHPLISTEXTENSION73}}"
+      EXT_MAP["7.4"]="{{.PHPLISTEXTENSION74}}"
+      EXT_MAP["8.0"]="{{.PHPLISTEXTENSION80}}"
+      EXT_MAP["8.1"]="{{.PHPLISTEXTENSION81}}"
+      EXT_MAP["8.2"]="{{.PHPLISTEXTENSION82}}"
+      EXT_MAP["8.3"]="{{.PHPLISTEXTENSION83}}"
+      EXT_MAP["8.4"]="{{.PHPLISTEXTENSION84}}"
+      # Extraction version pour docker pull :
+      # - si x.y.0 => x.y
+      # - sinon garder la version complète (ex : 5.6.20 => 5.6.20)
+      if echo "{{.VERSION}}" | grep -Eq '^[0-9]+\.[0-9]+\.0$'; then
+        BASE_VERSION=$(echo "{{.VERSION}}" | sed -E 's/^([0-9]+\.[0-9]+)\.0$/\1/')
+      else
+        BASE_VERSION="{{.VERSION}}"
+      fi
+      echo ""
+      echo "Verification de l'image de base php:${BASE_VERSION}-{{.FOLDER}}"
+      if ! docker pull php:${BASE_VERSION}-{{.FOLDER}}; then
+        echo "Erreur : Impossible de récupérer l'image php:${BASE_VERSION}-{{.FOLDER}}" >&2
+      else
+        mkdir -p build/{{.FOLDER}}/{{.VERSION}}
+        cp images/{{.FOLDER}}/Dockerfile build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
+        sed -i "s#VERSIONIMAGE#php:${BASE_VERSION}-{{.FOLDER}}#" build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
+        sed -i 's#PHPEXTENSIONS#{{.PHP_EXTENSIONS}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
+        EXT="${EXT_MAP["{{.NUMBER}}"]}"
+        sed -i "s#PHPLISTEXTENSION#${EXT}#" build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
+        sed -i 's#SYMFONYCLI#{{.SYMFONY_CLI}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
+        echo "Dockerfile créé dans build/{{.FOLDER}}/{{.VERSION}}/Dockerfile"
+      fi
 
   matrix:
     desc: "Génère une matrice JSON pour les versions PHP à utiliser dans GitHub Actions"
     silent: true
-    vars:
-      VERSION: '{{.VERSION | default ""}}'
-    cmds:
-    - echo "https://www.php.net/releases/index.php?json&version={{.VERSION}}&max=1000"
-    - wget -O php_versions{{.VERSION}}.json "https://www.php.net/releases/index.php?json&version={{.VERSION}}&max=1000"
-    - |
-      jq -r '{versions: (keys)}' php_versions{{.VERSION}}.json > matrix_{{.VERSION}}.json
-    - rm -rf php_versions{{.VERSION}}.json
-
-  matrix-all:
-    cmds:
-    - task: matrix
-      vars:
-        VERSION: "5.6"
-    - task: matrix
-      vars:
-        VERSION: "7.0"
-    - task: matrix
-      vars:
-        VERSION: "7.1"
-    - task: matrix
-      vars:
-        VERSION: "7.2"
-    - task: matrix
-      vars:
-        VERSION: "7.3"
-    - task: matrix
-      vars:
-        VERSION: "7.4"
-    - task: matrix
-      vars:
-        VERSION: "8.0"
-    - task: matrix
-      vars:
-        VERSION: "8.1"
-    - task: matrix
-      vars:
-        VERSION: "8.2"
-    - task: matrix
-      vars:
-        VERSION: "8.3"
-    - task: matrix
-      vars:
-        VERSION: "8.4"
-
-  create-apache:
-    desc: "Crée le Dockerfile pour PHP-Apache"
-    silent: true
-    vars:
-      VERSION: '{{.VERSION | default ""}}'
-      NUMBER: '{{.NUMBER | default ""}}'
-    cmds:
-    - task: create
-      vars:
-        FOLDER: "apache"
-
-  create-all:
-    desc: "Crée le Dockerfile pour PHP-Apache"
-    silent: true
-    vars:
-      VERSION: '{{.VERSION | default ""}}'
-      NUMBER: '{{.NUMBER | default ""}}'
-    cmds:
-    - task: create-apache
-    - task: create-fpm
-
-  create-with-matrix:
-    desc: "Crée les Dockerfiles pour toutes les versions PHP définies dans la matrice"
-    silent: true
-    vars:
-      NUMBER: '{{.NUMBER | default ""}}'
     cmds:
     - |
-      for version in $(jq -r '.versions[]' matrix_{{.NUMBER}}.json); do
-        echo "Création des Dockerfiles pour PHP $version"
-        task create-all VERSION=$version NUMBER={{.NUMBER}}
+      for version in {{.VERSIONS}}; do
+        echo ""
+        echo "Génération de la matrice pour PHP $version"
+        if [ ! -f matrix_$version.json ]; then
+          echo "https://www.php.net/releases/index.php?json&version=$version&max=1000"
+          wget -O php_versions$version.json "https://www.php.net/releases/index.php?json&version=$version&max=1000"
+          jq -r '{versions: (keys)}' php_versions$version.json > matrix_$version.json
+          rm -rf php_versions$version.json
+        else
+          echo "Le fichier matrix_$version.json existe déjà, génération ignorée."
+        fi
       done
-  
-  create-with-matrix-all:
-    desc: "Crée les Dockerfiles pour toutes les versions PHP définies dans toutes les matrices"
-    silent: true
-    cmds:
-    - task: create-with-matrix
-      vars:
-        NUMBER: "5.6"
-    - task: create-with-matrix
-      vars:
-        NUMBER: "7.0"
-    - task: create-with-matrix
-      vars:
-        NUMBER: "7.1"
-    - task: create-with-matrix
-      vars:
-        NUMBER: "7.2"
-    - task: create-with-matrix
-      vars:
-        NUMBER: "7.3"
-    - task: create-with-matrix
-      vars:
-        NUMBER: "7.4"
-    - task: create-with-matrix
-      vars:
-        NUMBER: "8.0"
-    - task: create-with-matrix
-      vars:
-        NUMBER: "8.1"
-    - task: create-with-matrix
-      vars:
-        NUMBER: "8.2"
-    - task: create-with-matrix
-      vars:
-        NUMBER: "8.3"
-    - task: create-with-matrix
-      vars:
-        NUMBER: "8.4"
 
   build:
     desc: "Construit les images Docker définies dans les Taskfiles inclus"
@@ -232,43 +133,34 @@ tasks:
     vars:
       FOLDER: '{{.FOLDER | default ""}}'
       VERSION: '{{.VERSION | default ""}}'
+      FOLDERS: "apache fpm"
     cmds:
-    - docker build -t koromerzhin/php:{{.VERSION}}-{{.FOLDER}} build/{{.FOLDER}}/{{.VERSION}} --target build-{{.FOLDER}}
-    - docker build -t koromerzhin/php:{{.VERSION}}-{{.FOLDER}}-xdebug build/{{.FOLDER}}/{{.VERSION}} --target build-{{.FOLDER}}-xdebug
-    - docker build -t koromerzhin/php:{{.VERSION}}-{{.FOLDER}}-wordpress build/{{.FOLDER}}/{{.VERSION}} --target build-{{.FOLDER}}-wordpress
-    - docker build -t koromerzhin/php:{{.VERSION}}-{{.FOLDER}}-wordpress-xdebug build/{{.FOLDER}}/{{.VERSION}} --target build-{{.FOLDER}}-wordpress-xdebug
-    - docker build -t koromerzhin/php:{{.VERSION}}-{{.FOLDER}}-symfony build/{{.FOLDER}}/{{.VERSION}} --target build-{{.FOLDER}}-symfony
-    - docker build -t koromerzhin/php:{{.VERSION}}-{{.FOLDER}}-symfony-xdebug build/{{.FOLDER}}/{{.VERSION}} --target build-{{.FOLDER}}-symfony-xdebug
-
-  build-fpm:
-    desc: "Construit l'image Docker pour PHP-FPM"
-    silent: true
-    vars:
-      NUMBER: '{{.NUMBER | default ""}}'
-      VERSION: '{{.VERSION | default ""}}'
-    cmds:
-    - task: build
-      vars:
-        FOLDER: "fpm"
-
-  build-apache:
-    desc: "Construit l'image Docker pour PHP-Apache"
-    silent: true
-    vars:
-      VERSION: '{{.VERSION | default ""}}'
-    cmds:
-    - task: build
-      vars:
-        FOLDER: "apache"
-
-  build-all:
-    desc: "Construit l'image Docker pour PHP-Apache"
-    silent: true
-    vars:
-      VERSION: '{{.VERSION | default ""}}'
-    cmds:
-    - task: build-apache
-    - task: build-fpm
+    - rm -rf build
+    - |
+      VARIANTS=("" "-xdebug" "-wordpress" "-wordpress-xdebug" "-symfony" "-symfony-xdebug")
+      for number in {{.VERSIONS}}; do
+        for version in $(jq -r '.versions[]' matrix_$number.json); do
+          for folder in {{.FOLDERS}}; do
+            task create FOLDER=$folder VERSION=$version NUMBER=$number || true
+            if [ -f build/$folder/$version/Dockerfile ]; then
+              for variant in "${VARIANTS[@]}"; do
+                image="php:$version-$folder${variant}"
+                tag="koromerzhin/php:$version-$folder${variant}"
+                target="build-$folder${variant}"
+                echo ""
+                echo "Verification de l'image $image"
+                if ! docker pull $image; then
+                  docker build -t $tag build/$folder/$version --target $target || true
+                else
+                  echo "Image $image déjà présente localement, build ignoré."
+                fi
+              done
+            else
+              echo "Le fichier build/$folder/$version/Dockerfile n'existe pas, build ignoré."
+            fi
+          done
+        done
+      done
 
   push:
     desc: "Pousse toutes les images Docker vers Docker Hub"
@@ -278,3 +170,8 @@ tasks:
     silent: true
     cmds:
     - docker push koromerzhin/php -a
+
+  exec:
+    cmds:
+    - task: matrix
+    - task: build
