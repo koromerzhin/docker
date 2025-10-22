@@ -181,7 +181,7 @@ tasks:
                   echo "Image koromerzhin/$image non trouvée localement, lancement du build."
                   docker build -t $tag build/$folder/$version --target $target || true
                 else
-                  echo "Image $image déjà présente localement, build ignoré."
+                  echo "Image koromerzhin/$image déjà présente localement, build ignoré."
                 fi
               done
             else
