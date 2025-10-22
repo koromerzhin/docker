@@ -135,6 +135,8 @@ tasks:
   matrix:
     desc: "Génère une matrice JSON pour les versions PHP à utiliser dans GitHub Actions"
     silent: true
+    vars:
+      VERSIONS: "{{.VERSIONS}}"
     cmds:
     - |
       for version in {{.VERSIONS}}; do
@@ -157,7 +159,7 @@ tasks:
     - sh: command -v docker
       msg: "Docker n'est pas installé ou accessible"
     vars:
-      # FOLDERS: "apache fpm"
+      VERSIONS: "{{.VERSIONS}}"
       FOLDERS: "apache fpm"
     cmds:
     - rm -rf build
@@ -199,6 +201,12 @@ tasks:
     - docker push koromerzhin/php -a
 
   exec:
+    vars:
+      VERSIONS: "{{.VERSIONS}}"
     cmds:
     - task: matrix
+      vars:
+        VERSIONS: "{{.VERSIONS}}"
     - task: build
+      vars:
+        VERSIONS: "{{.VERSIONS}}"
