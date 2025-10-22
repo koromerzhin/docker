@@ -116,7 +116,7 @@ tasks:
       fi
       echo ""
       echo "Verification de l'image de base php:${BASE_VERSION}-{{.FOLDER}}"
-      if ! docker pull php:${BASE_VERSION}-{{.FOLDER}}; then
+      if ! docker manifest inspect php:${BASE_VERSION}-{{.FOLDER}} > /dev/null 2>&1; then
         echo "Erreur : Impossible de récupérer l'image php:${BASE_VERSION}-{{.FOLDER}}" >&2
       else
         mkdir -p build/{{.FOLDER}}/{{.VERSION}}
@@ -177,7 +177,7 @@ tasks:
                 target="build-$folder${variant}"
                 echo ""
                 echo "Verification de l'image koromerzhin/$image"
-                if ! docker pull koromerzhin/$image; then
+                if ! docker manifest inspect koromerzhin/$image > /dev/null 2>&1; then
                   echo "Image koromerzhin/$image non trouvée localement, lancement du build."
                   docker build -t $tag build/$folder/$version --target $target || true
                 else
