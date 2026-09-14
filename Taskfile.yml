@@ -42,6 +42,25 @@ vars:
   PHPLISTEXTENSION82: '@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg'
   PHPLISTEXTENSION83: '@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg'
   PHPLISTEXTENSION84: '@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg'
+  MANIFEST_EXISTS_FN: |
+    manifest_exists() {
+      check_image="$1"
+      cached_status=$(awk -F= -v key="$check_image" '$1==key {status=$2} END {print status}' "$cache_file")
+      if [ "$cached_status" = "1" ]; then
+        return 0
+      fi
+      if [ "$cached_status" = "0" ]; then
+        return 1
+      fi
+
+      if docker manifest inspect "$check_image" > /dev/null 2>&1; then
+        echo "$check_image=1" >> "$cache_file"
+        return 0
+      fi
+
+      echo "$check_image=0" >> "$cache_file"
+      return 1
+    }
 tasks:
   default:
     desc: "Affiche l'aide et les tâches disponibles"
@@ -106,31 +125,17 @@ tasks:
       PKG_MAP["8.2"]="{{.PKG82}}"
       PKG_MAP["8.3"]="{{.PKG83}}"
       PKG_MAP["8.4"]="{{.PKG84}}"
-      # Extraction version pour docker pull :
-      # - si x.y.0 => x.y
-      # - sinon garder la version complète (ex : 5.6.20 => 5.6.20)
-      if echo "{{.VERSION}}" | grep -Eq '^[0-9]+\.[0-9]+\.0$'; then
-        BASE_VERSION=$(echo "{{.VERSION}}" | sed -E 's/^([0-9]+\.[0-9]+)\.0$/\1/')
-      else
-        BASE_VERSION="{{.VERSION}}"
-      fi
-      echo ""
-      echo "Verification de l'image de base php:${BASE_VERSION}-{{.FOLDER}}"
-      if ! docker manifest inspect php:${BASE_VERSION}-{{.FOLDER}} > /dev/null 2>&1; then
-        echo "Erreur : Impossible de récupérer l'image php:${BASE_VERSION}-{{.FOLDER}}" >&2
-      else
-        mkdir -p build/{{.FOLDER}}/{{.VERSION}}
-        cp images/{{.FOLDER}}/Dockerfile build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
-        sed -i "s#VERSIONIMAGE#php:${BASE_VERSION}-{{.FOLDER}}#" build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
-        sed -i 's#PHPEXTENSIONS#{{.PHP_EXTENSIONS}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
-        EXT="${EXT_MAP["{{.NUMBER}}"]}"
-        sed -i "s#PHPLISTEXTENSION#${EXT}#" build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
-        EXT="${PKG_MAP["{{.NUMBER}}"]}"
-        sed -i "s#PKGINSTALL#${EXT}#" build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
-        sed -i 's#SYMFONYCLI#{{.SYMFONY_CLI}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
-        sed -i 's#WORDPRESSPHAR#{{.WORDPRESS_PHAR}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
-        echo "Dockerfile créé dans build/{{.FOLDER}}/{{.VERSION}}/Dockerfile"
-      fi
+      mkdir -p build/{{.FOLDER}}/{{.VERSION}}
+      cp images/{{.FOLDER}}/Dockerfile build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
+      sed -i "s#VERSIONIMAGE#php:{{.VERSION}}-{{.FOLDER}}#" build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
+      sed -i 's#PHPEXTENSIONS#{{.PHP_EXTENSIONS}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
+      EXT="${EXT_MAP["{{.NUMBER}}"]}"
+      sed -i "s#PHPLISTEXTENSION#${EXT}#" build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
+      EXT="${PKG_MAP["{{.NUMBER}}"]}"
+      sed -i "s#PKGINSTALL#${EXT}#" build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
+      sed -i 's#SYMFONYCLI#{{.SYMFONY_CLI}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
+      sed -i 's#WORDPRESSPHAR#{{.WORDPRESS_PHAR}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
+      echo "Dockerfile créé dans build/{{.FOLDER}}/{{.VERSION}}/Dockerfile"
 
   matrix:
     desc: "Génère une matrice JSON pour les versions PHP à utiliser dans GitHub Actions"
@@ -152,8 +157,28 @@ tasks:
         fi
       done
 
-  build:
-    desc: "Construit les images Docker définies dans les Taskfiles inclus"
+  build:prepare:
+    desc: "Prépare le dossier de build"
+    silent: true
+    cmds:
+    - rm -rf build
+
+  build:cache:clear:
+    desc: "Supprime le cache des vérifications d'images distantes"
+    silent: true
+    vars:
+      CHECK_CACHE_FILE: '{{.CHECK_CACHE_FILE | default "manifest-checks.txt"}}'
+    cmds:
+    - |
+      if [ -f "{{.CHECK_CACHE_FILE}}" ]; then
+        rm -f "{{.CHECK_CACHE_FILE}}"
+        echo "Cache supprimé: {{.CHECK_CACHE_FILE}}"
+      else
+        echo "Aucun cache à supprimer: {{.CHECK_CACHE_FILE}}"
+      fi
+
+  build:dockerfiles:
+    desc: "Génère tous les Dockerfiles de build"
     silent: true
     preconditions:
     - sh: command -v docker
@@ -162,34 +187,139 @@ tasks:
       VERSIONS: "{{.VERSIONS}}"
       FOLDERS: "apache fpm"
     cmds:
-    - rm -rf build
     - |
-      VARIANTS=("" "-xdebug" "-wordpress" "-wordpress-xdebug" "-symfony" "-symfony-xdebug")
       for number in {{.VERSIONS}}; do
         for version in $(jq -r '.versions[]' matrix_$number.json); do
           for folder in {{.FOLDERS}}; do
             task create FOLDER=$folder VERSION=$version NUMBER=$number || true
-            if [ -f build/$folder/$version/Dockerfile ]; then
-              echo "Création des images a partir du Dockerfile build/$folder/$version/Dockerfile"
-              for variant in "${VARIANTS[@]}"; do
-                image="php:$version-$folder${variant}"
-                tag="koromerzhin/php:$version-$folder${variant}"
-                target="build-$folder${variant}"
-                echo ""
-                echo "Verification de l'image koromerzhin/$image"
-                if ! docker manifest inspect koromerzhin/$image > /dev/null 2>&1; then
-                  echo "Image koromerzhin/$image non trouvée localement, lancement du build."
-                  docker build -t $tag build/$folder/$version --target $target || true
-                else
-                  echo "Image koromerzhin/$image déjà présente localement, build ignoré."
-                fi
-              done
-            else
-              echo "Le fichier build/$folder/$version/Dockerfile n'existe pas, build ignoré."
-            fi
           done
         done
       done
+
+  build:image:
+    desc: "Construit une image unique à partir d'un Dockerfile généré"
+    silent: true
+    preconditions:
+    - sh: command -v docker
+      msg: "Docker n'est pas installé ou accessible"
+    vars:
+      VERSION: '{{.VERSION | default ""}}'
+      FOLDER: '{{.FOLDER | default ""}}'
+      VARIANT: '{{.VARIANT | default ""}}'
+      BASE_VERSION: '{{.BASE_VERSION | default ""}}'
+    cmds:
+    - |
+      dockerfile_path="build/{{.FOLDER}}/{{.VERSION}}/Dockerfile"
+      if [ ! -f "$dockerfile_path" ]; then
+        echo "Le fichier $dockerfile_path n'existe pas, build ignoré."
+        exit 0
+      fi
+
+      tag="koromerzhin/php:{{.VERSION}}-{{.FOLDER}}{{.VARIANT}}"
+      target="build-{{.FOLDER}}{{.VARIANT}}"
+      base_version="{{.BASE_VERSION}}"
+
+      if [ -z "$base_version" ]; then
+        base_version="{{.VERSION}}"
+      fi
+
+      sed -i -E "s#php:[0-9]+\.[0-9]+(\.[0-9]+)?-{{.FOLDER}}#php:${base_version}-{{.FOLDER}}#g" "$dockerfile_path"
+
+      echo ""
+      echo "Lancement du build pour $tag"
+      docker build -t "$tag" "build/{{.FOLDER}}/{{.VERSION}}" --target "$target" || true
+
+  build:images:
+    desc: "Construit les images à partir des Dockerfiles générés"
+    silent: true
+    preconditions:
+    - sh: command -v docker
+      msg: "Docker n'est pas installé ou accessible"
+    vars:
+      VERSIONS: "{{.VERSIONS}}"
+      FOLDERS: "apache fpm"
+      REMOTE_CHECK_PAUSE_SECONDS: '{{.REMOTE_CHECK_PAUSE_SECONDS | default "60"}}'
+      CHECK_CACHE_FILE: '{{.CHECK_CACHE_FILE | default "manifest-checks.txt"}}'
+    cmds:
+    - |
+      pause_seconds="{{.REMOTE_CHECK_PAUSE_SECONDS}}"
+      cache_file="{{.CHECK_CACHE_FILE}}"
+      mkdir -p "$(dirname "$cache_file")"
+      touch "$cache_file"
+
+      if ! echo "$pause_seconds" | grep -Eq '^[0-9]+$'; then
+        pause_seconds=0
+      fi
+      {{.MANIFEST_EXISTS_FN}}
+
+      for number in {{.VERSIONS}}; do
+        for version in $(jq -r '.versions[]' matrix_$number.json); do
+          for folder in {{.FOLDERS}}; do
+            echo "Création des images a partir du Dockerfile build/$folder/$version/Dockerfile"
+            base_version="$version"
+            minor_version="$version"
+            case "$version" in
+              *.*.*)
+                minor_version="${version%.*}"
+                ;;
+            esac
+
+            echo "Verification de l'image de base php:${version}-${folder}"
+            if manifest_exists "php:${version}-${folder}"; then
+              base_version="$version"
+            elif [ "$minor_version" != "$version" ] && manifest_exists "php:${minor_version}-${folder}"; then
+              echo "Image php:${version}-${folder} introuvable, utilisation de php:${minor_version}-${folder}"
+              base_version="$minor_version"
+            else
+              echo "Avertissement : Impossible de valider php:${version}-${folder} ni php:${minor_version}-${folder}."
+              echo "Avertissement : Utilisation de php:${version}-${folder} pour laisser le build trancher."
+              base_version="$version"
+            fi
+
+            for variant in "" "-xdebug" "-wordpress" "-wordpress-xdebug" "-symfony" "-symfony-xdebug"; do
+              image="php:$version-$folder${variant}"
+              remote_image="koromerzhin/$image"
+              pre_remote_status=$(awk -F= -v key="$remote_image" '$1==key {status=$2} END {print status}' "$cache_file")
+
+              if manifest_exists "$remote_image"; then
+                echo "Image $remote_image déjà présente sur internet, build ignoré."
+              else
+                task build:image VERSION="$version" FOLDER="$folder" VARIANT="$variant" BASE_VERSION="$base_version" || true
+              fi
+
+              if [ "$pause_seconds" -gt 0 ]; then
+                if [ "$pre_remote_status" = "1" ]; then
+                  echo "Pause ignorée: image déjà validée dans le cache distant."
+                else
+                  echo "Pause de ${pause_seconds}s après build:image pour limiter les appels."
+                  sleep "$pause_seconds"
+                fi
+              fi
+            done
+          done
+        done
+      done
+
+  build:
+    desc: "Construit les images Docker définies dans les Taskfiles inclus"
+    silent: true
+    vars:
+      VERSIONS: "{{.VERSIONS}}"
+      FOLDERS: "apache fpm"
+      REMOTE_CHECK_PAUSE_SECONDS: '{{.REMOTE_CHECK_PAUSE_SECONDS | default "60"}}'
+      CHECK_CACHE_FILE: '{{.CHECK_CACHE_FILE | default "manifest-checks.txt"}}'
+    cmds:
+    - task: build:prepare
+    - task: build:dockerfiles
+      vars:
+        VERSIONS: "{{.VERSIONS}}"
+        FOLDERS: "{{.FOLDERS}}"
+    - task: build:images
+      vars:
+        VERSIONS: "{{.VERSIONS}}"
+        FOLDERS: "{{.FOLDERS}}"
+        REMOTE_CHECK_PAUSE_SECONDS: "{{.REMOTE_CHECK_PAUSE_SECONDS}}"
+        CHECK_CACHE_FILE: "{{.CHECK_CACHE_FILE}}"
 
   push:
     desc: "Pousse toutes les images Docker vers Docker Hub"
