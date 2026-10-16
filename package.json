@@ -13,7 +13,20 @@
     "url": "https://github.com/koromerzhin/docker/issues"
   },
   "homepage": "https://github.com/koromerzhin/docker#readme",
+  "scripts": {
+    "docker:build:php": "task exec",
+    "docker:push:php": "task push",
+    "test:images": "task test:sample",
+    "lint:duplication": "jscpd images Taskfile.yml",
+    "versions:check": "task versions:check"
+  },
   "devDependencies": {
     "jscpd": "5.2.*"
+  },
+  "jscpd": {
+    "threshold": 5,
+    "reporters": [
+      "console"
+    ]
   }
 }

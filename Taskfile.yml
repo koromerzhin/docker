@@ -1,8 +1,9 @@
 version: 3
 
 # Taskfile principal - Tâches globales et inclusions
-# Charge automatiquement les variables depuis le fichier .env s'il existe
-dotenv: [ '.env', '.env.example' ]
+# Charge automatiquement les variables depuis les fichiers .env s'ils existent
+# (.env local prioritaire, puis versions.env versionné pour les outils externes)
+dotenv: [ '.env', '.env.example', 'versions.env' ]
 
 includes:
   docker: ./taskfiles/docker/Taskfile.yml
@@ -16,10 +17,13 @@ vars:
   PROJECT_NAME: '{{.PROJECT_NAME | default "docker"}}'
   ENVIRONMENT: '{{.ENVIRONMENT | default "development"}}'
   NODE_VERSION: '{{.NODE_VERSION | default "20"}}'
-  PHP_EXTENSIONS: "https://github.com/mlocati/docker-php-extension-installer/releases/download/2.11.12/install-php-extensions"
-  WORDPRESS_PHAR: "https://github.com/wp-cli/wp-cli/releases/download/v2.12.0/wp-cli-2.12.0.phar"
-  SYMFONY_CLI: "https://github.com/symfony-cli/symfony-cli/releases/download/v5.20.0/symfony-cli_5.20.0_amd64.deb"
-  VERSIONS: "7.4 8.0 8.1 8.2 8.3 8.4"
+  PHP_EXTENSIONS: '{{.PHP_EXTENSIONS_URL}}'
+  WORDPRESS_PHAR: '{{.WORDPRESS_PHAR_URL}}'
+  SYMFONY_CLI: '{{.SYMFONY_CLI_URL}}'
+  # Versions supportées par défaut : uniquement les branches PHP maintenues.
+  # Versions legacy (EOL) : task exec VERSIONS="{{.LEGACY_VERSIONS}}" — à vos risques et périls.
+  VERSIONS: "8.2 8.3 8.4"
+  LEGACY_VERSIONS: "7.4 8.0 8.1"
   PKG56: 'wget git fish unzip zip'
   PKG70: 'wget git fish unzip zip'
   PKG71: 'wget git fish unzip zip'
@@ -42,25 +46,6 @@ vars:
   PHPLISTEXTENSION82: '@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg'
   PHPLISTEXTENSION83: '@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg'
   PHPLISTEXTENSION84: '@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg'
-  MANIFEST_EXISTS_FN: |
-    manifest_exists() {
-      check_image="$1"
-      cached_status=$(awk -F= -v key="$check_image" '$1==key {status=$2} END {print status}' "$cache_file")
-      if [ "$cached_status" = "1" ]; then
-        return 0
-      fi
-      if [ "$cached_status" = "0" ]; then
-        return 1
-      fi
-
-      if docker manifest inspect "$check_image" > /dev/null 2>&1; then
-        echo "$check_image=1" >> "$cache_file"
-        return 0
-      fi
-
-      echo "$check_image=0" >> "$cache_file"
-      return 1
-    }
 tasks:
   default:
     desc: "Affiche l'aide et les tâches disponibles"
@@ -126,7 +111,7 @@ tasks:
       PKG_MAP["8.3"]="{{.PKG83}}"
       PKG_MAP["8.4"]="{{.PKG84}}"
       mkdir -p build/{{.FOLDER}}/{{.VERSION}}
-      cp images/{{.FOLDER}}/Dockerfile build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
+      cp images/php/Dockerfile build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
       sed -i "s#VERSIONIMAGE#php:{{.VERSION}}-{{.FOLDER}}#" build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
       sed -i 's#PHPEXTENSIONS#{{.PHP_EXTENSIONS}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
       EXT="${EXT_MAP["{{.NUMBER}}"]}"
@@ -135,6 +120,12 @@ tasks:
       sed -i "s#PKGINSTALL#${EXT}#" build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
       sed -i 's#SYMFONYCLI#{{.SYMFONY_CLI}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
       sed -i 's#WORDPRESSPHAR#{{.WORDPRESS_PHAR}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
+      if [ "{{.FOLDER}}" = "apache" ]; then
+        port="80"
+      else
+        port="9000"
+      fi
+      sed -i "s#EXPOSEPORT#${port}#" build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
       echo "Dockerfile créé dans build/{{.FOLDER}}/{{.VERSION}}/Dockerfile"
 
   matrix:
@@ -144,14 +135,21 @@ tasks:
       VERSIONS: "{{.VERSIONS}}"
     cmds:
     - |
+      set -e
       for version in {{.VERSIONS}}; do
         echo ""
         echo "Génération de la matrice pour PHP $version"
         if [ ! -f matrix_$version.json ]; then
           echo "https://www.php.net/releases/index.php?json&version=$version&max=1000"
-          wget -O php_versions$version.json "https://www.php.net/releases/index.php?json&version=$version&max=1000"
-          jq -r '{versions: (keys)}' php_versions$version.json > matrix_$version.json
-          rm -rf php_versions$version.json
+          wget --timeout=30 --tries=3 -O "php_versions$version.json.tmp" "https://www.php.net/releases/index.php?json&version=$version&max=1000"
+          mv "php_versions$version.json.tmp" "php_versions$version.json"
+          if ! jq -e 'keys | length > 0' "php_versions$version.json" > /dev/null; then
+            echo "Réponse php.net invalide ou vide pour PHP $version" >&2
+            rm -f "php_versions$version.json"
+            exit 1
+          fi
+          jq -r '{versions: (keys)}' "php_versions$version.json" > "matrix_$version.json"
+          rm -f "php_versions$version.json"
         else
           echo "Le fichier matrix_$version.json existe déjà, génération ignorée."
         fi
@@ -162,20 +160,6 @@ tasks:
     silent: true
     cmds:
     - rm -rf build
-
-  build:cache:clear:
-    desc: "Supprime le cache des vérifications d'images distantes"
-    silent: true
-    vars:
-      CHECK_CACHE_FILE: '{{.CHECK_CACHE_FILE | default "manifest-checks.txt"}}'
-    cmds:
-    - |
-      if [ -f "{{.CHECK_CACHE_FILE}}" ]; then
-        rm -f "{{.CHECK_CACHE_FILE}}"
-        echo "Cache supprimé: {{.CHECK_CACHE_FILE}}"
-      else
-        echo "Aucun cache à supprimer: {{.CHECK_CACHE_FILE}}"
-      fi
 
   build:dockerfiles:
     desc: "Génère tous les Dockerfiles de build"
@@ -207,6 +191,7 @@ tasks:
       FOLDER: '{{.FOLDER | default ""}}'
       VARIANT: '{{.VARIANT | default ""}}'
       BASE_VERSION: '{{.BASE_VERSION | default ""}}'
+      PLATFORMS: '{{.PLATFORMS | default ""}}'
     cmds:
     - |
       dockerfile_path="build/{{.FOLDER}}/{{.VERSION}}/Dockerfile"
@@ -216,7 +201,13 @@ tasks:
       fi
 
       tag="koromerzhin/php:{{.VERSION}}-{{.FOLDER}}{{.VARIANT}}"
-      target="build-{{.FOLDER}}{{.VARIANT}}"
+      # Template unique images/php/Dockerfile : la base s'appelle build-base,
+      # les variantes build-<nom> (ex. VARIANT=-wordpress -> build-wordpress).
+      target="build-base"
+      variant="{{.VARIANT}}"
+      if [ -n "$variant" ]; then
+        target="build-${variant#-}"
+      fi
       base_version="{{.BASE_VERSION}}"
 
       if [ -z "$base_version" ]; then
@@ -225,79 +216,67 @@ tasks:
 
       sed -i -E "s#php:[0-9]+\.[0-9]+(\.[0-9]+)?-{{.FOLDER}}#php:${base_version}-{{.FOLDER}}#g" "$dockerfile_path"
 
+      platform_args=""
+      if [ -n "{{.PLATFORMS}}" ]; then
+        platform_args="--platform {{.PLATFORMS}}"
+      fi
+
       echo ""
-      echo "Lancement du build pour $tag"
-      docker build -t "$tag" "build/{{.FOLDER}}/{{.VERSION}}" --target "$target" || true
+      echo "Lancement du build pour $tag (target=$target)"
+      # shellcheck disable=SC2086
+      docker build -t "$tag" "build/{{.FOLDER}}/{{.VERSION}}" --target "$target" --build-arg "SERVER={{.FOLDER}}" $platform_args || true
 
   build:images:
-    desc: "Construit les images à partir des Dockerfiles générés"
+    desc: "Construit uniquement les images manquantes sur Docker Hub (source : missing.json de check:missing)"
     silent: true
     preconditions:
     - sh: command -v docker
       msg: "Docker n'est pas installé ou accessible"
+    - sh: command -v jq
+      msg: "jq n'est pas installé ou accessible"
     vars:
       VERSIONS: "{{.VERSIONS}}"
       FOLDERS: "apache fpm"
-      REMOTE_CHECK_PAUSE_SECONDS: '{{.REMOTE_CHECK_PAUSE_SECONDS | default "60"}}'
-      CHECK_CACHE_FILE: '{{.CHECK_CACHE_FILE | default "manifest-checks.txt"}}'
+      MISSING_FILE: '{{.MISSING_FILE | default "missing.json"}}'
     cmds:
+    - task: check:missing
+      vars:
+        VERSIONS: "{{.VERSIONS}}"
+        MISSING_FILE: "{{.MISSING_FILE}}"
     - |
-      pause_seconds="{{.REMOTE_CHECK_PAUSE_SECONDS}}"
-      cache_file="{{.CHECK_CACHE_FILE}}"
-      mkdir -p "$(dirname "$cache_file")"
-      touch "$cache_file"
-
-      if ! echo "$pause_seconds" | grep -Eq '^[0-9]+$'; then
-        pause_seconds=0
+      set -e
+      out="{{.MISSING_FILE}}"
+      count=$(jq '.include | length' "$out")
+      if [ "$count" -eq 0 ]; then
+        echo "Rien à construire : tous les tags sont déjà publiés."
+        exit 0
       fi
-      {{.MANIFEST_EXISTS_FN}}
+      echo "$count image(s) à construire."
+      jq -c '.include[]' "$out" | while read -r item; do
+        version=$(echo "$item" | jq -r '.version')
+        folder=$(echo "$item" | jq -r '.folder')
+        variant=$(echo "$item" | jq -r '.variant')
+        base_version="$version"
+        minor_version="$version"
+        case "$version" in
+          *.*.*)
+            minor_version="${version%.*}"
+            ;;
+        esac
 
-      for number in {{.VERSIONS}}; do
-        for version in $(jq -r '.versions[]' matrix_$number.json); do
-          for folder in {{.FOLDERS}}; do
-            echo "Création des images a partir du Dockerfile build/$folder/$version/Dockerfile"
-            base_version="$version"
-            minor_version="$version"
-            case "$version" in
-              *.*.*)
-                minor_version="${version%.*}"
-                ;;
-            esac
+        echo "Vérification de l'image de base php:${version}-${folder}"
+        if docker manifest inspect "php:${version}-${folder}" > /dev/null 2>&1; then
+          base_version="$version"
+        elif [ "$minor_version" != "$version" ] && docker manifest inspect "php:${minor_version}-${folder}" > /dev/null 2>&1; then
+          echo "Image php:${version}-${folder} introuvable, utilisation de php:${minor_version}-${folder}"
+          base_version="$minor_version"
+        else
+          echo "Avertissement : impossible de valider php:${version}-${folder} ni php:${minor_version}-${folder}."
+          echo "Avertissement : utilisation de php:${version}-${folder} pour laisser le build trancher."
+          base_version="$version"
+        fi
 
-            echo "Verification de l'image de base php:${version}-${folder}"
-            if manifest_exists "php:${version}-${folder}"; then
-              base_version="$version"
-            elif [ "$minor_version" != "$version" ] && manifest_exists "php:${minor_version}-${folder}"; then
-              echo "Image php:${version}-${folder} introuvable, utilisation de php:${minor_version}-${folder}"
-              base_version="$minor_version"
-            else
-              echo "Avertissement : Impossible de valider php:${version}-${folder} ni php:${minor_version}-${folder}."
-              echo "Avertissement : Utilisation de php:${version}-${folder} pour laisser le build trancher."
-              base_version="$version"
-            fi
-
-            for variant in "" "-xdebug" "-wordpress" "-wordpress-xdebug" "-symfony" "-symfony-xdebug"; do
-              image="php:$version-$folder${variant}"
-              remote_image="koromerzhin/$image"
-              pre_remote_status=$(awk -F= -v key="$remote_image" '$1==key {status=$2} END {print status}' "$cache_file")
-
-              if manifest_exists "$remote_image"; then
-                echo "Image $remote_image déjà présente sur internet, build ignoré."
-              else
-                task build:image VERSION="$version" FOLDER="$folder" VARIANT="$variant" BASE_VERSION="$base_version" || true
-              fi
-
-              if [ "$pause_seconds" -gt 0 ]; then
-                if [ "$pre_remote_status" = "1" ]; then
-                  echo "Pause ignorée: image déjà validée dans le cache distant."
-                else
-                  echo "Pause de ${pause_seconds}s après build:image pour limiter les appels."
-                  sleep "$pause_seconds"
-                fi
-              fi
-            done
-          done
-        done
+        task build:image VERSION="$version" FOLDER="$folder" VARIANT="$variant" BASE_VERSION="$base_version" || true
       done
 
   build:
@@ -306,8 +285,7 @@ tasks:
     vars:
       VERSIONS: "{{.VERSIONS}}"
       FOLDERS: "apache fpm"
-      REMOTE_CHECK_PAUSE_SECONDS: '{{.REMOTE_CHECK_PAUSE_SECONDS | default "60"}}'
-      CHECK_CACHE_FILE: '{{.CHECK_CACHE_FILE | default "manifest-checks.txt"}}'
+      MISSING_FILE: '{{.MISSING_FILE | default "missing.json"}}'
     cmds:
     - task: build:prepare
     - task: build:dockerfiles
@@ -318,23 +296,257 @@ tasks:
       vars:
         VERSIONS: "{{.VERSIONS}}"
         FOLDERS: "{{.FOLDERS}}"
-        REMOTE_CHECK_PAUSE_SECONDS: "{{.REMOTE_CHECK_PAUSE_SECONDS}}"
-        CHECK_CACHE_FILE: "{{.CHECK_CACHE_FILE}}"
+        MISSING_FILE: "{{.MISSING_FILE}}"
+
+  test:image:
+    desc: "Smoke tests d'une image : php -v + outils de la variante (wp, symfony, xdebug)"
+    silent: true
+    preconditions:
+    - sh: command -v docker
+      msg: "Docker n'est pas installé ou accessible"
+    vars:
+      VERSION: '{{.VERSION | default ""}}'
+      FOLDER: '{{.FOLDER | default ""}}'
+      VARIANT: '{{.VARIANT | default ""}}'
+    cmds:
+    - |
+      tag="koromerzhin/php:{{.VERSION}}-{{.FOLDER}}{{.VARIANT}}"
+      variant="{{.VARIANT}}"
+      if ! docker image inspect "$tag" > /dev/null 2>&1; then
+        echo "Image $tag absente localement, test ignoré."
+        exit 0
+      fi
+      echo "Smoke tests pour $tag"
+      docker run --rm "$tag" php -v
+      case "$variant" in
+        *wordpress*)
+          docker run --rm "$tag" wp --info --allow-root
+          ;;
+      esac
+      case "$variant" in
+        *symfony*)
+          docker run --rm "$tag" symfony version
+          ;;
+      esac
+      case "$variant" in
+        *xdebug*)
+          docker run --rm "$tag" php -m | grep -qi xdebug
+          ;;
+      esac
+      echo "OK: $tag"
+
+  test:sample:
+    desc: "Smoke tests sur un échantillon représentatif (PHP 8.4, apache+fpm, base+wordpress+symfony+xdebug)"
+    silent: true
+    preconditions:
+    - sh: command -v docker
+      msg: "Docker n'est pas installé ou accessible"
+    cmds:
+    - |
+      for folder in apache fpm; do
+        task test:image VERSION="8.4" FOLDER="$folder" VARIANT=""
+      done
+      task test:image VERSION="8.4" FOLDER="apache" VARIANT="-wordpress"
+      task test:image VERSION="8.4" FOLDER="fpm" VARIANT="-symfony"
+      task test:image VERSION="8.4" FOLDER="apache" VARIANT="-xdebug"
+      task test:image VERSION="8.4" FOLDER="fpm" VARIANT="-xdebug"
+
+  push:image:
+    desc: "Pousse une seule image vers Docker Hub (échoue si le push échoue)"
+    preconditions:
+    - sh: command -v docker
+      msg: "Docker n'est pas installé ou accessible"
+    vars:
+      VERSION: '{{.VERSION | default ""}}'
+      FOLDER: '{{.FOLDER | default ""}}'
+      VARIANT: '{{.VARIANT | default ""}}'
+    cmds:
+    - docker push "koromerzhin/php:{{.VERSION}}-{{.FOLDER}}{{.VARIANT}}"
+
+  check:missing:
+    desc: "Détecte les tags koromerzhin/php manquants (nouvelles versions PHP) : écrit missing.json + $GITHUB_OUTPUT"
+    silent: true
+    preconditions:
+    - sh: command -v jq
+      msg: "jq n'est pas installé ou accessible"
+    vars:
+      VERSIONS: "{{.VERSIONS}}"
+      FOLDERS: "apache fpm"
+      HUB_REPO: "koromerzhin/php"
+      MISSING_FILE: '{{.MISSING_FILE | default "missing.json"}}'
+    cmds:
+    - task: matrix
+      vars:
+        VERSIONS: "{{.VERSIONS}}"
+    - |
+      set -e
+      repo="{{.HUB_REPO}}"
+      out="{{.MISSING_FILE}}"
+      existing="$(mktemp)"
+      trap 'rm -f "$existing"' EXIT
+      # Liste les tags distants par branche (filtre name= : ~3 pages au lieu de ~20).
+      # Pause + retry : l'API Hub limite la pagination anonyme rapide (403 passé ~10 pages).
+      hub_get() {
+        curl -fsSL --retry-all-errors --retry 5 --retry-delay 5 --max-time 30 "$1"
+      }
+      for number in {{.VERSIONS}}; do
+        page=1
+        while :; do
+          resp=$(hub_get "https://hub.docker.com/v2/repositories/${repo}/tags?page_size=100&name=${number}&page=${page}")
+          echo "$resp" | jq -r '.results[].name' >> "$existing"
+          next=$(echo "$resp" | jq -r '.next')
+          if [ "$next" = "null" ] || [ -z "$next" ]; then
+            break
+          fi
+          page=$((page + 1))
+          sleep 2
+        done
+      done
+      items="$(mktemp)"
+      trap 'rm -f "$existing" "$items"' EXIT
+      : > "$items"
+      for number in {{.VERSIONS}}; do
+        matrix_file="matrix_$number.json"
+        if [ ! -f "$matrix_file" ]; then
+          echo "Avertissement : $matrix_file absent, version $number ignorée." >&2
+          continue
+        fi
+        for version in $(jq -r '.versions[]' "$matrix_file"); do
+          minor="$version"
+          case "$version" in
+            *.*.*) minor="${version%.*}" ;;
+          esac
+          for folder in {{.FOLDERS}}; do
+            for variant in "" "-xdebug" "-wordpress" "-wordpress-xdebug" "-symfony" "-symfony-xdebug"; do
+              tag="${version}-${folder}${variant}"
+              if ! grep -qx "$tag" "$existing"; then
+                jq -c -n --arg version "$version" --arg number "$minor" --arg folder "$folder" --arg variant "$variant" '{version: $version, number: $number, folder: $folder, variant: $variant}' >> "$items"
+              fi
+            done
+          done
+        done
+      done
+      jq -c -s '{include: .}' "$items" > "$out"
+      count=$(jq '.include | length' "$out")
+      echo "Tags manquants : $count (voir $out)"
+      if [ -n "${GITHUB_OUTPUT:-}" ]; then
+        if [ "$count" -gt 0 ]; then
+          echo "has_missing=true" >> "$GITHUB_OUTPUT"
+        else
+          echo "has_missing=false" >> "$GITHUB_OUTPUT"
+        fi
+        {
+          echo "matrix<<EOF"
+          cat "$out"
+          echo "EOF"
+        } >> "$GITHUB_OUTPUT"
+      fi
+
+  versions:check:
+    desc: "Compare versions.env aux dernières releases GitHub (lecture seule)"
+    silent: true
+    preconditions:
+    - sh: command -v curl
+      msg: "curl n'est pas installé ou accessible"
+    - sh: command -v jq
+      msg: "jq n'est pas installé ou accessible"
+    cmds:
+    - |
+      set -e
+      gh_latest() {
+        curl -fsSL --retry 3 --max-time 30 "https://api.github.com/repos/$1/releases/latest" | jq -r '.tag_name'
+      }
+      strip_v() {
+        echo "$1" | sed 's#^v##'
+      }
+      current_v() {
+        grep -E "^$1=" versions.env | sed 's#^[^=]*=##' | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1
+      }
+      printf '%-42s %-12s %-12s %s\n' OUTIL ACTUELLE DERNIERE STATUT
+      for spec in "mlocati/docker-php-extension-installer|PHP_EXTENSIONS_URL" "wp-cli/wp-cli|WORDPRESS_PHAR_URL" "symfony-cli/symfony-cli|SYMFONY_CLI_URL"; do
+        repo="${spec%%|*}"
+        var="${spec#*|}"
+        ver=$(strip_v "$(gh_latest "$repo")")
+        cur=$(current_v "$var")
+        if [ "$cur" = "$ver" ]; then
+          st="OK"
+        else
+          st="MAJ DISPO"
+        fi
+        printf '%-42s %-12s %-12s %s\n' "$repo" "$cur" "$ver" "$st"
+      done
+
+  versions:update:
+    desc: "Met à jour versions.env vers les dernières releases GitHub (URLs vérifiées avant écriture)"
+    silent: true
+    preconditions:
+    - sh: command -v curl
+      msg: "curl n'est pas installé ou accessible"
+    - sh: command -v jq
+      msg: "jq n'est pas installé ou accessible"
+    cmds:
+    - task: versions:check
+    - |
+      set -e
+      gh_latest() {
+        curl -fsSL --retry 3 --max-time 30 "https://api.github.com/repos/$1/releases/latest" | jq -r '.tag_name'
+      }
+      strip_v() {
+        echo "$1" | sed 's#^v##'
+      }
+      ext_v=$(strip_v "$(gh_latest mlocati/docker-php-extension-installer)")
+      wp_v=$(strip_v "$(gh_latest wp-cli/wp-cli)")
+      sym_v=$(strip_v "$(gh_latest symfony-cli/symfony-cli)")
+      ext_url="https://github.com/mlocati/docker-php-extension-installer/releases/download/${ext_v}/install-php-extensions"
+      wp_url="https://github.com/wp-cli/wp-cli/releases/download/v${wp_v}/wp-cli-${wp_v}.phar"
+      sym_url="https://github.com/symfony-cli/symfony-cli/releases/download/v${sym_v}/symfony-cli_${sym_v}_amd64.deb"
+      for url in "$ext_url" "$wp_url" "$sym_url"; do
+        if ! curl -fsSL -o /dev/null --max-time 30 "$url"; then
+          echo "URL invalide, versions.env inchangé : $url" >&2
+          exit 1
+        fi
+      done
+      sed -i "s#^PHP_EXTENSIONS_URL=.*#PHP_EXTENSIONS_URL=${ext_url}#" versions.env
+      sed -i "s#^WORDPRESS_PHAR_URL=.*#WORDPRESS_PHAR_URL=${wp_url}#" versions.env
+      sed -i "s#^SYMFONY_CLI_URL=.*#SYMFONY_CLI_URL=${sym_url}#" versions.env
+      echo "versions.env mis à jour :"
+      cat versions.env
 
   push:
-    desc: "Pousse toutes les images Docker vers Docker Hub"
+    desc: "Pousse les images koromerzhin/php locales vers Docker Hub (confirmation requise, sauf PUSH_CONFIRM=1)"
     preconditions:
     - sh: command -v docker
       msg: "Docker n'est pas installé ou accessible"
     silent: true
+    vars:
+      PUSH_CONFIRM: '{{.PUSH_CONFIRM | default ""}}'
     cmds:
     - |
-      if [ -n "$(docker images -q koromerzhin/php)" ]; then
-        echo "Images koromerzhin/php trouvées, lancement du push."
-        docker push koromerzhin/php -a
-      else
+      # Sans --format docker (conflit avec la syntaxe des templates Task) :
+      # la 1re colonne de `docker images` est déjà REPO:TAG ; on ignore les <none>.
+      tags=$(docker images koromerzhin/php | awk 'NR>1 && $1 !~ /<none>/ {print $1}' | sort -u)
+      if [ -z "$tags" ]; then
         echo "Aucune image koromerzhin/php trouvée localement, push ignoré."
+        exit 0
       fi
+      echo "Images locales à pousser :"
+      echo "$tags"
+      if [ "{{.PUSH_CONFIRM}}" != "1" ]; then
+        printf 'Pousser ces %s image(s) vers Docker Hub ? [o/N] ' "$(echo "$tags" | wc -l)"
+        read -r answer || answer=""
+        case "$answer" in
+          o|O|y|Y|oui|yes) ;;
+          *)
+            echo "Push annulé."
+            exit 0
+            ;;
+        esac
+      fi
+      echo "$tags" | while read -r tag; do
+        if [ -n "$tag" ]; then
+          docker push "$tag"
+        fi
+      done
 
   exec:
     vars:

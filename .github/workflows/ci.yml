@@ -1,15 +1,18 @@
-name: CI/CD Pipeline
-on: 
+name: CI
+# Contrôles rapides à chaque push/PR : aucun build ni push d'image ici.
+# Les builds ont lieu uniquement dans release.yml (nouvelle version PHP détectée).
+on:
   push:
     branches: [main, develop]
   pull_request:
     branches: [main, develop]
 
+permissions:
+  contents: read
+
 jobs:
-  launch:
-    strategy:
-      fail-fast: false
-    name: PHP
+  checks:
+    name: Checks
     runs-on: ubuntu-26.04
     steps:
       - name: Checkout
@@ -17,43 +20,37 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Setup Docker Compose
-        uses: docker/setup-compose-action@v2
-
       - name: Setup Task
         uses: go-task/setup-task@v2
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v4
-
-      - name: Login to DockerHub
-        uses: docker/login-action@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          node-version: 24
+          cache: npm
 
-      - name: Build with matrix
-        id: check_docker
-        run: task exec VERSIONS=8.4
+      - name: Install npm dependencies
+        run: npm ci
 
-      - name: "Show images"
-        run: docker images
+      - name: Lint duplication
+        run: npm run lint:duplication
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v4
+      - name: Validate Taskfile
+        run: task --list-all > /dev/null
 
-      - name: Push Docker
-        run: task push
-
-      - name: Commit manifest-checks changes
+      - name: Generate sample Dockerfiles
         run: |
-          if [ -n "$(git status --porcelain manifest-checks.txt)" ]; then
-            git config user.name "github-actions[bot]"
-            git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add manifest-checks.txt
-            git commit -m "chore(ci): update manifest-checks.txt"
-            git push
-          else
-            echo "No changes on manifest-checks.txt"
-          fi
-    
+          task create FOLDER=apache VERSION=8.4.0 NUMBER=8.4
+          task create FOLDER=fpm VERSION=8.4.0 NUMBER=8.4
+          ! grep -q 'VERSIONIMAGE\|PHPEXTENSIONS\|PHPLISTEXTENSION\|PKGINSTALL\|SYMFONYCLI\|WORDPRESSPHAR\|EXPOSEPORT' build/apache/8.4.0/Dockerfile build/fpm/8.4.0/Dockerfile
+
+      - name: Check upstream tool URLs
+        run: |
+          while read -r line; do
+            case "$line" in
+              \#*|"") continue ;;
+            esac
+            url="${line#*=}"
+            curl -fsSL -o /dev/null --max-time 30 "$url"
+            echo "OK: $url"
+          done < versions.env

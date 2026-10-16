@@ -2,3 +2,5 @@
 *.sh
 /build
 matrix_*.json
+missing.json
+php_versions*.json

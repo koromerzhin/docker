@@ -1,0 +1,150 @@
+name: PHP release
+# Construit + pousse koromerzhin/php UNIQUEMENT quand une nouvelle version PHP
+# est disponible et que le tag correspondant n'existe pas encore sur Docker Hub.
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+    inputs:
+      versions:
+        description: "Branches PHP à vérifier"
+        default: "8.2 8.3 8.4"
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  detect:
+    name: Detect missing tags
+    runs-on: ubuntu-26.04
+    outputs:
+      has_missing: ${{ steps.missing.outputs.has_missing }}
+      matrix: ${{ steps.missing.outputs.matrix }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          submodules: recursive
+
+      - name: Setup Task
+        uses: go-task/setup-task@v2
+
+      - name: Find missing tags
+        id: missing
+        run: task check:missing VERSIONS="${{ inputs.versions || '8.2 8.3 8.4' }}"
+
+      - name: Upload missing matrix
+        uses: actions/upload-artifact@v4
+        with:
+          name: missing
+          path: missing.json
+          if-no-files-found: error
+
+  build:
+    name: Build & push
+    needs: detect
+    if: needs.detect.outputs.has_missing == 'true'
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.detect.outputs.matrix) }}
+    runs-on: ubuntu-26.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          submodules: recursive
+
+      - name: Setup Task
+        uses: go-task/setup-task@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v4
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Generate Dockerfile
+        run: task create FOLDER="${{ matrix.folder }}" VERSION="${{ matrix.version }}" NUMBER="${{ matrix.number }}"
+
+      - name: Check official base image
+        run: docker manifest inspect "php:${{ matrix.version }}-${{ matrix.folder }}" > /dev/null || (echo "Base php:${{ matrix.version }}-${{ matrix.folder }} indisponible, réessayer plus tard." >&2 && exit 1)
+
+      - name: Build image
+        run: task build:image VERSION="${{ matrix.version }}" FOLDER="${{ matrix.folder }}" VARIANT="${{ matrix.variant }}"
+
+      - name: Verify image built
+        run: docker image inspect "koromerzhin/php:${{ matrix.version }}-${{ matrix.folder }}${{ matrix.variant }}" > /dev/null
+
+      - name: Smoke tests
+        run: task test:image VERSION="${{ matrix.version }}" FOLDER="${{ matrix.folder }}" VARIANT="${{ matrix.variant }}"
+
+      - name: Scan with Trivy
+        uses: aquasecurity/trivy-action@0.33.1
+        with:
+          scan-type: image
+          image-ref: koromerzhin/php:${{ matrix.version }}-${{ matrix.folder }}${{ matrix.variant }}
+          severity: HIGH,CRITICAL
+          exit-code: 1
+          ignore-unfixed: true
+
+      - name: Push image
+        run: task push:image VERSION="${{ matrix.version }}" FOLDER="${{ matrix.folder }}" VARIANT="${{ matrix.variant }}"
+
+  supply-chain:
+    name: SBOM + signature
+    needs: [detect, build]
+    if: needs.detect.outputs.has_missing == 'true'
+    runs-on: ubuntu-26.04
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Login to DockerHub
+        uses: docker/login-action@v4
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Download missing matrix
+        uses: actions/download-artifact@v4
+        with:
+          name: missing
+          path: .
+
+      - name: Install cosign
+        uses: sigstore/cosign-installer@v3
+
+      - name: Pull pushed tags
+        id: pull
+        run: |
+          {
+            echo "tags<<EOF"
+            jq -r '.include[] | "\(.version)-\(.folder)\(.variant)"' missing.json | while read -r tag; do
+              if docker pull "koromerzhin/php:$tag"; then
+                echo "koromerzhin/php:$tag"
+              else
+                echo "Image koromerzhin/php:$tag absente du registre, ignorée." >&2
+              fi
+            done
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Generate SBOM (SPDX)
+        if: steps.pull.outputs.tags != ''
+        uses: anchore/sbom-action@66cbf4bc1f1c0d2edc94016e65bc221b6bb0ad6c # v0.24.3 (SHA pinné, cf. P1-3)
+        with:
+          image: ${{ steps.pull.outputs.tags }}
+          format: spdx-json
+          artifact-name: sbom.spdx.json
+          upload-artifact: true
+
+      - name: Sign images with cosign (keyless)
+        if: steps.pull.outputs.tags != ''
+        run: |
+          echo "${{ steps.pull.outputs.tags }}" | while read -r ref; do
+            [ -n "$ref" ] && cosign sign --yes "$ref"
+          done

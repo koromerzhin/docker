@@ -1,5 +1,31 @@
 {
   "extends": [
     "config:recommended"
+  ],
+  "regexManagers": [
+    {
+      "fileMatch": ["^versions\\.env$"],
+      "matchStrings": [
+        "PHP_EXTENSIONS_URL=https://github\\.com/mlocati/docker-php-extension-installer/releases/download/(?<currentValue>[^/\\s]+)/install-php-extensions"
+      ],
+      "depNameTemplate": "mlocati/docker-php-extension-installer",
+      "datasourceTemplate": "github-releases"
+    },
+    {
+      "fileMatch": ["^versions\\.env$"],
+      "matchStrings": [
+        "WORDPRESS_PHAR_URL=https://github\\.com/wp-cli/wp-cli/releases/download/v(?<currentValue>[^/\\s]+)/wp-cli-[^\\s]+\\.phar"
+      ],
+      "depNameTemplate": "wp-cli/wp-cli",
+      "datasourceTemplate": "github-releases"
+    },
+    {
+      "fileMatch": ["^versions\\.env$"],
+      "matchStrings": [
+        "SYMFONY_CLI_URL=https://github\\.com/symfony-cli/symfony-cli/releases/download/v(?<currentValue>[^/\\s]+)/symfony-cli_[^\\s]+\\.deb"
+      ],
+      "depNameTemplate": "symfony-cli/symfony-cli",
+      "datasourceTemplate": "github-releases"
+    }
   ]
 }
