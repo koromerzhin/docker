@@ -35,7 +35,7 @@ jobs:
         run: task check:missing VERSIONS="${{ inputs.versions || '8.2 8.3 8.4' }}"
 
       - name: Upload missing matrix
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: missing
           path: missing.json
@@ -110,7 +110,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Download missing matrix
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: missing
           path: .
