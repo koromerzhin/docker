@@ -83,7 +83,7 @@ jobs:
         run: task test:image VERSION="${{ matrix.version }}" FOLDER="${{ matrix.folder }}" VARIANT="${{ matrix.variant }}"
 
       - name: Scan with Trivy
-        uses: aquasecurity/trivy-action@0.33.1
+        uses: aquasecurity/trivy-action@0.35.0
         with:
           scan-type: image
           image-ref: koromerzhin/php:${{ matrix.version }}-${{ matrix.folder }}${{ matrix.variant }}
