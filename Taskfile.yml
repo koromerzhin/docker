@@ -35,6 +35,7 @@ vars:
   PKG82: 'wget git fish unzip zip graphviz'
   PKG83: 'wget git fish unzip zip graphviz'
   PKG84: 'wget git fish unzip zip graphviz'
+  PKG85: 'wget git fish unzip zip graphviz'
   PHPLISTEXTENSION56: '@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg'
   PHPLISTEXTENSION70: '@composer'
   PHPLISTEXTENSION71: '@composer'
@@ -46,6 +47,7 @@ vars:
   PHPLISTEXTENSION82: '@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg'
   PHPLISTEXTENSION83: '@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg'
   PHPLISTEXTENSION84: '@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg'
+  PHPLISTEXTENSION85: '@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg'
 tasks:
   default:
     desc: "Affiche l'aide et les tâches disponibles"
@@ -98,6 +100,7 @@ tasks:
       EXT_MAP["8.2"]="{{.PHPLISTEXTENSION82}}"
       EXT_MAP["8.3"]="{{.PHPLISTEXTENSION83}}"
       EXT_MAP["8.4"]="{{.PHPLISTEXTENSION84}}"
+      EXT_MAP["8.5"]="{{.PHPLISTEXTENSION85}}"
       declare -A PKG_MAP
       PKG_MAP["5.6"]="{{.PKG56}}"
       PKG_MAP["7.0"]="{{.PKG70}}"
@@ -110,6 +113,7 @@ tasks:
       PKG_MAP["8.2"]="{{.PKG82}}"
       PKG_MAP["8.3"]="{{.PKG83}}"
       PKG_MAP["8.4"]="{{.PKG84}}"
+      PKG_MAP["8.5"]="{{.PKG85}}"
       mkdir -p build/{{.FOLDER}}/{{.VERSION}}
       cp images/php/Dockerfile build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
       sed -i "s#VERSIONIMAGE#php:{{.VERSION}}-{{.FOLDER}}#" build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
