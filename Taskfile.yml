@@ -159,6 +159,8 @@ tasks:
       VARIANT: '{{.VARIANT | default ""}}'
       BASE_VERSION: '{{.BASE_VERSION | default ""}}'
       PLATFORMS: '{{.PLATFORMS | default ""}}'
+      PUSH: '{{.PUSH | default "false"}}'
+      CLEANUP: '{{.CLEANUP | default "false"}}'
     cmds:
     - |
       dockerfile_path="build/{{.FOLDER}}/{{.VERSION}}/Dockerfile"
@@ -193,6 +195,18 @@ tasks:
       # shellcheck disable=SC2086
       docker build -t "$tag" "build/{{.FOLDER}}/{{.VERSION}}" --target "$target" --build-arg "SERVER={{.FOLDER}}" $platform_args
 
+      if [ "{{.PUSH}}" = "true" ]; then
+        task push:image VERSION="{{.VERSION}}" FOLDER="{{.FOLDER}}" VARIANT="{{.VARIANT}}"
+      fi
+
+      if [ "{{.CLEANUP}}" = "true" ]; then
+        if [ -z "$(docker ps -aq --filter "ancestor=${tag}")" ]; then
+          docker rmi "$tag" || echo "Suppression locale ignorée pour $tag"
+        else
+          echo "Image $tag encore utilisée par un conteneur, suppression locale ignorée."
+        fi
+      fi
+
   build:images:
     desc: "Construit uniquement les images manquantes sur Docker Hub (source : missing.json de check:missing)"
     silent: true
@@ -205,6 +219,8 @@ tasks:
       VERSIONS: "{{.VERSIONS}}"
       FOLDERS: "apache fpm"
       MISSING_FILE: '{{.MISSING_FILE | default "missing.json"}}'
+      PUSH: '{{.PUSH | default "false"}}'
+      CLEANUP: '{{.CLEANUP | default "false"}}'
     cmds:
     - task: check:missing
       vars:
@@ -243,7 +259,7 @@ tasks:
           base_version="$version"
         fi
 
-        task build:image VERSION="$version" FOLDER="$folder" VARIANT="$variant" BASE_VERSION="$base_version" || echo "Échec du build pour ${version}-${folder}${variant}" >&2
+        task build:image VERSION="$version" FOLDER="$folder" VARIANT="$variant" BASE_VERSION="$base_version" PUSH="{{.PUSH}}" CLEANUP="{{.CLEANUP}}" || echo "Échec du build pour ${version}-${folder}${variant}" >&2
       done
 
   build:
@@ -253,7 +269,12 @@ tasks:
       VERSIONS: "{{.VERSIONS}}"
       FOLDERS: "apache fpm"
       MISSING_FILE: '{{.MISSING_FILE | default "missing.json"}}'
+      PUSH: '{{.PUSH | default "false"}}'
+      CLEANUP: '{{.CLEANUP | default "false"}}'
     cmds:
+    - task: matrix
+      vars:
+        VERSIONS: "{{.VERSIONS}}"
     - task: build:prepare
     - task: build:dockerfiles
       vars:
@@ -264,6 +285,8 @@ tasks:
         VERSIONS: "{{.VERSIONS}}"
         FOLDERS: "{{.FOLDERS}}"
         MISSING_FILE: "{{.MISSING_FILE}}"
+        PUSH: "{{.PUSH}}"
+        CLEANUP: "{{.CLEANUP}}"
 
   test:image:
     desc: "Smoke tests d'une image : php -v + outils de la variante (wp, symfony, xdebug)"
@@ -508,10 +531,11 @@ tasks:
   exec:
     vars:
       VERSIONS: "{{.VERSIONS}}"
+      PUSH: '{{.PUSH | default "false"}}'
+      CLEANUP: '{{.CLEANUP | default "false"}}'
     cmds:
-    - task: matrix
-      vars:
-        VERSIONS: "{{.VERSIONS}}"
     - task: build
       vars:
         VERSIONS: "{{.VERSIONS}}"
+        PUSH: "{{.PUSH}}"
+        CLEANUP: "{{.CLEANUP}}"
