@@ -74,7 +74,7 @@ jobs:
         run: docker manifest inspect "php:${{ matrix.version }}-${{ matrix.folder }}" > /dev/null || (echo "Base php:${{ matrix.version }}-${{ matrix.folder }} indisponible, réessayer plus tard." >&2 && exit 1)
 
       - name: Build image
-        run: task build:image VERSION="${{ matrix.version }}" FOLDER="${{ matrix.folder }}" VARIANT="${{ matrix.variant }}"
+        run: task build:image VERSION="${{ matrix.version }}" FOLDER="${{ matrix.folder }}" VARIANT="${{ matrix.variant }}" CACHE_GHA=true
 
       - name: Verify image built
         run: docker image inspect "koromerzhin/php:${{ matrix.version }}-${{ matrix.folder }}${{ matrix.variant }}" > /dev/null

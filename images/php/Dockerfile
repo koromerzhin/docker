@@ -10,12 +10,13 @@ RUN chmod +x /usr/local/bin/install-php-extensions
 # Apache uniquement (a2enmod n'existe pas sur les images fpm)
 RUN if [ "$SERVER" = "apache" ]; then a2enmod headers rewrite; fi
 
-RUN apt-get update && apt-get autoremove
-RUN apt-get install -y PKGINSTALL --no-install-recommends
-RUN apt-get clean && rm -fr /var/lib/apt/lists/*
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
+    apt-get update && apt-get install -y PKGINSTALL --no-install-recommends
 
 # Add Extension
-RUN install-php-extensions PHPLISTEXTENSION
+RUN --mount=type=cache,target=/tmp,sharing=locked \
+    install-php-extensions PHPLISTEXTENSION
 
 WORKDIR /var/www
 
@@ -38,24 +39,28 @@ RUN wget SYMFONYCLI -O symfony-cli_amd64.deb && dpkg -i symfony-cli_amd64.deb &&
 
 FROM build-symfony AS build-symfony-messenger
 
-RUN apt-get update && apt-get autoremove
-RUN apt-get install -y --no-install-recommends supervisor
-RUN apt-get clean && rm -fr /var/lib/apt/lists/*
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
+    apt-get update && apt-get install -y --no-install-recommends supervisor
 
 FROM build-base AS build-xdebug
 
-RUN install-php-extensions xdebug
+RUN --mount=type=cache,target=/tmp,sharing=locked \
+    install-php-extensions xdebug
 
 
 FROM build-wordpress AS build-wordpress-xdebug
 
-RUN install-php-extensions xdebug
+RUN --mount=type=cache,target=/tmp,sharing=locked \
+    install-php-extensions xdebug
 
 
 FROM build-symfony AS build-symfony-xdebug
 
-RUN install-php-extensions xdebug
+RUN --mount=type=cache,target=/tmp,sharing=locked \
+    install-php-extensions xdebug
 
 FROM build-symfony-messenger AS build-symfony-messenger-xdebug
 
-RUN install-php-extensions xdebug
+RUN --mount=type=cache,target=/tmp,sharing=locked \
+    install-php-extensions xdebug

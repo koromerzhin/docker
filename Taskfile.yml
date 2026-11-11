@@ -99,7 +99,7 @@ tasks:
     desc: "Génère une matrice JSON pour les versions PHP à utiliser dans GitHub Actions"
     silent: true
     vars:
-      VERSIONS: "{{.VERSIONS}}"
+      VERSIONS: '{{.VERSIONS | default .VERSION | default "8.2 8.3 8.4"}}'
     cmds:
     - |
       set -euo pipefail
@@ -135,7 +135,7 @@ tasks:
     - sh: command -v jq
       msg: "jq n'est pas installé ou accessible"
     vars:
-      VERSIONS: "{{.VERSIONS}}"
+      VERSIONS: '{{.VERSIONS | default .VERSION | default "8.2 8.3 8.4"}}'
       FOLDERS: "apache fpm"
     cmds:
     - |
@@ -159,8 +159,11 @@ tasks:
       VARIANT: '{{.VARIANT | default ""}}'
       BASE_VERSION: '{{.BASE_VERSION | default ""}}'
       PLATFORMS: '{{.PLATFORMS | default ""}}'
-      PUSH: '{{.PUSH | default "false"}}'
-      CLEANUP: '{{.CLEANUP | default "false"}}'
+      PUSH: '{{.PUSH | default "true"}}'
+      CLEANUP: '{{.CLEANUP | default "true"}}'
+      PREPULL: '{{.PREPULL | default "true"}}'
+      CACHE_REGISTRY: '{{.CACHE_REGISTRY | default "koromerzhin/php:buildcache"}}'
+      CACHE_GHA: '{{.CACHE_GHA | default "true"}}'
     cmds:
     - |
       dockerfile_path="build/{{.FOLDER}}/{{.VERSION}}/Dockerfile"
@@ -185,15 +188,27 @@ tasks:
 
       sed -i -E "s#php:[0-9]+\.[0-9]+(\.[0-9]+)?-{{.FOLDER}}#php:${base_version}-{{.FOLDER}}#g" "$dockerfile_path"
 
+      if [ "{{.PREPULL}}" = "true" ]; then
+        docker pull "php:${base_version}-{{.FOLDER}}" >/dev/null 2>&1 || true
+      fi
+
       platform_args=""
       if [ -n "{{.PLATFORMS}}" ]; then
         platform_args="--platform {{.PLATFORMS}}"
       fi
 
+      cache_args=""
+      if [ -n "{{.CACHE_REGISTRY}}" ]; then
+        cache_args="--cache-from=type=registry,ref={{.CACHE_REGISTRY}} --cache-to=type=registry,ref={{.CACHE_REGISTRY}},mode=max"
+      fi
+      if [ "{{.CACHE_GHA}}" = "true" ]; then
+        cache_args="$cache_args --cache-from=type=gha --cache-to=type=gha,mode=max"
+      fi
+
       echo ""
       echo "Lancement du build pour $tag (target=$target)"
       # shellcheck disable=SC2086
-      docker build -t "$tag" "build/{{.FOLDER}}/{{.VERSION}}" --target "$target" --build-arg "SERVER={{.FOLDER}}" $platform_args
+      DOCKER_BUILDKIT=1 docker build $cache_args -t "$tag" "build/{{.FOLDER}}/{{.VERSION}}" --target "$target" --build-arg "SERVER={{.FOLDER}}" $platform_args
 
       if [ "{{.PUSH}}" = "true" ]; then
         task push:image VERSION="{{.VERSION}}" FOLDER="{{.FOLDER}}" VARIANT="{{.VARIANT}}"
@@ -216,15 +231,18 @@ tasks:
     - sh: command -v jq
       msg: "jq n'est pas installé ou accessible"
     vars:
-      VERSIONS: "{{.VERSIONS}}"
+      VERSIONS: '{{.VERSIONS | default .VERSION | default "8.2 8.3 8.4"}}'
       FOLDERS: "apache fpm"
       MISSING_FILE: '{{.MISSING_FILE | default "missing.json"}}'
-      PUSH: '{{.PUSH | default "false"}}'
-      CLEANUP: '{{.CLEANUP | default "false"}}'
+      PUSH: '{{.PUSH | default "true"}}'
+      CLEANUP: '{{.CLEANUP | default "true"}}'
+      PREPULL: '{{.PREPULL | default "true"}}'
+      CACHE_REGISTRY: '{{.CACHE_REGISTRY | default "koromerzhin/php:buildcache"}}'
+      CACHE_GHA: '{{.CACHE_GHA | default "true"}}'
     cmds:
     - task: check:missing
       vars:
-        VERSIONS: "{{.VERSIONS}}"
+        VERSIONS: '{{.VERSIONS | default .VERSION | default "8.2 8.3 8.4"}}'
         MISSING_FILE: "{{.MISSING_FILE}}"
     - |
       set -euo pipefail
@@ -259,32 +277,40 @@ tasks:
           base_version="$version"
         fi
 
-        task build:image VERSION="$version" FOLDER="$folder" VARIANT="$variant" BASE_VERSION="$base_version" PUSH="{{.PUSH}}" CLEANUP="{{.CLEANUP}}" || echo "Échec du build pour ${version}-${folder}${variant}" >&2
+        task build:image VERSION="$version" FOLDER="$folder" VARIANT="$variant" BASE_VERSION="$base_version" PUSH="{{.PUSH}}" CLEANUP="{{.CLEANUP}}" PREPULL="{{.PREPULL}}" CACHE_REGISTRY="{{.CACHE_REGISTRY}}" CACHE_GHA="{{.CACHE_GHA}}" || echo "Échec du build pour ${version}-${folder}${variant}" >&2
       done
 
   build:
     desc: "Construit les images Docker définies dans les Taskfiles inclus"
     silent: true
     vars:
-      VERSIONS: "{{.VERSIONS}}"
+      VERSIONS: '{{.VERSIONS | default .VERSION | default "8.2 8.3 8.4"}}'
       FOLDERS: "apache fpm"
       MISSING_FILE: '{{.MISSING_FILE | default "missing.json"}}'
-      PUSH: '{{.PUSH | default "false"}}'
-      CLEANUP: '{{.CLEANUP | default "false"}}'
+      PUSH: '{{.PUSH | default "true"}}'
+      CLEANUP: '{{.CLEANUP | default "true"}}'
+      PREPULL: '{{.PREPULL | default "true"}}'
+      CACHE_REGISTRY: '{{.CACHE_REGISTRY | default "koromerzhin/php:buildcache"}}'
+      CACHE_GHA: '{{.CACHE_GHA | default "true"}}'
     cmds:
     - task: matrix
       vars:
-        VERSIONS: "{{.VERSIONS}}"
+        VERSIONS: '{{.VERSIONS | default .VERSION | default "8.2 8.3 8.4"}}'
     - task: build:prepare
     - task: build:dockerfiles
       vars:
-        VERSIONS: "{{.VERSIONS}}"
+        VERSIONS: '{{.VERSIONS | default .VERSION | default "8.2 8.3 8.4"}}'
         FOLDERS: "{{.FOLDERS}}"
     - task: build:images
       vars:
-        VERSIONS: "{{.VERSIONS}}"
+        VERSIONS: '{{.VERSIONS | default .VERSION | default "8.2 8.3 8.4"}}'
         FOLDERS: "{{.FOLDERS}}"
         MISSING_FILE: "{{.MISSING_FILE}}"
+        PUSH: "{{.PUSH}}"
+        CLEANUP: "{{.CLEANUP}}"
+        PREPULL: "{{.PREPULL}}"
+        CACHE_REGISTRY: "{{.CACHE_REGISTRY}}"
+        CACHE_GHA: "{{.CACHE_GHA}}"
         PUSH: "{{.PUSH}}"
         CLEANUP: "{{.CLEANUP}}"
 
@@ -362,14 +388,14 @@ tasks:
     - sh: command -v jq
       msg: "jq n'est pas installé ou accessible"
     vars:
-      VERSIONS: "{{.VERSIONS}}"
+      VERSIONS: '{{.VERSIONS | default .VERSION | default "8.2 8.3 8.4"}}'
       FOLDERS: "apache fpm"
       HUB_REPO: "koromerzhin/php"
       MISSING_FILE: '{{.MISSING_FILE | default "missing.json"}}'
     cmds:
     - task: matrix
       vars:
-        VERSIONS: "{{.VERSIONS}}"
+        VERSIONS: '{{.VERSIONS | default .VERSION | default "8.2 8.3 8.4"}}'
     - |
       set -euo pipefail
       repo="{{.HUB_REPO}}"
@@ -530,12 +556,18 @@ tasks:
 
   exec:
     vars:
-      VERSIONS: "{{.VERSIONS}}"
-      PUSH: '{{.PUSH | default "false"}}'
-      CLEANUP: '{{.CLEANUP | default "false"}}'
+      VERSIONS: '{{.VERSIONS | default .VERSION | default "8.2 8.3 8.4"}}'
+      PUSH: '{{.PUSH | default "true"}}'
+      CLEANUP: '{{.CLEANUP | default "true"}}'
+      PREPULL: '{{.PREPULL | default "true"}}'
+      CACHE_REGISTRY: '{{.CACHE_REGISTRY | default "koromerzhin/php:buildcache"}}'
+      CACHE_GHA: '{{.CACHE_GHA | default "true"}}'
     cmds:
     - task: build
       vars:
-        VERSIONS: "{{.VERSIONS}}"
+        VERSIONS: '{{.VERSIONS | default .VERSION | default "8.2 8.3 8.4"}}'
         PUSH: "{{.PUSH}}"
         CLEANUP: "{{.CLEANUP}}"
+        PREPULL: "{{.PREPULL}}"
+        CACHE_REGISTRY: "{{.CACHE_REGISTRY}}"
+        CACHE_GHA: "{{.CACHE_GHA}}"
