@@ -163,7 +163,7 @@ tasks:
       CLEANUP: '{{.CLEANUP | default "true"}}'
       PREPULL: '{{.PREPULL | default "true"}}'
       CACHE_REGISTRY: '{{.CACHE_REGISTRY | default "koromerzhin/php:buildcache"}}'
-      CACHE_GHA: '{{.CACHE_GHA | default "true"}}'
+      CACHE_GHA: '{{.CACHE_GHA | default "false"}}'
     cmds:
     - |
       dockerfile_path="build/{{.FOLDER}}/{{.VERSION}}/Dockerfile"
@@ -198,8 +198,12 @@ tasks:
       fi
 
       cache_args=""
-      if [ -n "{{.CACHE_REGISTRY}}" ]; then
-        cache_args="--cache-from=type=registry,ref={{.CACHE_REGISTRY}} --cache-to=type=registry,ref={{.CACHE_REGISTRY}},mode=max"
+      if [ -n "{{.CACHE_REGISTRY}}" ] && [ "{{.CACHE_REGISTRY}}" != "false" ] && [ "{{.CACHE_REGISTRY}}" != "none" ]; then
+        if docker manifest inspect "{{.CACHE_REGISTRY}}" >/dev/null 2>&1; then
+          cache_args="--cache-from=type=registry,ref={{.CACHE_REGISTRY}} --cache-to=type=registry,ref={{.CACHE_REGISTRY}},mode=max"
+        else
+          cache_args="--cache-to=type=registry,ref={{.CACHE_REGISTRY}},mode=max"
+        fi
       fi
       if [ "{{.CACHE_GHA}}" = "true" ]; then
         cache_args="$cache_args --cache-from=type=gha --cache-to=type=gha,mode=max"
@@ -207,8 +211,15 @@ tasks:
 
       echo ""
       echo "Lancement du build pour $tag (target=$target)"
+      # Utilise un builder buildx (driver docker-container) pour supporter
+      # l'export de cache (registry / gha). Crée le builder si nécessaire.
+      builder="koromerzhin-builder"
+      if ! docker buildx inspect "$builder" >/dev/null 2>&1; then
+        docker buildx create --name "$builder" --driver docker-container --use >/dev/null
+      fi
+      docker buildx use "$builder" >/dev/null
       # shellcheck disable=SC2086
-      DOCKER_BUILDKIT=1 docker build $cache_args -t "$tag" "build/{{.FOLDER}}/{{.VERSION}}" --target "$target" --build-arg "SERVER={{.FOLDER}}" $platform_args
+      docker buildx build --builder "$builder" $cache_args --load -t "$tag" "build/{{.FOLDER}}/{{.VERSION}}" --target "$target" --build-arg "SERVER={{.FOLDER}}" $platform_args
 
       if [ "{{.PUSH}}" = "true" ]; then
         task push:image VERSION="{{.VERSION}}" FOLDER="{{.FOLDER}}" VARIANT="{{.VARIANT}}"
@@ -238,7 +249,7 @@ tasks:
       CLEANUP: '{{.CLEANUP | default "true"}}'
       PREPULL: '{{.PREPULL | default "true"}}'
       CACHE_REGISTRY: '{{.CACHE_REGISTRY | default "koromerzhin/php:buildcache"}}'
-      CACHE_GHA: '{{.CACHE_GHA | default "true"}}'
+      CACHE_GHA: '{{.CACHE_GHA | default "false"}}'
     cmds:
     - task: check:missing
       vars:
@@ -291,7 +302,7 @@ tasks:
       CLEANUP: '{{.CLEANUP | default "true"}}'
       PREPULL: '{{.PREPULL | default "true"}}'
       CACHE_REGISTRY: '{{.CACHE_REGISTRY | default "koromerzhin/php:buildcache"}}'
-      CACHE_GHA: '{{.CACHE_GHA | default "true"}}'
+      CACHE_GHA: '{{.CACHE_GHA | default "false"}}'
       BAKE: '{{.BAKE | default "false"}}'
     cmds:
     - task: matrix
@@ -302,6 +313,11 @@ tasks:
       vars:
         VERSIONS: '{{.VERSIONS | default .VERSION | default "8.2 8.3 8.4"}}'
         FOLDERS: "{{.FOLDERS}}"
+    - task: check:missing
+      vars:
+        VERSIONS: '{{.VERSIONS | default .VERSION | default "8.2 8.3 8.4"}}'
+        FOLDERS: "{{.FOLDERS}}"
+        MISSING_FILE: "{{.MISSING_FILE}}"
     - |
       if [ "{{.BAKE}}" = "true" ]; then
         task build:bake VERSIONS="{{.VERSIONS}}" FOLDERS="{{.FOLDERS}}" MISSING_FILE="{{.MISSING_FILE}}" PUSH="{{.PUSH}}" CLEANUP="{{.CLEANUP}}" PREPULL="{{.PREPULL}}" CACHE_REGISTRY="{{.CACHE_REGISTRY}}" CACHE_GHA="{{.CACHE_GHA}}" PLATFORMS="{{.PLATFORMS}}"
@@ -320,7 +336,7 @@ tasks:
       CLEANUP: '{{.CLEANUP | default "true"}}'
       PREPULL: '{{.PREPULL | default "true"}}'
       CACHE_REGISTRY: '{{.CACHE_REGISTRY | default "koromerzhin/php:buildcache"}}'
-      CACHE_GHA: '{{.CACHE_GHA | default "true"}}'
+      CACHE_GHA: '{{.CACHE_GHA | default "false"}}'
       PLATFORMS: '{{.PLATFORMS | default ""}}'
     cmds:
     - |
@@ -329,6 +345,11 @@ tasks:
       export CACHE_REGISTRY="{{.CACHE_REGISTRY}}"
       export CACHE_GHA="{{.CACHE_GHA}}"
       export PLATFORMS="{{.PLATFORMS}}"
+      if [ -n "{{.CACHE_REGISTRY}}" ] && [ "{{.CACHE_REGISTRY}}" != "false" ] && [ "{{.CACHE_REGISTRY}}" != "none" ] && docker manifest inspect "{{.CACHE_REGISTRY}}" >/dev/null 2>&1; then
+        export CACHE_FROM_ENABLED=true
+      else
+        export CACHE_FROM_ENABLED=false
+      fi
       python3 - <<'PY'
       import json, os
       missing_file = os.environ["MISSING_FILE"]
@@ -338,8 +359,9 @@ tasks:
       cache_from = []
       cache_to = []
       cr = os.environ.get("CACHE_REGISTRY", "")
-      if cr:
-          cache_from.append(f"type=registry,ref={cr}")
+      if cr and cr.lower() not in ("false", "none", ""):
+          if os.environ.get("CACHE_FROM_ENABLED", "false").lower() == "true":
+              cache_from.append(f"type=registry,ref={cr}")
           cache_to.append(f"type=registry,ref={cr},mode=max")
       if os.environ.get("CACHE_GHA", "false").lower() == "true":
           cache_from.append("type=gha")
@@ -377,10 +399,14 @@ tasks:
           docker pull "php:${version}-${folder}" >/dev/null 2>&1 || true
         done
       fi
+      builder="koromerzhin-builder"
+      if ! docker buildx inspect "$builder" >/dev/null 2>&1; then
+        docker buildx create --name "$builder" --driver docker-container --use >/dev/null
+      fi
       if [ "{{.PUSH}}" = "true" ]; then
-        docker buildx bake -f build-bake.json --push
+        docker buildx bake --builder "$builder" -f build-bake.json --push
       else
-        docker buildx bake -f build-bake.json --load
+        docker buildx bake --builder "$builder" -f build-bake.json --load
       fi
       if [ "{{.CLEANUP}}" = "true" ]; then
         jq -r '.include[] | "koromerzhin/php:\(.version)-\(.folder)\(.variant)"' "{{.MISSING_FILE}}" | while read -r img; do
@@ -637,7 +663,7 @@ tasks:
       CLEANUP: '{{.CLEANUP | default "true"}}'
       PREPULL: '{{.PREPULL | default "true"}}'
       CACHE_REGISTRY: '{{.CACHE_REGISTRY | default "koromerzhin/php:buildcache"}}'
-      CACHE_GHA: '{{.CACHE_GHA | default "true"}}'
+      CACHE_GHA: '{{.CACHE_GHA | default "false"}}'
       BAKE: '{{.BAKE | default "false"}}'
     cmds:
     - task: build
