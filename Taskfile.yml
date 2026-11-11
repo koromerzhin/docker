@@ -16,7 +16,7 @@ vars:
   # Variables avec valeurs par défaut depuis .env ou valeurs de fallback
   PROJECT_NAME: '{{.PROJECT_NAME | default "docker"}}'
   ENVIRONMENT: '{{.ENVIRONMENT | default "development"}}'
-  NODE_VERSION: '{{.NODE_VERSION | default "20"}}'
+  NODE_VERSION: '{{.NODE_VERSION | default "24"}}'
   PHP_EXTENSIONS: '{{.PHP_EXTENSIONS_URL}}'
   WORDPRESS_PHAR: '{{.WORDPRESS_PHAR_URL}}'
   SYMFONY_CLI: '{{.SYMFONY_CLI_URL}}'
@@ -24,30 +24,12 @@ vars:
   # Versions legacy (EOL) : task exec VERSIONS="{{.LEGACY_VERSIONS}}" — à vos risques et périls.
   VERSIONS: "8.2 8.3 8.4"
   LEGACY_VERSIONS: "7.4 8.0 8.1"
-  PKG56: 'wget git fish unzip zip'
-  PKG70: 'wget git fish unzip zip'
-  PKG71: 'wget git fish unzip zip'
-  PKG72: 'wget git fish unzip zip'
-  PKG73: 'wget git fish unzip zip'
-  PKG74: 'wget git fish unzip zip graphviz'
-  PKG80: 'wget git fish unzip zip graphviz'
-  PKG81: 'wget git fish unzip zip graphviz'
-  PKG82: 'wget git fish unzip zip graphviz'
-  PKG83: 'wget git fish unzip zip graphviz'
-  PKG84: 'wget git fish unzip zip graphviz'
-  PKG85: 'wget git fish unzip zip graphviz'
-  PHPLISTEXTENSION56: '@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg'
-  PHPLISTEXTENSION70: '@composer'
-  PHPLISTEXTENSION71: '@composer'
-  PHPLISTEXTENSION72: '@composer'
-  PHPLISTEXTENSION73: '@composer'
-  PHPLISTEXTENSION74: '@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg'
-  PHPLISTEXTENSION80: '@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg'
-  PHPLISTEXTENSION81: '@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg'
-  PHPLISTEXTENSION82: '@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg'
-  PHPLISTEXTENSION83: '@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg'
-  PHPLISTEXTENSION84: '@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg'
-  PHPLISTEXTENSION85: '@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg'
+  # Paquets système par branche PHP (graphviz à partir de 7.4).
+  PKG_BASE: 'wget git fish unzip zip'
+  PKG_WITH_GRAPHVIZ: 'wget git fish unzip zip graphviz'
+  # Extensions PHP par branche (7.0-7.3 : @composer uniquement).
+  PHP_EXTENSIONS_FULL: '@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg'
+  PHP_EXTENSIONS_MINIMAL: '@composer'
 tasks:
   default:
     desc: "Affiche l'aide et les tâches disponibles"
@@ -56,7 +38,7 @@ tasks:
     - echo "🛠️  Collection de Taskfiles pour le développement"
     - echo ""
     - echo "Tâches globales disponibles :"
-    - task --list
+    - task --list-all
     - echo ""
 
   info:
@@ -77,59 +59,40 @@ tasks:
     - task: default
 
   create:
-    desc: "Construit les images Docker définies dans les Taskfiles inclus"
+    desc: "Génère un Dockerfile pour une version PHP donnée"
     silent: true
-    preconditions:
-    - sh: command -v docker
-      msg: "Docker n'est pas installé ou accessible"
     vars:
       FOLDER: '{{.FOLDER | default ""}}'
       VERSION: '{{.VERSION | default ""}}'
       NUMBER: '{{.NUMBER | default ""}}'
     cmds:
     - |
-      declare -A EXT_MAP
-      EXT_MAP["5.6"]="{{.PHPLISTEXTENSION56}}"
-      EXT_MAP["7.0"]="{{.PHPLISTEXTENSION70}}"
-      EXT_MAP["7.1"]="{{.PHPLISTEXTENSION71}}"
-      EXT_MAP["7.2"]="{{.PHPLISTEXTENSION72}}"
-      EXT_MAP["7.3"]="{{.PHPLISTEXTENSION73}}"
-      EXT_MAP["7.4"]="{{.PHPLISTEXTENSION74}}"
-      EXT_MAP["8.0"]="{{.PHPLISTEXTENSION80}}"
-      EXT_MAP["8.1"]="{{.PHPLISTEXTENSION81}}"
-      EXT_MAP["8.2"]="{{.PHPLISTEXTENSION82}}"
-      EXT_MAP["8.3"]="{{.PHPLISTEXTENSION83}}"
-      EXT_MAP["8.4"]="{{.PHPLISTEXTENSION84}}"
-      EXT_MAP["8.5"]="{{.PHPLISTEXTENSION85}}"
-      declare -A PKG_MAP
-      PKG_MAP["5.6"]="{{.PKG56}}"
-      PKG_MAP["7.0"]="{{.PKG70}}"
-      PKG_MAP["7.1"]="{{.PKG71}}"
-      PKG_MAP["7.2"]="{{.PKG72}}"
-      PKG_MAP["7.3"]="{{.PKG73}}"
-      PKG_MAP["7.4"]="{{.PKG74}}"
-      PKG_MAP["8.0"]="{{.PKG80}}"
-      PKG_MAP["8.1"]="{{.PKG81}}"
-      PKG_MAP["8.2"]="{{.PKG82}}"
-      PKG_MAP["8.3"]="{{.PKG83}}"
-      PKG_MAP["8.4"]="{{.PKG84}}"
-      PKG_MAP["8.5"]="{{.PKG85}}"
-      mkdir -p build/{{.FOLDER}}/{{.VERSION}}
-      cp images/php/Dockerfile build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
-      sed -i "s#VERSIONIMAGE#php:{{.VERSION}}-{{.FOLDER}}#" build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
-      sed -i 's#PHPEXTENSIONS#{{.PHP_EXTENSIONS}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
-      EXT="${EXT_MAP["{{.NUMBER}}"]}"
-      sed -i "s#PHPLISTEXTENSION#${EXT}#" build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
-      EXT="${PKG_MAP["{{.NUMBER}}"]}"
-      sed -i "s#PKGINSTALL#${EXT}#" build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
-      sed -i 's#SYMFONYCLI#{{.SYMFONY_CLI}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
-      sed -i 's#WORDPRESSPHAR#{{.WORDPRESS_PHAR}}#' build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
+      set -euo pipefail
+      number="{{.NUMBER}}"
+      case "$number" in
+        7.0|7.1|7.2|7.3) ext="{{.PHP_EXTENSIONS_MINIMAL}}" ;;
+        *) ext="{{.PHP_EXTENSIONS_FULL}}" ;;
+      esac
+      case "$number" in
+        5.6|7.0|7.1|7.2|7.3) pkg="{{.PKG_BASE}}" ;;
+        *) pkg="{{.PKG_WITH_GRAPHVIZ}}" ;;
+      esac
       if [ "{{.FOLDER}}" = "apache" ]; then
         port="80"
       else
         port="9000"
       fi
-      sed -i "s#EXPOSEPORT#${port}#" build/{{.FOLDER}}/{{.VERSION}}/Dockerfile;
+      mkdir -p build/{{.FOLDER}}/{{.VERSION}}
+      cp images/php/Dockerfile build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
+      sed -i \
+        -e "s#VERSIONIMAGE#php:{{.VERSION}}-{{.FOLDER}}#" \
+        -e 's#PHPEXTENSIONS#{{.PHP_EXTENSIONS}}#' \
+        -e "s#PHPLISTEXTENSION#${ext}#" \
+        -e "s#PKGINSTALL#${pkg}#" \
+        -e 's#SYMFONYCLI#{{.SYMFONY_CLI}}#' \
+        -e 's#WORDPRESSPHAR#{{.WORDPRESS_PHAR}}#' \
+        -e "s#EXPOSEPORT#${port}#" \
+        build/{{.FOLDER}}/{{.VERSION}}/Dockerfile
       echo "Dockerfile créé dans build/{{.FOLDER}}/{{.VERSION}}/Dockerfile"
 
   matrix:
@@ -139,7 +102,7 @@ tasks:
       VERSIONS: "{{.VERSIONS}}"
     cmds:
     - |
-      set -e
+      set -euo pipefail
       for version in {{.VERSIONS}}; do
         echo ""
         echo "Génération de la matrice pour PHP $version"
@@ -169,8 +132,8 @@ tasks:
     desc: "Génère tous les Dockerfiles de build"
     silent: true
     preconditions:
-    - sh: command -v docker
-      msg: "Docker n'est pas installé ou accessible"
+    - sh: command -v jq
+      msg: "jq n'est pas installé ou accessible"
     vars:
       VERSIONS: "{{.VERSIONS}}"
       FOLDERS: "apache fpm"
@@ -228,7 +191,7 @@ tasks:
       echo ""
       echo "Lancement du build pour $tag (target=$target)"
       # shellcheck disable=SC2086
-      docker build -t "$tag" "build/{{.FOLDER}}/{{.VERSION}}" --target "$target" --build-arg "SERVER={{.FOLDER}}" $platform_args || true
+      docker build -t "$tag" "build/{{.FOLDER}}/{{.VERSION}}" --target "$target" --build-arg "SERVER={{.FOLDER}}" $platform_args
 
   build:images:
     desc: "Construit uniquement les images manquantes sur Docker Hub (source : missing.json de check:missing)"
@@ -248,7 +211,7 @@ tasks:
         VERSIONS: "{{.VERSIONS}}"
         MISSING_FILE: "{{.MISSING_FILE}}"
     - |
-      set -e
+      set -euo pipefail
       out="{{.MISSING_FILE}}"
       count=$(jq '.include | length' "$out")
       if [ "$count" -eq 0 ]; then
@@ -280,7 +243,7 @@ tasks:
           base_version="$version"
         fi
 
-        task build:image VERSION="$version" FOLDER="$folder" VARIANT="$variant" BASE_VERSION="$base_version" || true
+        task build:image VERSION="$version" FOLDER="$folder" VARIANT="$variant" BASE_VERSION="$base_version" || echo "Échec du build pour ${version}-${folder}${variant}" >&2
       done
 
   build:
@@ -385,7 +348,7 @@ tasks:
       vars:
         VERSIONS: "{{.VERSIONS}}"
     - |
-      set -e
+      set -euo pipefail
       repo="{{.HUB_REPO}}"
       out="{{.MISSING_FILE}}"
       existing="$(mktemp)"
@@ -458,16 +421,8 @@ tasks:
       msg: "jq n'est pas installé ou accessible"
     cmds:
     - |
-      set -e
-      gh_latest() {
-        curl -fsSL --retry 3 --max-time 30 "https://api.github.com/repos/$1/releases/latest" | jq -r '.tag_name'
-      }
-      strip_v() {
-        echo "$1" | sed 's#^v##'
-      }
-      current_v() {
-        grep -E "^$1=" versions.env | sed 's#^[^=]*=##' | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1
-      }
+      set -euo pipefail
+      . ./versions-common
       printf '%-42s %-12s %-12s %s\n' OUTIL ACTUELLE DERNIERE STATUT
       for spec in "mlocati/docker-php-extension-installer|PHP_EXTENSIONS_URL" "wp-cli/wp-cli|WORDPRESS_PHAR_URL" "symfony-cli/symfony-cli|SYMFONY_CLI_URL"; do
         repo="${spec%%|*}"
@@ -493,13 +448,8 @@ tasks:
     cmds:
     - task: versions:check
     - |
-      set -e
-      gh_latest() {
-        curl -fsSL --retry 3 --max-time 30 "https://api.github.com/repos/$1/releases/latest" | jq -r '.tag_name'
-      }
-      strip_v() {
-        echo "$1" | sed 's#^v##'
-      }
+      set -euo pipefail
+      . ./versions-common
       ext_v=$(strip_v "$(gh_latest mlocati/docker-php-extension-installer)")
       wp_v=$(strip_v "$(gh_latest wp-cli/wp-cli)")
       sym_v=$(strip_v "$(gh_latest symfony-cli/symfony-cli)")
@@ -528,6 +478,7 @@ tasks:
       PUSH_CONFIRM: '{{.PUSH_CONFIRM | default ""}}'
     cmds:
     - |
+      set -euo pipefail
       # Sans --format docker (conflit avec la syntaxe des templates Task) :
       # la 1re colonne de `docker images` est déjà REPO:TAG ; on ignore les <none>.
       tags=$(docker images koromerzhin/php | awk 'NR>1 && $1 !~ /<none>/ {print $1}' | sort -u)

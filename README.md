@@ -52,7 +52,7 @@ cp .env.example .env  # optionnel : surcharger VERSIONS, PLATFORMS, ...
 | `fpm` | `9000` | (base), `-xdebug`, `-wordpress`, `-wordpress-xdebug`, `-symfony`, `-symfony-messenger`, `-symfony-xdebug`, `-symfony-messenger-xdebug` |
 
 - PHP supportés par défaut : `8.2 8.3 8.4` (branches maintenues). Legacy EOL (`7.4 8.0 8.1`) via `LEGACY_VERSIONS`, non supporté.
-- Base : images officielles `php:<version>-<serveur>`, extensions via `install-php-extensions` (2.12.1), `wp-cli` (2.12.0), `symfony-cli` (5.22.1, amd64 uniquement).
+- Base : images officielles `php:<version>-<serveur>`, extensions via `install-php-extensions` (2.13.2), `wp-cli` (2.12.0), `symfony-cli` (5.22.2, amd64 uniquement), `supervisor` (variante `-symfony-messenger`).
 - `HEALTHCHECK php -v` embarqué (minimal, à surcharger au déploiement).
 
 ## Usage

@@ -1,0 +1,14 @@
+# Fonctions shell partagées pour versions:check et versions:update.
+# Sourcer ce fichier : . taskfiles/utils/versions-common
+
+gh_latest() {
+  curl -fsSL --retry 3 --max-time 30 "https://api.github.com/repos/$1/releases/latest" | jq -r '.tag_name'
+}
+
+strip_v() {
+  echo "$1" | sed 's#^v##'
+}
+
+current_v() {
+  grep -E "^$1=" versions.env | sed 's#^[^=]*=##' | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1
+}
