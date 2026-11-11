@@ -36,6 +36,12 @@ FROM build-base AS build-symfony
 RUN wget SYMFONYCLI -O symfony-cli_amd64.deb && dpkg -i symfony-cli_amd64.deb && rm symfony-cli_amd64.deb
 
 
+FROM build-symfony AS build-symfony-messenger
+
+RUN apt-get update && apt-get autoremove
+RUN apt-get install -y --no-install-recommends supervisor
+RUN apt-get clean && rm -fr /var/lib/apt/lists/*
+
 FROM build-base AS build-xdebug
 
 RUN install-php-extensions xdebug
@@ -47,5 +53,9 @@ RUN install-php-extensions xdebug
 
 
 FROM build-symfony AS build-symfony-xdebug
+
+RUN install-php-extensions xdebug
+
+FROM build-symfony-messenger AS build-symfony-messenger-xdebug
 
 RUN install-php-extensions xdebug

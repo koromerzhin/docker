@@ -352,6 +352,8 @@ tasks:
       done
       task test:image VERSION="8.4" FOLDER="apache" VARIANT="-wordpress"
       task test:image VERSION="8.4" FOLDER="fpm" VARIANT="-symfony"
+      task test:image VERSION="8.4" FOLDER="apache" VARIANT="-symfony-messenger"
+      task test:image VERSION="8.4" FOLDER="fpm" VARIANT="-symfony-messenger"
       task test:image VERSION="8.4" FOLDER="apache" VARIANT="-xdebug"
       task test:image VERSION="8.4" FOLDER="fpm" VARIANT="-xdebug"
 
@@ -421,7 +423,7 @@ tasks:
             *.*.*) minor="${version%.*}" ;;
           esac
           for folder in {{.FOLDERS}}; do
-            for variant in "" "-xdebug" "-wordpress" "-wordpress-xdebug" "-symfony" "-symfony-xdebug"; do
+            for variant in "" "-xdebug" "-wordpress" "-wordpress-xdebug" "-symfony" "-symfony-messenger" "-symfony-xdebug" "-symfony-messenger-xdebug"; do
               tag="${version}-${folder}${variant}"
               if ! grep -qx "$tag" "$existing"; then
                 jq -c -n --arg version "$version" --arg number "$minor" --arg folder "$folder" --arg variant "$variant" '{version: $version, number: $number, folder: $folder, variant: $variant}' >> "$items"
