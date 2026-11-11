@@ -1,6 +1,7 @@
 /node_modules
 *.sh
 /build
+/build-bake.json
 matrix_*.json
 missing.json
 php_versions*.json

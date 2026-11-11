@@ -162,7 +162,7 @@ tasks:
       PUSH: '{{.PUSH | default "true"}}'
       CLEANUP: '{{.CLEANUP | default "true"}}'
       PREPULL: '{{.PREPULL | default "true"}}'
-      CACHE_REGISTRY: '{{.CACHE_REGISTRY | default "koromerzhin/php:buildcache"}}'
+      CACHE_REGISTRY: '{{.CACHE_REGISTRY | default ""}}'
       CACHE_GHA: '{{.CACHE_GHA | default "false"}}'
     cmds:
     - |
@@ -248,7 +248,7 @@ tasks:
       PUSH: '{{.PUSH | default "true"}}'
       CLEANUP: '{{.CLEANUP | default "true"}}'
       PREPULL: '{{.PREPULL | default "true"}}'
-      CACHE_REGISTRY: '{{.CACHE_REGISTRY | default "koromerzhin/php:buildcache"}}'
+      CACHE_REGISTRY: '{{.CACHE_REGISTRY | default ""}}'
       CACHE_GHA: '{{.CACHE_GHA | default "false"}}'
     cmds:
     - task: check:missing
@@ -301,7 +301,7 @@ tasks:
       PUSH: '{{.PUSH | default "true"}}'
       CLEANUP: '{{.CLEANUP | default "true"}}'
       PREPULL: '{{.PREPULL | default "true"}}'
-      CACHE_REGISTRY: '{{.CACHE_REGISTRY | default "koromerzhin/php:buildcache"}}'
+      CACHE_REGISTRY: '{{.CACHE_REGISTRY | default ""}}'
       CACHE_GHA: '{{.CACHE_GHA | default "false"}}'
       BAKE: '{{.BAKE | default "false"}}'
     cmds:
@@ -335,7 +335,7 @@ tasks:
       PUSH: '{{.PUSH | default "true"}}'
       CLEANUP: '{{.CLEANUP | default "true"}}'
       PREPULL: '{{.PREPULL | default "true"}}'
-      CACHE_REGISTRY: '{{.CACHE_REGISTRY | default "koromerzhin/php:buildcache"}}'
+      CACHE_REGISTRY: '{{.CACHE_REGISTRY | default ""}}'
       CACHE_GHA: '{{.CACHE_GHA | default "false"}}'
       PLATFORMS: '{{.PLATFORMS | default ""}}'
     cmds:
@@ -662,7 +662,7 @@ tasks:
       PUSH: '{{.PUSH | default "true"}}'
       CLEANUP: '{{.CLEANUP | default "true"}}'
       PREPULL: '{{.PREPULL | default "true"}}'
-      CACHE_REGISTRY: '{{.CACHE_REGISTRY | default "koromerzhin/php:buildcache"}}'
+      CACHE_REGISTRY: '{{.CACHE_REGISTRY | default ""}}'
       CACHE_GHA: '{{.CACHE_GHA | default "false"}}'
       BAKE: '{{.BAKE | default "false"}}'
     cmds:
