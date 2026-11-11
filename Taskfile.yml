@@ -292,6 +292,7 @@ tasks:
       PREPULL: '{{.PREPULL | default "true"}}'
       CACHE_REGISTRY: '{{.CACHE_REGISTRY | default "koromerzhin/php:buildcache"}}'
       CACHE_GHA: '{{.CACHE_GHA | default "true"}}'
+      BAKE: '{{.BAKE | default "false"}}'
     cmds:
     - task: matrix
       vars:
@@ -301,18 +302,93 @@ tasks:
       vars:
         VERSIONS: '{{.VERSIONS | default .VERSION | default "8.2 8.3 8.4"}}'
         FOLDERS: "{{.FOLDERS}}"
-    - task: build:images
-      vars:
-        VERSIONS: '{{.VERSIONS | default .VERSION | default "8.2 8.3 8.4"}}'
-        FOLDERS: "{{.FOLDERS}}"
-        MISSING_FILE: "{{.MISSING_FILE}}"
-        PUSH: "{{.PUSH}}"
-        CLEANUP: "{{.CLEANUP}}"
-        PREPULL: "{{.PREPULL}}"
-        CACHE_REGISTRY: "{{.CACHE_REGISTRY}}"
-        CACHE_GHA: "{{.CACHE_GHA}}"
-        PUSH: "{{.PUSH}}"
-        CLEANUP: "{{.CLEANUP}}"
+    - |
+      if [ "{{.BAKE}}" = "true" ]; then
+        task build:bake VERSIONS="{{.VERSIONS}}" FOLDERS="{{.FOLDERS}}" MISSING_FILE="{{.MISSING_FILE}}" PUSH="{{.PUSH}}" CLEANUP="{{.CLEANUP}}" PREPULL="{{.PREPULL}}" CACHE_REGISTRY="{{.CACHE_REGISTRY}}" CACHE_GHA="{{.CACHE_GHA}}" PLATFORMS="{{.PLATFORMS}}"
+      else
+        task build:images VERSIONS="{{.VERSIONS}}" FOLDERS="{{.FOLDERS}}" MISSING_FILE="{{.MISSING_FILE}}" PUSH="{{.PUSH}}" CLEANUP="{{.CLEANUP}}" PREPULL="{{.PREPULL}}" CACHE_REGISTRY="{{.CACHE_REGISTRY}}" CACHE_GHA="{{.CACHE_GHA}}"
+      fi
+
+  build:bake:
+    desc: "Construit les images en parallèle via docker buildx bake"
+    silent: true
+    vars:
+      VERSIONS: '{{.VERSIONS | default .VERSION | default "8.2 8.3 8.4"}}'
+      FOLDERS: "apache fpm"
+      MISSING_FILE: '{{.MISSING_FILE | default "missing.json"}}'
+      PUSH: '{{.PUSH | default "true"}}'
+      CLEANUP: '{{.CLEANUP | default "true"}}'
+      PREPULL: '{{.PREPULL | default "true"}}'
+      CACHE_REGISTRY: '{{.CACHE_REGISTRY | default "koromerzhin/php:buildcache"}}'
+      CACHE_GHA: '{{.CACHE_GHA | default "true"}}'
+      PLATFORMS: '{{.PLATFORMS | default ""}}'
+    cmds:
+    - |
+      set -euo pipefail
+      export MISSING_FILE="{{.MISSING_FILE}}"
+      export CACHE_REGISTRY="{{.CACHE_REGISTRY}}"
+      export CACHE_GHA="{{.CACHE_GHA}}"
+      export PLATFORMS="{{.PLATFORMS}}"
+      python3 - <<'PY'
+      import json, os
+      missing_file = os.environ["MISSING_FILE"]
+      with open(missing_file) as f:
+          data = json.load(f)
+      items = data.get("include", [])
+      cache_from = []
+      cache_to = []
+      cr = os.environ.get("CACHE_REGISTRY", "")
+      if cr:
+          cache_from.append(f"type=registry,ref={cr}")
+          cache_to.append(f"type=registry,ref={cr},mode=max")
+      if os.environ.get("CACHE_GHA", "false").lower() == "true":
+          cache_from.append("type=gha")
+          cache_to.append("type=gha,mode=max")
+      platforms = [p for p in os.environ.get("PLATFORMS", "").split() if p]
+      targets = {}
+      target_names = []
+      for i, it in enumerate(items):
+          version = it["version"]
+          folder = it["folder"]
+          variant = it.get("variant", "")
+          target = "build-base" if not variant else "build-" + variant.lstrip("-")
+          tag = f"koromerzhin/php:{version}-{folder}{variant}"
+          name = f"t{i}"
+          targets[name] = {
+              "context": f"build/{folder}/{version}",
+              "dockerfile": "Dockerfile",
+              "target": target,
+              "args": {"SERVER": folder},
+              "tags": [tag],
+              "cache-from": cache_from,
+              "cache-to": cache_to,
+          }
+          if platforms:
+              targets[name]["platforms"] = platforms
+          target_names.append(name)
+      bake = {"group": {"default": {"targets": target_names}}, "target": targets}
+      with open("build-bake.json", "w") as f:
+          json.dump(bake, f, indent=2)
+      print(f"Generated build-bake.json with {len(target_names)} targets")
+      PY
+      if [ "{{.PREPULL}}" = "true" ]; then
+        jq -r '.include[] | "\(.version)-\(.folder)"' "{{.MISSING_FILE}}" | sort -u | while read -r bf; do
+          version="${bf%-*}"; folder="${bf##*-}"
+          docker pull "php:${version}-${folder}" >/dev/null 2>&1 || true
+        done
+      fi
+      if [ "{{.PUSH}}" = "true" ]; then
+        docker buildx bake -f build-bake.json --push
+      else
+        docker buildx bake -f build-bake.json --load
+      fi
+      if [ "{{.CLEANUP}}" = "true" ]; then
+        jq -r '.include[] | "koromerzhin/php:\(.version)-\(.folder)\(.variant)"' "{{.MISSING_FILE}}" | while read -r img; do
+          if [ -z "$(docker ps -aq --filter "ancestor=${img}")" ]; then
+            docker rmi "$img" >/dev/null 2>&1 || true
+          fi
+        done
+      fi
 
   test:image:
     desc: "Smoke tests d'une image : php -v + outils de la variante (wp, symfony, xdebug)"
@@ -562,6 +638,7 @@ tasks:
       PREPULL: '{{.PREPULL | default "true"}}'
       CACHE_REGISTRY: '{{.CACHE_REGISTRY | default "koromerzhin/php:buildcache"}}'
       CACHE_GHA: '{{.CACHE_GHA | default "true"}}'
+      BAKE: '{{.BAKE | default "false"}}'
     cmds:
     - task: build
       vars:
@@ -571,3 +648,4 @@ tasks:
         PREPULL: "{{.PREPULL}}"
         CACHE_REGISTRY: "{{.CACHE_REGISTRY}}"
         CACHE_GHA: "{{.CACHE_GHA}}"
+        BAKE: "{{.BAKE}}"
