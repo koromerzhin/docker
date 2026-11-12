@@ -1,5 +1,5 @@
 name: PHP release
-# Construit + pousse koromerzhin/php UNIQUEMENT quand une nouvelle version PHP
+# Construit + pousse koromerzhin/php-apache et koromerzhin/php-fpm UNIQUEMENT quand une nouvelle version PHP
 # est disponible et que le tag correspondant n'existe pas encore sur Docker Hub.
 on:
   schedule:
@@ -77,7 +77,7 @@ jobs:
         run: task build:image VERSION="${{ matrix.version }}" FOLDER="${{ matrix.folder }}" VARIANT="${{ matrix.variant }}" CACHE_GHA=true
 
       - name: Verify image built
-        run: docker image inspect "koromerzhin/php:${{ matrix.version }}-${{ matrix.folder }}${{ matrix.variant }}" > /dev/null
+        run: docker image inspect "koromerzhin/php-${{ matrix.folder }}:${{ matrix.version }}${{ matrix.variant }}" > /dev/null
 
       - name: Smoke tests
         run: task test:image VERSION="${{ matrix.version }}" FOLDER="${{ matrix.folder }}" VARIANT="${{ matrix.variant }}"
@@ -86,7 +86,7 @@ jobs:
         uses: aquasecurity/trivy-action@0.33.1
         with:
           scan-type: image
-          image-ref: koromerzhin/php:${{ matrix.version }}-${{ matrix.folder }}${{ matrix.variant }}
+          image-ref: koromerzhin/php-${{ matrix.folder }}:${{ matrix.version }}${{ matrix.variant }}
           severity: HIGH,CRITICAL
           exit-code: 1
           ignore-unfixed: true
@@ -123,11 +123,12 @@ jobs:
         run: |
           {
             echo "tags<<EOF"
-            jq -r '.include[] | "\(.version)-\(.folder)\(.variant)"' missing.json | while read -r tag; do
-              if docker pull "koromerzhin/php:$tag"; then
-                echo "koromerzhin/php:$tag"
+            jq -r '.include[] | "\(.folder) \(.version)\(.variant)"' missing.json | while read -r folder tag; do
+              ref="koromerzhin/php-${folder}:${tag}"
+              if docker pull "$ref"; then
+                echo "$ref"
               else
-                echo "Image koromerzhin/php:$tag absente du registre, ignorée." >&2
+                echo "Image $ref absente du registre, ignorée." >&2
               fi
             done
             echo "EOF"

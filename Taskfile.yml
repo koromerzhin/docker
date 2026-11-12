@@ -97,6 +97,7 @@ tasks:
 
   matrix:
     desc: "Génère une matrice JSON pour les versions PHP à utiliser dans GitHub Actions"
+    internal: true
     silent: true
     vars:
       VERSIONS: '{{.VERSIONS | default .VERSION | default "8.2 8.3 8.4"}}'
@@ -124,19 +125,21 @@ tasks:
 
   build:prepare:
     desc: "Prépare le dossier de build"
+    internal: true
     silent: true
     cmds:
     - rm -rf build
 
   build:dockerfiles:
     desc: "Génère tous les Dockerfiles de build"
+    internal: true
     silent: true
     preconditions:
     - sh: command -v jq
       msg: "jq n'est pas installé ou accessible"
     vars:
       VERSIONS: '{{.VERSIONS | default .VERSION | default "8.2 8.3 8.4"}}'
-      FOLDERS: "apache fpm"
+      FOLDERS: '{{.FOLDERS | default "apache fpm"}}'
     cmds:
     - |
       for number in {{.VERSIONS}}; do
@@ -172,7 +175,7 @@ tasks:
         exit 0
       fi
 
-      tag="koromerzhin/php:{{.VERSION}}-{{.FOLDER}}{{.VARIANT}}"
+      tag="koromerzhin/php-{{.FOLDER}}:{{.VERSION}}{{.VARIANT}}"
       # Template unique images/php/Dockerfile : la base s'appelle build-base,
       # les variantes build-<nom> (ex. VARIANT=-wordpress -> build-wordpress).
       target="build-base"
@@ -243,7 +246,7 @@ tasks:
       msg: "jq n'est pas installé ou accessible"
     vars:
       VERSIONS: '{{.VERSIONS | default .VERSION | default "8.2 8.3 8.4"}}'
-      FOLDERS: "apache fpm"
+      FOLDERS: '{{.FOLDERS | default "apache fpm"}}'
       MISSING_FILE: '{{.MISSING_FILE | default "missing.json"}}'
       PUSH: '{{.PUSH | default "true"}}'
       CLEANUP: '{{.CLEANUP | default "true"}}'
@@ -291,46 +294,13 @@ tasks:
         task build:image VERSION="$version" FOLDER="$folder" VARIANT="$variant" BASE_VERSION="$base_version" PUSH="{{.PUSH}}" CLEANUP="{{.CLEANUP}}" PREPULL="{{.PREPULL}}" CACHE_REGISTRY="{{.CACHE_REGISTRY}}" CACHE_GHA="{{.CACHE_GHA}}" || echo "Échec du build pour ${version}-${folder}${variant}" >&2
       done
 
-  build:
-    desc: "Construit les images Docker définies dans les Taskfiles inclus"
-    silent: true
-    vars:
-      VERSIONS: '{{.VERSIONS | default .VERSION | default "8.2 8.3 8.4"}}'
-      FOLDERS: "apache fpm"
-      MISSING_FILE: '{{.MISSING_FILE | default "missing.json"}}'
-      PUSH: '{{.PUSH | default "true"}}'
-      CLEANUP: '{{.CLEANUP | default "true"}}'
-      PREPULL: '{{.PREPULL | default "true"}}'
-      CACHE_REGISTRY: '{{.CACHE_REGISTRY | default ""}}'
-      CACHE_GHA: '{{.CACHE_GHA | default "false"}}'
-      BAKE: '{{.BAKE | default "false"}}'
-    cmds:
-    - task: matrix
-      vars:
-        VERSIONS: '{{.VERSIONS | default .VERSION | default "8.2 8.3 8.4"}}'
-    - task: build:prepare
-    - task: build:dockerfiles
-      vars:
-        VERSIONS: '{{.VERSIONS | default .VERSION | default "8.2 8.3 8.4"}}'
-        FOLDERS: "{{.FOLDERS}}"
-    - task: check:missing
-      vars:
-        VERSIONS: '{{.VERSIONS | default .VERSION | default "8.2 8.3 8.4"}}'
-        FOLDERS: "{{.FOLDERS}}"
-        MISSING_FILE: "{{.MISSING_FILE}}"
-    - |
-      if [ "{{.BAKE}}" = "true" ]; then
-        task build:bake VERSIONS="{{.VERSIONS}}" FOLDERS="{{.FOLDERS}}" MISSING_FILE="{{.MISSING_FILE}}" PUSH="{{.PUSH}}" CLEANUP="{{.CLEANUP}}" PREPULL="{{.PREPULL}}" CACHE_REGISTRY="{{.CACHE_REGISTRY}}" CACHE_GHA="{{.CACHE_GHA}}" PLATFORMS="{{.PLATFORMS}}"
-      else
-        task build:images VERSIONS="{{.VERSIONS}}" FOLDERS="{{.FOLDERS}}" MISSING_FILE="{{.MISSING_FILE}}" PUSH="{{.PUSH}}" CLEANUP="{{.CLEANUP}}" PREPULL="{{.PREPULL}}" CACHE_REGISTRY="{{.CACHE_REGISTRY}}" CACHE_GHA="{{.CACHE_GHA}}"
-      fi
 
   build:bake:
     desc: "Construit les images en parallèle via docker buildx bake"
     silent: true
     vars:
       VERSIONS: '{{.VERSIONS | default .VERSION | default "8.2 8.3 8.4"}}'
-      FOLDERS: "apache fpm"
+      FOLDERS: '{{.FOLDERS | default "apache fpm"}}'
       MISSING_FILE: '{{.MISSING_FILE | default "missing.json"}}'
       PUSH: '{{.PUSH | default "true"}}'
       CLEANUP: '{{.CLEANUP | default "true"}}'
@@ -374,7 +344,7 @@ tasks:
           folder = it["folder"]
           variant = it.get("variant", "")
           target = "build-base" if not variant else "build-" + variant.lstrip("-")
-          tag = f"koromerzhin/php:{version}-{folder}{variant}"
+          tag = f"koromerzhin/php-{folder}:{version}{variant}"
           name = f"t{i}"
           targets[name] = {
               "context": f"build/{folder}/{version}",
@@ -409,7 +379,7 @@ tasks:
         docker buildx bake --builder "$builder" -f build-bake.json --load
       fi
       if [ "{{.CLEANUP}}" = "true" ]; then
-        jq -r '.include[] | "koromerzhin/php:\(.version)-\(.folder)\(.variant)"' "{{.MISSING_FILE}}" | while read -r img; do
+        jq -r '.include[] | "koromerzhin/php-\(.folder):\(.version)\(.variant)"' "{{.MISSING_FILE}}" | while read -r img; do
           if [ -z "$(docker ps -aq --filter "ancestor=${img}")" ]; then
             docker rmi "$img" >/dev/null 2>&1 || true
           fi
@@ -428,7 +398,7 @@ tasks:
       VARIANT: '{{.VARIANT | default ""}}'
     cmds:
     - |
-      tag="koromerzhin/php:{{.VERSION}}-{{.FOLDER}}{{.VARIANT}}"
+      tag="koromerzhin/php-{{.FOLDER}}:{{.VERSION}}{{.VARIANT}}"
       variant="{{.VARIANT}}"
       if ! docker image inspect "$tag" > /dev/null 2>&1; then
         echo "Image $tag absente localement, test ignoré."
@@ -481,18 +451,18 @@ tasks:
       FOLDER: '{{.FOLDER | default ""}}'
       VARIANT: '{{.VARIANT | default ""}}'
     cmds:
-    - docker push "koromerzhin/php:{{.VERSION}}-{{.FOLDER}}{{.VARIANT}}"
+    - docker push "koromerzhin/php-{{.FOLDER}}:{{.VERSION}}{{.VARIANT}}"
 
   check:missing:
     desc: "Détecte les tags koromerzhin/php manquants (nouvelles versions PHP) : écrit missing.json + $GITHUB_OUTPUT"
+    internal: true
     silent: true
     preconditions:
     - sh: command -v jq
       msg: "jq n'est pas installé ou accessible"
     vars:
       VERSIONS: '{{.VERSIONS | default .VERSION | default "8.2 8.3 8.4"}}'
-      FOLDERS: "apache fpm"
-      HUB_REPO: "koromerzhin/php"
+      FOLDERS: '{{.FOLDERS | default "apache fpm"}}'
       MISSING_FILE: '{{.MISSING_FILE | default "missing.json"}}'
     cmds:
     - task: matrix
@@ -500,31 +470,29 @@ tasks:
         VERSIONS: '{{.VERSIONS | default .VERSION | default "8.2 8.3 8.4"}}'
     - |
       set -euo pipefail
-      repo="{{.HUB_REPO}}"
       out="{{.MISSING_FILE}}"
-      existing="$(mktemp)"
-      trap 'rm -f "$existing"' EXIT
-      # Liste les tags distants par branche (filtre name= : ~3 pages au lieu de ~20).
-      # Pause + retry : l'API Hub limite la pagination anonyme rapide (403 passé ~10 pages).
-      hub_get() {
-        curl -fsSL --retry-all-errors --retry 5 --retry-delay 5 --max-time 30 "$1"
-      }
-      for number in {{.VERSIONS}}; do
-        page=1
-        while :; do
-          resp=$(hub_get "https://hub.docker.com/v2/repositories/${repo}/tags?page_size=100&name=${number}&page=${page}")
-          echo "$resp" | jq -r '.results[].name' >> "$existing"
-          next=$(echo "$resp" | jq -r '.next')
-          if [ "$next" = "null" ] || [ -z "$next" ]; then
-            break
-          fi
-          page=$((page + 1))
-          sleep 2
+      items="$(mktemp)"
+      existing_dir="$(mktemp -d)"
+      trap 'rm -f "$items"; rm -rf "$existing_dir"' EXIT
+      : > "$items"
+      for folder in {{.FOLDERS}}; do
+        repo="koromerzhin/php-${folder}"
+        existing_file="${existing_dir}/${folder}.txt"
+        : > "$existing_file"
+        for number in {{.VERSIONS}}; do
+          page=1
+          while :; do
+            resp=$(curl -fsSL --retry-all-errors --retry 5 --retry-delay 5 --max-time 30 "https://hub.docker.com/v2/repositories/${repo}/tags?page_size=100&name=${number}&page=${page}")
+            echo "$resp" | jq -r '.results[].name' >> "$existing_file"
+            next=$(echo "$resp" | jq -r '.next')
+            if [ "$next" = "null" ] || [ -z "$next" ]; then
+              break
+            fi
+            page=$((page + 1))
+            sleep 2
+          done
         done
       done
-      items="$(mktemp)"
-      trap 'rm -f "$existing" "$items"' EXIT
-      : > "$items"
       for number in {{.VERSIONS}}; do
         matrix_file="matrix_$number.json"
         if [ ! -f "$matrix_file" ]; then
@@ -537,9 +505,10 @@ tasks:
             *.*.*) minor="${version%.*}" ;;
           esac
           for folder in {{.FOLDERS}}; do
+            existing_file="${existing_dir}/${folder}.txt"
             for variant in "" "-xdebug" "-wordpress" "-wordpress-xdebug" "-symfony" "-symfony-messenger" "-symfony-xdebug" "-symfony-messenger-xdebug"; do
-              tag="${version}-${folder}${variant}"
-              if ! grep -qx "$tag" "$existing"; then
+              tag="${version}${variant}"
+              if ! grep -qx "$tag" "$existing_file"; then
                 jq -c -n --arg version "$version" --arg number "$minor" --arg folder "$folder" --arg variant "$variant" '{version: $version, number: $number, folder: $folder, variant: $variant}' >> "$items"
               fi
             done
@@ -548,7 +517,6 @@ tasks:
       done
       jq -c -s '{include: .}' "$items" > "$out"
       count=$(jq '.include | length' "$out")
-      echo "Tags manquants : $count (voir $out)"
       if [ -n "${GITHUB_OUTPUT:-}" ]; then
         if [ "$count" -gt 0 ]; then
           echo "has_missing=true" >> "$GITHUB_OUTPUT"
@@ -564,6 +532,7 @@ tasks:
 
   versions:check:
     desc: "Compare versions.env aux dernières releases GitHub (lecture seule)"
+    internal: true
     silent: true
     preconditions:
     - sh: command -v curl
@@ -590,6 +559,7 @@ tasks:
 
   versions:update:
     desc: "Met à jour versions.env vers les dernières releases GitHub (URLs vérifiées avant écriture)"
+    internal: true
     silent: true
     preconditions:
     - sh: command -v curl
@@ -619,22 +589,17 @@ tasks:
       echo "versions.env mis à jour :"
       cat versions.env
 
-  push:
-    desc: "Pousse les images koromerzhin/php locales vers Docker Hub (confirmation requise, sauf PUSH_CONFIRM=1)"
-    preconditions:
-    - sh: command -v docker
-      msg: "Docker n'est pas installé ou accessible"
+  push:fpm:
+    desc: "Pousse les images koromerzhin/php-fpm locales vers Docker Hub"
     silent: true
     vars:
       PUSH_CONFIRM: '{{.PUSH_CONFIRM | default ""}}'
     cmds:
     - |
       set -euo pipefail
-      # Sans --format docker (conflit avec la syntaxe des templates Task) :
-      # la 1re colonne de `docker images` est déjà REPO:TAG ; on ignore les <none>.
-      tags=$(docker images koromerzhin/php | awk 'NR>1 && $1 !~ /<none>/ {print $1}' | sort -u)
+      tags=$(docker images "koromerzhin/php-fpm" --format '{{.Repository}}:{{.Tag}}' | grep -v '<none>' | sort -u)
       if [ -z "$tags" ]; then
-        echo "Aucune image koromerzhin/php trouvée localement, push ignoré."
+        echo "Aucune image koromerzhin/php-fpm trouvée localement, push ignoré."
         exit 0
       fi
       echo "Images locales à pousser :"
@@ -656,9 +621,44 @@ tasks:
         fi
       done
 
-  exec:
+  push:apache:
+    desc: "Pousse les images koromerzhin/php-apache locales vers Docker Hub"
+    silent: true
+    vars:
+      PUSH_CONFIRM: '{{.PUSH_CONFIRM | default ""}}'
+    cmds:
+    - |
+      set -euo pipefail
+      tags=$(docker images "koromerzhin/php-apache" --format '{{.Repository}}:{{.Tag}}' | grep -v '<none>' | sort -u)
+      if [ -z "$tags" ]; then
+        echo "Aucune image koromerzhin/php-apache trouvée localement, push ignoré."
+        exit 0
+      fi
+      echo "Images locales à pousser :"
+      echo "$tags"
+      if [ "{{.PUSH_CONFIRM}}" != "1" ]; then
+        printf 'Pousser ces %s image(s) vers Docker Hub ? [o/N] ' "$(echo "$tags" | wc -l)"
+        read -r answer || answer=""
+        case "$answer" in
+          o|O|y|Y|oui|yes) ;;
+          *)
+            echo "Push annulé."
+            exit 0
+            ;;
+        esac
+      fi
+      echo "$tags" | while read -r tag; do
+        if [ -n "$tag" ]; then
+          docker push "$tag"
+        fi
+      done
+
+  build:fpm:
+    desc: "Construit les images Docker PHP-FPM manquantes"
+    silent: true
     vars:
       VERSIONS: '{{.VERSIONS | default .VERSION | default "8.2 8.3 8.4"}}'
+      MISSING_FILE: '{{.MISSING_FILE | default "missing.json"}}'
       PUSH: '{{.PUSH | default "true"}}'
       CLEANUP: '{{.CLEANUP | default "true"}}'
       PREPULL: '{{.PREPULL | default "true"}}'
@@ -666,12 +666,57 @@ tasks:
       CACHE_GHA: '{{.CACHE_GHA | default "false"}}'
       BAKE: '{{.BAKE | default "false"}}'
     cmds:
-    - task: build
+    - task: versions:update
+    - task: matrix
       vars:
         VERSIONS: '{{.VERSIONS | default .VERSION | default "8.2 8.3 8.4"}}'
-        PUSH: "{{.PUSH}}"
-        CLEANUP: "{{.CLEANUP}}"
-        PREPULL: "{{.PREPULL}}"
-        CACHE_REGISTRY: "{{.CACHE_REGISTRY}}"
-        CACHE_GHA: "{{.CACHE_GHA}}"
-        BAKE: "{{.BAKE}}"
+    - task: build:prepare
+    - task: build:dockerfiles
+      vars:
+        VERSIONS: '{{.VERSIONS | default .VERSION | default "8.2 8.3 8.4"}}'
+        FOLDERS: "fpm"
+    - task: check:missing
+      vars:
+        VERSIONS: '{{.VERSIONS | default .VERSION | default "8.2 8.3 8.4"}}'
+        FOLDERS: "fpm"
+        MISSING_FILE: "{{.MISSING_FILE}}"
+    - |
+      if [ "{{.BAKE}}" = "true" ]; then
+        task build:bake VERSIONS="{{.VERSIONS}}" FOLDERS="fpm" MISSING_FILE="{{.MISSING_FILE}}" PUSH="{{.PUSH}}" CLEANUP="{{.CLEANUP}}" PREPULL="{{.PREPULL}}" CACHE_REGISTRY="{{.CACHE_REGISTRY}}" CACHE_GHA="{{.CACHE_GHA}}" PLATFORMS="{{.PLATFORMS}}"
+      else
+        task build:images VERSIONS="{{.VERSIONS}}" FOLDERS="fpm" MISSING_FILE="{{.MISSING_FILE}}" PUSH="{{.PUSH}}" CLEANUP="{{.CLEANUP}}" PREPULL="{{.PREPULL}}" CACHE_REGISTRY="{{.CACHE_REGISTRY}}" CACHE_GHA="{{.CACHE_GHA}}"
+      fi
+
+  build:apache:
+    desc: "Construit les images Docker PHP-Apache manquantes"
+    silent: true
+    vars:
+      VERSIONS: '{{.VERSIONS | default .VERSION | default "8.2 8.3 8.4"}}'
+      MISSING_FILE: '{{.MISSING_FILE | default "missing.json"}}'
+      PUSH: '{{.PUSH | default "true"}}'
+      CLEANUP: '{{.CLEANUP | default "true"}}'
+      PREPULL: '{{.PREPULL | default "true"}}'
+      CACHE_REGISTRY: '{{.CACHE_REGISTRY | default ""}}'
+      CACHE_GHA: '{{.CACHE_GHA | default "false"}}'
+      BAKE: '{{.BAKE | default "false"}}'
+    cmds:
+    - task: versions:update
+    - task: matrix
+      vars:
+        VERSIONS: '{{.VERSIONS | default .VERSION | default "8.2 8.3 8.4"}}'
+    - task: build:prepare
+    - task: build:dockerfiles
+      vars:
+        VERSIONS: '{{.VERSIONS | default .VERSION | default "8.2 8.3 8.4"}}'
+        FOLDERS: "apache"
+    - task: check:missing
+      vars:
+        VERSIONS: '{{.VERSIONS | default .VERSION | default "8.2 8.3 8.4"}}'
+        FOLDERS: "apache"
+        MISSING_FILE: "{{.MISSING_FILE}}"
+    - |
+      if [ "{{.BAKE}}" = "true" ]; then
+        task build:bake VERSIONS="{{.VERSIONS}}" FOLDERS="apache" MISSING_FILE="{{.MISSING_FILE}}" PUSH="{{.PUSH}}" CLEANUP="{{.CLEANUP}}" PREPULL="{{.PREPULL}}" CACHE_REGISTRY="{{.CACHE_REGISTRY}}" CACHE_GHA="{{.CACHE_GHA}}" PLATFORMS="{{.PLATFORMS}}"
+      else
+        task build:images VERSIONS="{{.VERSIONS}}" FOLDERS="apache" MISSING_FILE="{{.MISSING_FILE}}" PUSH="{{.PUSH}}" CLEANUP="{{.CLEANUP}}" PREPULL="{{.PREPULL}}" CACHE_REGISTRY="{{.CACHE_REGISTRY}}" CACHE_GHA="{{.CACHE_GHA}}"
+      fi
