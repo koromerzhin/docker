@@ -21,7 +21,7 @@
     "versions:check": "task versions:check"
   },
   "devDependencies": {
-    "jscpd": "5.2.*"
+    "jscpd": "5.4.*"
   },
   "jscpd": {
     "threshold": 5,
