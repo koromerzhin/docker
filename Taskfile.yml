@@ -3,7 +3,7 @@ version: 3
 # Taskfile principal - Tâches globales et inclusions
 # Charge automatiquement les variables depuis les fichiers .env s'ils existent
 # (.env local prioritaire, puis versions.env versionné pour les outils externes)
-dotenv: [ '.env', '.env.example', 'versions.env' ]
+dotenv: [ '.env', '.env.example', 'versions.env', 'extensions.env' ]
 
 includes:
   docker: ./taskfiles/docker/Taskfile.yml
@@ -22,14 +22,11 @@ vars:
   SYMFONY_CLI: '{{.SYMFONY_CLI_URL}}'
   # Versions supportées par défaut : uniquement les branches PHP maintenues.
   # Versions legacy (EOL) : task exec VERSIONS="{{.LEGACY_VERSIONS}}" — à vos risques et périls.
-  VERSIONS: "8.2 8.3 8.4"
-  LEGACY_VERSIONS: "7.4 8.0 8.1"
+  VERSIONS: "5.5 5.6 7.0 7.1 7.2 7.3 7.4 8.0 8.1 8.2 8.3 8.4 8.5 8.6"
   # Paquets système par branche PHP (graphviz à partir de 7.4).
   PKG_BASE: 'wget git fish unzip zip'
   PKG_WITH_GRAPHVIZ: 'wget git fish unzip zip graphviz'
-  # Extensions PHP par branche (7.0-7.3 : @composer uniquement).
-  PHP_EXTENSIONS_FULL: '@composer amqp apcu bcmath blackfire exif gd imagick intl ldap mysqli opcache pdo_mysql pdo_pgsql redis shmop soap sockets tidy zip gnupg'
-  PHP_EXTENSIONS_MINIMAL: '@composer'
+  # Extensions PHP 7.0-7.3 : @composer uniquement (pas dans extensions.env).
 tasks:
   default:
     desc: "Affiche l'aide et les tâches disponibles"
@@ -69,12 +66,9 @@ tasks:
     - |
       set -euo pipefail
       number="{{.NUMBER}}"
+      ext="@composer $(grep '^PHP_'$(echo {{.NUMBER}} | tr . _)'_EXTENSIONS=' extensions.env | cut -d= -f2-)"
       case "$number" in
-        7.0|7.1|7.2|7.3) ext="{{.PHP_EXTENSIONS_MINIMAL}}" ;;
-        *) ext="{{.PHP_EXTENSIONS_FULL}}" ;;
-      esac
-      case "$number" in
-        5.6|7.0|7.1|7.2|7.3) pkg="{{.PKG_BASE}}" ;;
+        5.5|5.6|7.0|7.1|7.2|7.3) pkg="{{.PKG_BASE}}" ;;
         *) pkg="{{.PKG_WITH_GRAPHVIZ}}" ;;
       esac
       if [ "{{.FOLDER}}" = "apache" ]; then
